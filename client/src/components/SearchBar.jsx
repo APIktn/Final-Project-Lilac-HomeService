@@ -4,107 +4,29 @@ import CategoryFilter from "./filters/CategoryFilter";
 import PriceFilter from "./filters/PriceFilter";
 import SortFilter from "./filters/SortFilter";
 import ServiceCard from "./ServiceCard";
-
-const servicesData = [
-  {
-    service_id: 1,
-    image: "https://i.postimg.cc/R08FDx8s/image.png",
-    service_name: "ล้างแอร์",
-    description: "ค่าบริการประมาณ 500.00-1000.00 ฿",
-    price: 500,
-    created_at_by_admin: "2024-07-25T19:58:58",
-    quantity: 1,
-    category: "บริการทั่วไป",
-  },
-  {
-    service_id: 2,
-    image: "https://i.postimg.cc/CLCCWB59/image.png",
-    service_name: "ติดตั้งแอร์",
-    description: "ค่าบริการประมาณ 2800.00 ฿",
-    price: 2000,
-    created_at_by_admin: null,
-    quantity: 1,
-    category: "บริการทั่วไป",
-  },
-  {
-    service_id: 3,
-    image: "https://i.postimg.cc/ZRGbFqhL/image.png",
-    service_name: "ซ่อมแอร์",
-    description: "ค่าบริการประมาณ 400.00 ฿",
-    price: 500,
-    created_at_by_admin: null,
-    quantity: 1,
-    category: " บริการทั่วไป",
-  },
-  {
-    service_id: 4,
-    image: "https://i.postimg.cc/wTTN1W0T/image.png",
-    service_name: "ทำความสะอาดทั่วไป",
-    description: "ค่าบริการประมาณ 500.00 ฿",
-    price: 500,
-    created_at_by_admin: null,
-    quantity: 1,
-    category: "บริการทั่วไป",
-  },
-  {
-    service_id: 5,
-    image: "https://i.postimg.cc/kGhg6ygB/image.png",
-    service_name: "ซ่อมเครื่องซักผ้า",
-    description: "ค่าบริการประมาณ 500.00 ฿",
-    price: 500,
-    created_at_by_admin: null,
-    quantity: 10,
-    category: "บริการทั่วไป",
-  },
-  {
-    service_id: 6,
-    image: "https://i.postimg.cc/3Jmg5yS2/image.png",
-    service_name: "ติดตั้งเตาแก๊ส",
-    description: "ค่าบริการประมาณ 1000.00 ฿",
-    price: 1000,
-    created_at_by_admin: null,
-    quantity: 1,
-    category: "บริการห้องครัว",
-  },
-  {
-    service_id: 7,
-    image: "https://i.postimg.cc/CMfv5xrx/image.png",
-    service_name: "ติดตั้งเครื่องดูดควัน",
-    description: "ค่าบริการประมาณ 1000.00฿",
-    price: 1000,
-    created_at_by_admin: null,
-    quantity: 1,
-    category: "บริการห้องครัว",
-  },
-  {
-    service_id: 8,
-    image: "https://i.postimg.cc/Fz7Xk5qQ/image.png",
-    service_name: "ติดตั้งชักโครก",
-    description: "ค่าบริการประมาณ 1000.00฿",
-    price: 1000,
-    created_at_by_admin: null,
-    quantity: 1,
-    category: "บริการห้องน้ำ",
-  },
-  {
-    service_id: 9,
-    image: "https://i.postimg.cc/50JwtfX6/image.png",
-    service_name: "ติดตั้งเครื่องทำน้ำอุ่น",
-    description: "ค่าบริการประมาณ 500.00 ฿",
-    price: 500,
-    created_at_by_admin: null,
-    quantity: 1,
-    category: "บริการห้องน้ำ\n",
-  },
-];
+import axios from "axios";
 
 const SearchBar = () => {
+  const [services, setServices] = useState([]);
+  const [findServices, setFindServices] = useState("");
   const [category, setCategory] = useState("");
   const [priceRange, setPriceRange] = useState([0, 2000]);
   const [sortOption, setSortOption] = useState("");
   const [openDropdown, setOpenDropdown] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSticky, setIsSticky] = useState(false);
+
+  const getServices = async () => {
+    const result = await axios.get(
+      `http://localhost:4000/serviceslist`
+    );
+    console.log(result.data.data)
+    setServices(result.data.data);
+  };
+
+  useEffect(() => {
+    getServices();
+  },[findServices]);
 
   const toggleDropdown = (dropdownName) => {
     setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
@@ -115,7 +37,7 @@ const SearchBar = () => {
   };
 
   const filterServices = () => {
-    let filteredServices = servicesData;
+    let filteredServices = services;
 
     // Filter by category
     if (category && category !== "บริการทั้งหมด") {
