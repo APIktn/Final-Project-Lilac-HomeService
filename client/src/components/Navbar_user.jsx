@@ -10,6 +10,7 @@ import history from "../assets/icons/history-icon.png";
 import logout1 from "../assets/icons/logout-icon.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication";
+import { useAdminAuth } from "../contexts/adminAuthentication";
 
 const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
   fontFamily: "Prompt",
@@ -57,7 +58,8 @@ const Navbar_user = () => {
           </a>
         </div>
         <div className="flex items-center ml-2 sm:ml-4">
-          <span className="text-gray-700 text-sm font-normal mt-1">
+          <span className="text-gray-700 text-sm font-normal mt-1  hidden sm:block">
+            {user?.role === "admin" && "Admin "}
             {user?.firstname} {user?.lastname}
             <span style={{ marginLeft: "5px" }}></span>
           </span>
@@ -86,16 +88,29 @@ const Navbar_user = () => {
               <img src={order} alt="order" className="mr-1 h-8 sm:h-6" />
               รายการคำสั่งซ่อม
             </CustomMenuItem>
-            <CustomMenuItem onClick={() => handleMenuItemClick("/history")}>
-              <img src={history} alt="history" className="mr-1 h-8 sm:h-6" />
+            <CustomMenuItem
+              className="border-b-[1px]"
+              onClick={() => handleMenuItemClick("/history")}
+            >
+              <img src={history} alt="history" className=" mr-1 h-8 sm:h-6" />
               ประวัติการซ่อม
             </CustomMenuItem>
+            {/* แสดงเฉพาะ admin */}
+            {user?.role === "admin" && (
+              <CustomMenuItem
+                className="border-b-[1px]"
+                onClick={() => handleMenuItemClick("/admin")}
+              >
+                <img src={history} alt="admin" className="mr-1 h-8 sm:h-6" />
+                Admin Dashboard
+              </CustomMenuItem>
+            )}
+
             <CustomMenuItem
               onClick={() => {
                 logout();
                 navigate("/");
               }}
-              // className="border-t border-gray-300 pt-1" ใช้ไม่ได้แต่อยากทำให้ได้
             >
               <img src={logout1} alt="logout" className="mr-1 h-8 sm:h-6" />
               ออกจากระบบ
