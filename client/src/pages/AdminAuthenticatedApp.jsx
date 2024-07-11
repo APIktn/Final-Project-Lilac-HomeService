@@ -4,7 +4,7 @@ import AdminDashboardPage from "./AdminDashboardPage";
 import NotFoundPage from "./NotFoundPage";
 import PolicyPage from "./PolicyPage";
 import TermsPage from "./TermsPage";
-import HomePage_user from "./HomePage_user";
+import HomePage_admin from "./HomePage_admin";
 
 function AdminAuthenticatedApp() {
   return (
@@ -14,7 +14,7 @@ function AdminAuthenticatedApp() {
         <Route path="/policy" element={<PolicyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/" element={<HomePage_user />} />
+        <Route path="/" element={<HomePage_admin />} />
       </Routes>
     </div>
   );

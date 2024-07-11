@@ -7,6 +7,9 @@ function AdminDashboardPage() {
   return (
     <>
       <div>This is the dashboard page for admin</div>
+      <div>
+        <a href="/">Home</a>
+      </div>
       <button
         onClick={() => {
           logout();

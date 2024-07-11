@@ -33,8 +33,8 @@ const Navbar_user = () => {
     handleMenuClose();
   };
 
-  const { state, logout } = useAuth();
-  const { user } = state;
+  const { state, logout } = useAdminAuth();
+  const { admin } = state;
 
   return (
     <nav className="bg-white shadow-md w-full">
@@ -59,13 +59,13 @@ const Navbar_user = () => {
         </div>
         <div className="flex items-center ml-2 sm:ml-4">
           <span className="text-gray-700 text-sm font-normal mt-1  hidden sm:block">
-            {user?.role === "admin" && "admin "}
-            {user?.firstname} {user?.lastname}
+            {admin?.role === "admin" && "Admin : "}
+            {admin?.firstname} {admin?.lastname}
             <span style={{ marginLeft: "5px" }}></span>
           </span>
           <button className="mr-2" onClick={handleAvatarClick}>
             <img
-              src={user?.profile_image || avatar}
+              src={admin?.profile_image || avatar}
               alt="avatar"
               className="h-8 sm:h-6 rounded-full"
             />
@@ -96,20 +96,20 @@ const Navbar_user = () => {
               ประวัติการซ่อม
             </CustomMenuItem>
             {/* แสดงเฉพาะ admin */}
-            {user?.role === "admin" && (
-              <CustomMenuItem
-                className="border-b-[1px]"
-                onClick={() => handleMenuItemClick("/admin")}
-              >
-                <img src={history} alt="admin" className="mr-1 h-8 sm:h-6" />
-                Admin Dashboard
-              </CustomMenuItem>
-            )}
+            {/* {user?.role === "admin" && ( */}
+            <CustomMenuItem
+              className="border-b-[1px]"
+              onClick={() => handleMenuItemClick("/admin")}
+            >
+              <img src={history} alt="admin" className="mr-1 h-8 sm:h-6" />
+              Admin Dashboard
+            </CustomMenuItem>
+            {/* )} */}
 
             <CustomMenuItem
               onClick={() => {
                 logout();
-                navigate("/");
+                navigate("/admin");
               }}
             >
               <img src={logout1} alt="logout" className="mr-1 h-8 sm:h-6" />
