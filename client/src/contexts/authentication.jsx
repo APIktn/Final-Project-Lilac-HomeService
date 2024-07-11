@@ -27,6 +27,12 @@ function AuthProvider(props) {
         }));
       } catch (error) {
         console.error("Token decoding failed", error);
+        localStorage.removeItem("token");
+        setState((prevState) => ({
+          ...prevState,
+          user: null,
+          error: "Invalid token",
+        }));
       }
     }
   }, []);

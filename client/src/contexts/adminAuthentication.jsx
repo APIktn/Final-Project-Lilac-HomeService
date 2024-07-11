@@ -39,10 +39,11 @@ function AdminAuthProvider(props) {
         "http://localhost:4000/auth/login/admin",
         data
       );
-      const { token, admin } = result.data;
+      const { token } = result.data;
       localStorage.setItem("admin-token", token);
-      setState({ ...state, admin });
-      window.location.reload();
+      const adminDataFromToken = jwtDecode(token);
+      setState({ ...state, admin: adminDataFromToken, error: null });
+      navigate("/");
     } catch (error) {
       setState({
         ...state,
