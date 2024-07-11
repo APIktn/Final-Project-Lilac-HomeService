@@ -1,25 +1,17 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
 
 function MuiBreadcrumbs() {
   const breadcrumbs = [
-    <Link
-      key="1"
-      underline="none"
-      variant="subtitle1"
-      color="inherit"
-      fontFamily="Prompt"
-    >
+    <a className="font-prompt text-[14px] font-[400] md:text-[16px] md:font-[500] text-center text-gray-700">
       บริการของเรา
-    </Link>,
-    <Typography key="2" color="primary" variant="h4" fontFamily="Prompt">
+    </a>,
+    <a className="font-prompt text-[20px] font-[500] md:text-[32px] text-center text-blue-600">
       ล้างแอร์
-    </Typography>,
+    </a>,
   ];
 
   return (
-    <div className="breadcrumb-container w-[300px] h-[68px] bg-white border-solid border-[1px] border-[#CCD0D7] rounded-[8px] gap-[12px] py-[10px] px-[32px] absolute top-[153px] left-[160px]">
+    <div className="breadcrumb-container w-[206px] h-[46px] px-4 py-1 md:w-[300px] md:h-[68px] bg-white border-solid border-[1px] border-[#CCD0D7] rounded-[8px] md:gap-[12px] md:py-[4px] md:px-[32px]">
       <Breadcrumbs separator="›" aria-label="breadcrumb" variant="subtitle1">
         {breadcrumbs}
       </Breadcrumbs>

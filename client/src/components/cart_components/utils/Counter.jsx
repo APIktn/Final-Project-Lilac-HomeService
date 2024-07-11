@@ -14,19 +14,19 @@ function Counter() {
   };
 
   return (
-    <div className="button-container flex flex-row items-center">
+    <div className="button-container flex flex-row items-center justify-between gap-1">
       <button
-        className="w-[43px] h-[43px] border-solid border-[1px] border-[#336DF2] rounded-[8px] text-[#336DF2] text-[20px]"
+        className="w-8 h-8 md:w-[43px] md:h-[43px] border-solid border-[1px] border-[#336DF2] rounded-[8px] text-[#336DF2] text-[16px] md:text-[20px] font-[500]"
         onClick={handleMinus}
       >
         {" "}
         -{" "}
       </button>
-      <div className="counter-container w-[54px] h-[43px] text-[16px] text-[#4B5160] flex items-center justify-center">
+      <div className="counter-container w-[29px] h-[24px] md:w-[54px] md:h-[43] text-[16px] font-[500] text-[#4B5160] flex items-center justify-center">
         {counter}
       </div>
       <button
-        className="w-[43px] h-[43px] border-solid border-[1px] border-[#336DF2] rounded-[8px] text-[#336DF2] text-[20px]"
+        className="w-8 h-8 md:w-[43px] md:h-[43px] border-solid border-[1px] border-[#336DF2] rounded-[8px] text-[#336DF2] text-[16px] md:text-[20px] font-[500]"
         onClick={handlePlus}
       >
         {" "}
