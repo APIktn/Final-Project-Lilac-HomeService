@@ -12,6 +12,11 @@ export const isValidPassword = (password) => {
   return password.length >= 12;
 };
 
+export const isValidName = (name) => {
+  const nameRegex = /^[a-zA-Z'-]+$/;
+  return nameRegex.test(name);
+};
+
 export const validateRegister = ({
   firstname,
   lastname,
@@ -24,27 +29,36 @@ export const validateRegister = ({
 
   if (!firstname) {
     errors.firstname = "กรุณากรอกชื่อ";
+  } else if (!isValidName(firstname)) {
+    errors.firstname =
+      "ชื่อไม่ถูกต้อง ต้องประกอบด้วยตัวอักษรภาษาอังกฤษเท่านั้น";
   }
+
   if (!lastname) {
     errors.lastname = "กรุณากรอกนามสกุล";
+  } else if (!isValidName(lastname)) {
+    errors.lastname =
+      "นามสกุลไม่ถูกต้อง ต้องประกอบด้วยตัวอักษรภาษาอังกฤษเท่านั้น";
   }
+
   if (!tel_num) {
     errors.tel_num = "กรุณากรอกหมายเลขโทรศัพท์";
   } else if (!isValidPhoneNumber(tel_num)) {
     errors.tel_num = "กรุณากรอกหมายเลขโทรศัพท์ (10 หลัก)";
   }
+
   if (!email) {
     errors.email = "กรุณากรอกอีเมล";
-  }
-  if (email && !isValidEmail(email)) {
+  } else if (!isValidEmail(email)) {
     errors.email = "กรุณากรอกอีเมลให้ถูกต้อง";
   }
+
   if (!password) {
     errors.password = "กรุณากรอกรหัสผ่าน";
-  }
-  if (password && !isValidPassword(password)) {
+  } else if (!isValidPassword(password)) {
     errors.password = "รหัสผ่านต้องมีอย่างน้อย 12 ตัวอักษร";
   }
+
   if (!isChecked) {
     errors.isChecked = "กรุณายอมรับข้อตกลงและเงื่อนไข";
   }
@@ -57,10 +71,10 @@ export const validateLogin = ({ email, password }) => {
 
   if (!email) {
     errors.email = "กรุณากรอกอีเมล";
-  }
-  if (email && !isValidEmail(email)) {
+  } else if (!isValidEmail(email)) {
     errors.email = "กรุณากรอกอีเมลให้ถูกต้อง";
   }
+
   if (!password) {
     errors.password = "กรุณากรอกรหัสผ่าน";
   }
