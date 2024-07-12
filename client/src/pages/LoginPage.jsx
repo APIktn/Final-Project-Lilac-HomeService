@@ -45,8 +45,9 @@ function LoginPage() {
     <>
       <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
+
         <div className="w-11/12 max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md absolute top-24">
-          <h2 className="text-2xl font-medium mb-6 text-center text-blue-900">
+          <h2 className="text-2xl font-medium mb-6 text-center text-blue-950">
             เข้าสู่ระบบ
           </h2>
           <form onSubmit={handleSubmit}>
@@ -55,7 +56,8 @@ function LoginPage() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                อีเมล{errors.email && <span className="text-red-500">*</span>}
+                อีเมล
+                <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -86,7 +88,7 @@ function LoginPage() {
                 className="block text-sm font-medium text-gray-700"
               >
                 รหัสผ่าน
-                {errors.password && <span className="text-red-500">*</span>}
+                <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -122,7 +124,11 @@ function LoginPage() {
                 เข้าสู่ระบบ
               </button>
             </div>
-            <div className="mb-4 text-center">หรือเข้าสู่ระบบใช้ผ่าน</div>
+            <div className="flex items-center mb-4">
+              <hr className="flex-grow border-gray-300" />
+              <span className="px-2 text-gray-700">หรือเข้าสู่ระบบใช้ผ่าน</span>
+              <hr className="flex-grow border-gray-300" />
+            </div>
             <div>
               <button
                 type="button"
@@ -137,10 +143,11 @@ function LoginPage() {
               </button>
             </div>
           </form>
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center flex justify-center">
+            <p className="text-gray-700">ยังไม่มีบัญชีผู้ใช้ HomeService?</p>
             <button
               onClick={() => navigate("/register")}
-              className="text-blue-600 hover:underline"
+              className="text-blue-600 underline ml-2 "
             >
               ลงทะเบียน
             </button>

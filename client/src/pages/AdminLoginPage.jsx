@@ -50,7 +50,8 @@ function AdminLoginPage() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                อีเมล{errors.email && <span className="text-red-500">*</span>}
+                อีเมล
+                <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -81,7 +82,7 @@ function AdminLoginPage() {
                 className="block text-sm font-medium text-gray-700"
               >
                 รหัสผ่าน
-                {errors.password && <span className="text-red-500">*</span>}
+                <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input

@@ -10,6 +10,11 @@ export const checkLoginErrors = (formData) => {
   return errors;
 };
 
+const isValidName = (name) => {
+  const nameRegex = /^[a-zA-Z'-]+$/;
+  return nameRegex.test(name);
+};
+
 export const updateErrors = (field, value, errors) => {
   let newErrors = { ...errors };
 
@@ -17,6 +22,9 @@ export const updateErrors = (field, value, errors) => {
     case "firstname":
       if (!value) {
         newErrors.firstname = "กรุณากรอกชื่อ";
+      } else if (!isValidName(value)) {
+        newErrors.firstname =
+          "ชื่อไม่ถูกต้อง ต้องประกอบด้วยตัวอักษรภาษาอังกฤษเท่านั้น";
       } else {
         delete newErrors.firstname;
       }
@@ -24,6 +32,9 @@ export const updateErrors = (field, value, errors) => {
     case "lastname":
       if (!value) {
         newErrors.lastname = "กรุณากรอกนามสกุล";
+      } else if (!isValidName(value)) {
+        newErrors.lastname =
+          "นามสกุลไม่ถูกต้อง ต้องประกอบด้วยตัวอักษรภาษาอังกฤษเท่านั้น";
       } else {
         delete newErrors.lastname;
       }
@@ -49,8 +60,8 @@ export const updateErrors = (field, value, errors) => {
     case "password":
       if (!value) {
         newErrors.password = "กรุณากรอกรหัสผ่าน";
-      } else if (value.length < 6) {
-        newErrors.password = "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร";
+      } else if (value.length < 12) {
+        newErrors.password = "รหัสผ่านต้องมีอย่างน้อย 12 ตัวอักษร";
       } else {
         delete newErrors.password;
       }
