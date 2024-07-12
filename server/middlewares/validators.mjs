@@ -12,7 +12,7 @@ const isValidPhoneNumber = (tel_num) => {
 };
 
 const isValidPassword = (password) => {
-  return password.length >= 6;
+  return password.length >= 12;
 };
 
 export const validateRegister = async (req, res, next) => {
@@ -38,7 +38,7 @@ export const validateRegister = async (req, res, next) => {
     errors.push({ message: "กรุณากรอกรหัสผ่าน" });
   }
   if (password && !isValidPassword(password)) {
-    errors.push({ message: "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร" });
+    errors.push({ message: "รหัสผ่านต้องมีอย่างน้อย 12 ตัวอักษร" });
   }
 
   if (errors.length > 0) {

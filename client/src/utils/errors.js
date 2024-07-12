@@ -49,8 +49,8 @@ export const updateErrors = (field, value, errors) => {
     case "password":
       if (!value) {
         newErrors.password = "กรุณากรอกรหัสผ่าน";
-      } else if (value.length < 6) {
-        newErrors.password = "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร";
+      } else if (value.length < 12) {
+        newErrors.password = "รหัสผ่านต้องมีอย่างน้อย 12 ตัวอักษร";
       } else {
         delete newErrors.password;
       }

@@ -9,7 +9,7 @@ export const isValidPhoneNumber = (tel_num) => {
 };
 
 export const isValidPassword = (password) => {
-  return password.length >= 6;
+  return password.length >= 12;
 };
 
 export const validateRegister = ({
@@ -43,7 +43,7 @@ export const validateRegister = ({
     errors.password = "กรุณากรอกรหัสผ่าน";
   }
   if (password && !isValidPassword(password)) {
-    errors.password = "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร";
+    errors.password = "รหัสผ่านต้องมีอย่างน้อย 12 ตัวอักษร";
   }
   if (!isChecked) {
     errors.isChecked = "กรุณายอมรับข้อตกลงและเงื่อนไข";
