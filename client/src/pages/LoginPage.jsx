@@ -45,7 +45,7 @@ function LoginPage() {
     <>
       <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="w-full max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md">
+        <div className="w-11/12 max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md absolute top-24">
           <h2 className="text-2xl font-medium mb-6 text-center text-blue-900">
             เข้าสู่ระบบ
           </h2>
