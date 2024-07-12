@@ -79,7 +79,7 @@ function RegisterPage() {
       <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="w-full max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md">
-          <h2 className="text-2xl font-medium mb-6 text-center text-blue-900">
+          <h2 className="text-2xl font-medium mb-6 text-center text-blue-950">
             ลงทะเบียน
           </h2>
           <form onSubmit={handleSubmit}>
@@ -89,7 +89,7 @@ function RegisterPage() {
                 className="block text-sm font-medium text-gray-700"
               >
                 ชื่อ
-                {errors.firstname && <span className="text-red-500">*</span>}
+                <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -120,7 +120,7 @@ function RegisterPage() {
                 className="block text-sm font-medium text-gray-700"
               >
                 นามสกุล
-                {errors.lastname && <span className="text-red-500">*</span>}
+                <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -151,7 +151,7 @@ function RegisterPage() {
                 className="block text-sm font-medium text-gray-700"
               >
                 เบอร์โทรศัพท์
-                {errors.tel_num && <span className="text-red-500">*</span>}
+                <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -182,7 +182,7 @@ function RegisterPage() {
                 className="block text-sm font-medium text-gray-700"
               >
                 อีเมล
-                {errors.email && <span className="text-red-500">*</span>}
+                <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -213,7 +213,7 @@ function RegisterPage() {
                 className="block text-sm font-medium text-gray-700"
               >
                 รหัสผ่าน
-                {errors.password && <span className="text-red-500">*</span>}
+                <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -239,7 +239,7 @@ function RegisterPage() {
               )}
             </div>
             <div
-              className="mb-4 flex items-center"
+              className="mb-4 flex items-start"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
@@ -257,14 +257,14 @@ function RegisterPage() {
                 <span className={isHovered ? "text-blue-600" : ""}>ยอมรับ</span>{" "}
                 <button
                   onClick={() => navigate("/terms")}
-                  className="text-blue-600 hover:underline"
+                  className="text-blue-600 underline"
                 >
                   ข้อตกลงและเงื่อนไข
                 </button>{" "}
                 และ{" "}
                 <button
                   onClick={() => navigate("/policy")}
-                  className="text-blue-600 hover:underline"
+                  className="text-blue-600 underline"
                 >
                   นโยบายความเป็นส่วนตัว
                 </button>
@@ -284,7 +284,11 @@ function RegisterPage() {
                 ลงทะเบียน
               </button>
             </div>
-            <div className="mb-4 text-center">หรือเข้าสู่ระบบใช้ผ่าน</div>
+            <div className="flex items-center mb-4">
+              <hr className="flex-grow border-gray-300" />
+              <span className="px-2 text-gray-700">หรือเข้าสู่ระบบใช้ผ่าน</span>
+              <hr className="flex-grow border-gray-300" />
+            </div>
             <div>
               <button
                 type="button"
