@@ -12,7 +12,7 @@ const Services = () => {
   };
 
   const getServices = async () => {
-    const result = await axios.get(`http://localhost:4000/top3services`);
+    const result = await axios.get(`http://localhost:4000/services/top3services`);
     console.log(result.data.data);
     setServices(result.data.data);
   };
@@ -31,9 +31,9 @@ const Services = () => {
           บริการยอดฮิตของเรา
         </h2>
         <div className="p-4 mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-8 md:px-20 md:py-16">
-          {filteredServices.map((service) => (
-            <ServiceCard key={service.service_id} service={service} />
-          ))}
+        {filteredServices.map((service, index) => (
+         <ServiceCard key={`${service.service_id}-${index}`} service={service} />
+        ))}
         </div>
         <div className="text-center mt-6 lg:mt-8">
           <button

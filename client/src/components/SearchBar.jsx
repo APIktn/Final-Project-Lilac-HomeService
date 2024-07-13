@@ -5,28 +5,33 @@ import PriceFilter from "./filters/PriceFilter";
 import SortFilter from "./filters/SortFilter";
 import ServiceCard from "./ServiceCard";
 import axios from "axios";
+import { ClipLoader } from "react-spinners";
 
 const SearchBar = () => {
   const [services, setServices] = useState([]);
-  const [findServices, setFindServices] = useState("");
   const [category, setCategory] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 2000]);
+  const [priceRange, setPriceRange] = useState([0,5000]);
   const [sortOption, setSortOption] = useState("");
   const [openDropdown, setOpenDropdown] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSticky, setIsSticky] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const getServices = async () => {
-    const result = await axios.get(
-      `http://localhost:4000/serviceslist`
-    );
-    console.log(result.data.data)
-    setServices(result.data.data);
+    try {
+      const result = await axios.get(`http://localhost:4000/services/serviceslist`);
+      console.log("Fetched services:", result.data.data);
+      setServices(result.data.data);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     getServices();
-  },[findServices]);
+  }, []);
 
   const toggleDropdown = (dropdownName) => {
     setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
@@ -42,14 +47,21 @@ const SearchBar = () => {
     // Filter by category
     if (category && category !== "บริการทั้งหมด") {
       filteredServices = filteredServices.filter(
-        (service) => service.category.trim() === category.trim()
+        (service) => service.categories.category_name.trim() === category.trim()
       );
     }
 
     // Filter by price range
-    filteredServices = filteredServices.filter(
-      (service) =>
-        service.price >= priceRange[0] && service.price <= priceRange[1]
+    filteredServices = filteredServices.filter((service) => {
+      const prices = service.service_list.map((detail) => detail.price);
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+      return minPrice >= priceRange[0] && maxPrice <= priceRange[1];
+    });
+
+    // Filter by search query
+    filteredServices = filteredServices.filter((service) =>
+      service.service_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     // Sort by sortOption
@@ -70,9 +82,7 @@ const SearchBar = () => {
     return filteredServices;
   };
 
-  const filteredServices = filterServices().filter((service) =>
-    service.service_name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredServices = filterServices();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,17 +97,17 @@ const SearchBar = () => {
   }, []);
 
   return (
-    <div className="font-prompt w-full mx-auto  flex flex-col space-y-4 bg-[#EFEFF2]">
+    <div className="font-prompt w-full mx-auto flex flex-col space-y-4 bg-[#EFEFF2]">
       {/* Filter Bar */}
       <div
         className={`${
           isSticky
-            ? "sticky top-0 z-50 bg-white  border-b border-gray-200 p-4 xl:px-32 xl:flex xl:justify-around xl:items-center"
+            ? "sticky top-0 z-50 bg-white border-b border-gray-200 p-4 xl:px-32 xl:flex xl:justify-around xl:items-center"
             : "bg-white p-4 xl:px-32 xl:flex xl:justify-around xl:items-center"
         }`}
       >
-        <section className="flex items-center space-x-2 ">
-          <div className="flex-grow flex items-center  border border-gray-300 rounded-md p-0 ">
+        <section className="flex items-center space-x-2">
+          <div className="flex-grow flex items-center border border-gray-300 rounded-md p-0">
             <div className="p-2 xl:w-[200px]">
               <SearchIcon />
             </div>
@@ -141,13 +151,21 @@ const SearchBar = () => {
       </div>
 
       {/* Filtered Services */}
-      <div className="p-4 mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-8 md:px-32 md:py-16">
-        {filteredServices.map((service) => (
-          <ServiceCard key={service.service_id} service={service} />
-        ))}
-      </div>
+
+      {loading ? (
+        <div className="flex justify-center items-center w-full h-[500px]">
+          <ClipLoader size={200} color={"#123abc"} loading={loading} />
+        </div>
+      ) : (
+        <div className="p-4 mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-8 md:px-32 md:py-16">
+          {filteredServices.map((service) => (
+            <ServiceCard key={service.service_id} service={service} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 export default SearchBar;
+
