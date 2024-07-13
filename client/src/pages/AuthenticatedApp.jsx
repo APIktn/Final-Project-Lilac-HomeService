@@ -15,7 +15,7 @@ function AuthenticatedApp() {
         <Route path="/policy" element={<PolicyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/servicelist" element={<ServiceList_user/>} />
-        <Route path="/cart" element={<CartPage_1 />} />
+        <Route path="/cart/:service_name" element={<CartPage_1 />} />
       </Routes>
     </div>
   );

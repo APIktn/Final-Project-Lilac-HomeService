@@ -16,7 +16,7 @@ const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
   fontFamily: "Prompt",
 }));
 
-const Navbar_user = () => {
+const Navbar_admin = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -122,4 +122,4 @@ const Navbar_user = () => {
   );
 };
 
-export default Navbar_user;
+export default Navbar_admin;

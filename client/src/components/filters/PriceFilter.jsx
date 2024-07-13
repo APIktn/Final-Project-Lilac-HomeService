@@ -19,22 +19,22 @@ const PriceFilter = ({
           }`}
           onClick={toggleDropdown}
         >
-          0-2000฿
+          0-5000฿
           <ArrowDropDownIcon />
         </button>
         {openDropdown === "price" && (
           <div className="absolute top-full left-0 w-52 bg-white border border-gray-300 rounded-md mt-2 p-2 z-10">
-            <p>0-2000฿</p>
+            <p>0-5000฿</p>
             <Slider
               value={priceRange}
               onChange={(event, newValue) => setPriceRange(newValue)}
               valueLabelDisplay="auto"
-              max={2000}
+              max={5000}
               className="-mt-2"
             />
             <div className="flex justify-between -mt-5">
               <span>0฿</span>
-              <span>2000฿</span>
+              <span>5000฿</span>
             </div>
           </div>
         )}

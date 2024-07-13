@@ -20,12 +20,12 @@ const SortFilter = ({
     },
     {
       label: "ตามตัวอักษร (Ascending)",
-      abbreviatedLabel: "ตามตัวอักษ...",
+      abbreviatedLabel: "ตามตัวอัก...",
       value: "ตามตัวอักษร (Ascending)",
     },
     {
       label: "ตามตัวอักษร (Descending)",
-      abbreviatedLabel: "ตามตัวอักษ...",
+      abbreviatedLabel: "ตามตัวอัก...",
       value: "ตามตัวอักษร (Descending)",
     },
   ];
