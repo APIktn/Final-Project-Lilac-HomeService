@@ -15,12 +15,14 @@ import vectorSearch from "../assets/icons/Vector-search.svg";
 const initialItems = [
   {
     id: "1",
+    service: "ล้างแอร์",
     category: "บริการทั่วไป",
     created: "12/02/2022 10.30PM",
     modified: "12/02/2022 10.30PM",
   },
   {
     id: "2",
+    service: "ซ่อมแอร์",
     category: "บริการห้องครัว",
     created: "15/03/2022 12.00PM",
     modified: "15/03/2022 12.00PM",
@@ -28,18 +30,63 @@ const initialItems = [
   {
     id: "3",
     category: "บริการห้องน้ำ",
+    service: "ล้างห้องน้ำ",
     created: "18/04/2022 9.30AM",
     modified: "18/04/2022 9.30AM",
   },
   {
     id: "4",
+    service: "ซ่อมรถ",
+    category: "บริการห้องอื่น ๆ",
+    created: "18/04/2022 9.30AM",
+    modified: "18/04/2022 9.30AM",
+  },
+  {
+    id: "5",
+    service: "ยกของ",
+    category: "บริการทั่วไป",
+    created: "18/04/2022 9.30AM",
+    modified: "18/04/2022 9.30AM",
+  },
+  {
+    id: "6",
+    service: "ติดตั้งเตาอบ",
+    category: "บริการห้องครัว",
+    created: "18/04/2022 9.30AM",
+    modified: "18/04/2022 9.30AM",
+  },
+  {
+    id: "7",
+    service: "ติดตั้งชักโครก",
+    category: "บริการห้องน้ำ",
+    created: "18/04/2022 9.30AM",
+    modified: "18/04/2022 9.30AM",
+  },
+  {
+    id: "8",
+    service: "ซ่อมท่อ",
     category: "บริการห้องอื่น ๆ",
     created: "18/04/2022 9.30AM",
     modified: "18/04/2022 9.30AM",
   },
 ];
 
-function AdminDashboardPage() {
+const categoryStyles = {
+  บริการทั่วไป: {
+    backgroundColor: "#E7EEFF",
+    color: "#0E3FB0",
+  },
+  บริการห้องครัว: {
+    backgroundColor: "#ECE6FF",
+    color: "#4512B4",
+  },
+  บริการห้องน้ำ: {
+    backgroundColor: "#DFF9F6",
+    color: "#00596C",
+  },
+};
+
+function AdminService() {
   const [items, setItems] = useState(initialItems);
   const [filteredItems, setFilteredItems] = useState(initialItems);
   const [searchTerm, setSearchTerm] = useState("");
@@ -116,29 +163,27 @@ function AdminDashboardPage() {
             <img src={vectorHouse} alt="House" className="mr-2" />
             <span>Homeservice</span>
           </div>
-          <div>
-            <div className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
-              <img src={vectorCategory} alt="Category" className="mr-2" />
-              <span className="text-white">หมวดหมู่</span>
-            </div>
-            <div
-              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/service")}
-            >
-              <img src={vectorService} alt="Service" className="mr-2" />
-              <span className="text-white">บริการ</span>
-            </div>
-            <div
-              className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admindashboard/promotioncode")}
-            >
-              <img
-                src={vectorPromotionCode}
-                alt="Promotion Code"
-                className="mr-2"
-              />
-              <span className="text-white">Promotion Code</span>
-            </div>
+          <div
+            className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+            onClick={() => navigate("/admin")}
+          >
+            <img src={vectorCategory} alt="Category" className="mr-2" />
+            <span className="text-white">หมวดหมู่</span>
+          </div>
+          <div className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
+            <img src={vectorService} alt="Service" className="mr-2" />
+            <span className="text-white">บริการ</span>
+          </div>
+          <div
+            className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+            onClick={() => navigate("/admin/promotioncode")}
+          >
+            <img
+              src={vectorPromotionCode}
+              alt="Promotion Code"
+              className="mr-2"
+            />
+            <span className="text-white">Promotion Code</span>
           </div>
         </div>
         <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
@@ -151,7 +196,7 @@ function AdminDashboardPage() {
       <div className="flex-1 flex flex-col bg-[#EFEFF2]">
         {/* Admin Topbar */}
         <div className="bg-white p-4 flex justify-between items-center">
-          <div className="text-lg">หมวดหมู่</div>
+          <div className="text-lg">บริการ</div>
           <div className="flex items-center space-x-4">
             <div className="flex w-72 h-11 border rounded-md p-2 items-center">
               <img
@@ -161,86 +206,109 @@ function AdminDashboardPage() {
               />
               <input
                 type="text"
-                placeholder="ค้นหาหมวดหมู่"
+                placeholder="ค้นหาบริการ"
                 value={searchTerm}
                 onChange={handleSearch}
                 className="outline-none text-[16px] font-light"
               />
             </div>
             <button
-              onClick={() => navigate("/admindashboard/category/create")}
+              onClick={() => navigate("/admin/service/create")}
               className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
             >
-              เพิ่มหมวดหมู่ +
+              เพิ่มบริการ +
             </button>
           </div>
         </div>
 
         {/* Workspace */}
-        <div className="p-4 pt-8 flex-1 overflow-auto rounded-md shadow-md ">
-          <div className="  rounded-md shadow-md rounded-b-none">
+        <div className="p-4 pt-8 flex-1 overflow-auto rounded-md shadow-md">
+          <div className="rounded-md shadow-md rounded-b-none">
             <div
               style={{ fontWeight: 400 }}
               className="grid grid-cols-12 gap-4 items-center bg-[#E6E7EB] rounded-md p-2 shadow-md border border-[#EFEFF2] text-[14px] text-[#646C80]"
             >
               <div className="col-span-1"></div>
               <div className="col-span-1">ลำดับ</div>
-              <div className="col-span-3 ml-3">ชื่อหมวดหมู่</div>
-              <div className="col-span-3">สร้างเมื่อ</div>
-              <div className="col-span-3">แก้ไขล่าสุด</div>
+              <div className="col-span-3 ml-3">ชื่อบริการ</div>
+              <div className="col-span-2">หมวดหมู่</div>
+              <div className="col-span-2">สร้างเมื่อ</div>
+              <div className="col-span-2">แก้ไขล่าสุด</div>
               <div className="col-span-1">Action</div>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-md shadow-md rounded-t-none ">
-            {filteredItems.map((item, index) => (
-              <div
-                key={item.id}
-                draggable
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDragOver={(e) => handleDragOver(e)}
-                onDrop={(e) => handleDrop(e, index)}
-                className="grid grid-cols-12 gap-4 items-center mb-4 bg-white rounded-md p-2 shadow-sm "
-              >
-                <div className="col-span-1 flex items-center cursor-grab">
-                  <img
-                    src={vectorDragDrop}
-                    alt="DragDrop"
-                    className="mr-2 cursor-grab"
-                  />
-                  <img
-                    src={vectorDragDrop}
-                    alt="DragDrop"
-                    className="mr-2 cursor-grab"
-                  />
+          <div className="bg-white p-4 rounded-md shadow-md rounded-t-none">
+            {filteredItems.map((item, index) => {
+              const categoryStyle = categoryStyles[item.category] || {
+                backgroundColor: "#fde68a",
+                color: "#f97316",
+              };
+              return (
+                <div
+                  key={item.id}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, index)}
+                  onDragOver={(e) => handleDragOver(e)}
+                  onDrop={(e) => handleDrop(e, index)}
+                  className="grid grid-cols-12 gap-4 items-center mb-4 bg-white rounded-md p-2 shadow-sm"
+                >
+                  <div className="col-span-1 flex items-center cursor-grab">
+                    <img
+                      src={vectorDragDrop}
+                      alt="DragDrop"
+                      className="mr-2 cursor-grab"
+                    />
+                    <img
+                      src={vectorDragDrop}
+                      alt="DragDrop"
+                      className="mr-2 cursor-grab"
+                    />
+                  </div>
+                  <div className="col-span-1">{index + 1}</div>
+                  <div
+                    className="col-span-3"
+                    style={{
+                      weight: 400,
+                    }}
+                  >
+                    {item.service}
+                  </div>
+                  <div
+                    className="col-span-2 w-fit"
+                    style={{
+                      backgroundColor: categoryStyle.backgroundColor,
+                      color: categoryStyle.color,
+                      padding: "4px 10px",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    <p className="text-xs">{item.category}</p>
+                  </div>
+                  <div className="col-span-2">{item.created}</div>
+                  <div className="col-span-2">{item.modified}</div>
+                  <div className="col-span-1 flex space-x-2 justify-between">
+                    <img
+                      src={vectorBin}
+                      alt="Bin"
+                      className="cursor-pointer"
+                      onClick={() => handleDeleteClick(item)}
+                    />
+                    <img
+                      src={vectorEdit}
+                      alt="Edit"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        navigate(
+                          `/admindashboard/category/${encodeURIComponent(
+                            item.category
+                          )}`
+                        )
+                      }
+                    />
+                  </div>
                 </div>
-                <div className="col-span-1 ">
-                  <p>{index + 1}</p>
-                </div>
-                <div className="col-span-3">{item.category}</div>
-                <div className="col-span-3">{item.created}</div>
-                <div className="col-span-3">{item.modified}</div>
-                <div className="col-span-1 flex space-x-2 justify-between">
-                  <img
-                    src={vectorBin}
-                    alt="Bin"
-                    className="cursor-pointer"
-                    onClick={() => handleDeleteClick(item)}
-                  />
-                  <img
-                    src={vectorEdit}
-                    alt="Edit"
-                    className="cursor-pointer"
-                    onClick={() =>
-                      navigate(
-                        `/admindashboard/category/${encodeURIComponent(
-                          item.category
-                        )}`
-                      )
-                    }
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -288,4 +356,4 @@ function AdminDashboardPage() {
   );
 }
 
-export default AdminDashboardPage;
+export default AdminService;
