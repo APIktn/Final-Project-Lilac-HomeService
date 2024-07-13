@@ -3,9 +3,11 @@ import servicesRouter from "./routes/services.mjs";
 import cors from "cors";
 import authRouter from "./controllers/authController.mjs";
 import adminRouter from "./routes/admins.mjs";
+import technicianRouter from "./routes/technicians.mjs";
 import {
   authenticateToken,
   authorizeAdmin,
+  authorizeTechnician,
 } from "./middlewares/authVerify.mjs";
 
 const app = express();
@@ -22,6 +24,13 @@ app.use(express.json());
 app.use("/auth", authRouter);
 
 app.use("/admin", authenticateToken, authorizeAdmin, adminRouter);
+
+app.use(
+  "/technician",
+  authenticateToken,
+  authorizeTechnician,
+  technicianRouter
+);
 
 app.use("/", servicesRouter);
 

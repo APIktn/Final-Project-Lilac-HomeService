@@ -27,3 +27,12 @@ export const authorizeAdmin = (req, res, next) => {
 
   next();
 };
+
+export const authorizeTechnician = (req, res, next) => {
+  if (req.user.role !== "technician")
+    return res
+      .status(403)
+      .json({ error: "การเข้าถึงถูกปฏิเสธสำหรับผู้ใช้งานทั่วไป" });
+
+  next();
+};
