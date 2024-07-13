@@ -2,8 +2,6 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import AdminDashboardPage from "./AdminDashboardPage";
 import NotFoundPage from "./NotFoundPage";
-import PolicyPage from "./PolicyPage";
-import TermsPage from "./TermsPage";
 import HomePage_admin from "./HomePage_admin";
 import ServiceList_admin from "./ServiceList_admin";
 import CartPage_1 from "./CartPage_1_admin";
