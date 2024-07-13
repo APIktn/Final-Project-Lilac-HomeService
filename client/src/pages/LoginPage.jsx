@@ -45,7 +45,6 @@ function LoginPage() {
     <>
       <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-
         <div className="w-11/12 max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md absolute top-24">
           <h2 className="text-2xl font-medium mb-6 text-center text-blue-950">
             เข้าสู่ระบบ
@@ -147,7 +146,7 @@ function LoginPage() {
             <p className="text-gray-700">ยังไม่มีบัญชีผู้ใช้ HomeService?</p>
             <button
               onClick={() => navigate("/register")}
-              className="text-blue-600 underline ml-2 "
+              className="text-blue-600 font-medium underline ml-2 "
             >
               ลงทะเบียน
             </button>
