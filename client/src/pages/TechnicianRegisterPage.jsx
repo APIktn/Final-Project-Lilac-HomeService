@@ -4,6 +4,8 @@ import { checkRegisterErrors, updateErrors } from "../utils/errors";
 import { useTechnicianAuth } from "../contexts/technicianAuthentication";
 import ExclamationIcon from "../assets/icons/exclamation-icon.svg";
 import Navbar from "../components/Navbar";
+import PolicyPopup from "../components/popup/PolicyPopup";
+import TermsPopup from "../components/popup/TermsPopup";
 
 function TechnicianRegisterPage() {
   const [firstname, setFirstname] = useState("");
@@ -16,6 +18,8 @@ function TechnicianRegisterPage() {
   const [errors, setErrors] = useState({});
   const { register, state } = useTechnicianAuth();
   const navigate = useNavigate();
+  const [showPolicyPopup, setShowPolicyPopup] = useState(false);
+  const [showTermsPopup, setShowTermsPopup] = useState(false);
 
   const handleChange = (e) => {
     const { id, value, checked, type } = e.target;
@@ -56,6 +60,11 @@ function TechnicianRegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (showPolicyPopup || showTermsPopup) {
+      return;
+    }
+
     const formData = {
       firstname,
       lastname,
@@ -75,9 +84,8 @@ function TechnicianRegisterPage() {
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="w-11/12 max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md absolute top-24 mb-10 md:w-full">
+        <div className="w-11/12 max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md md:w-full">
           <h2 className="text-2xl font-medium mb-6 text-center text-blue-950">
             ลงทะเบียนช่างเทคนิค
           </h2>
@@ -255,15 +263,17 @@ function TechnicianRegisterPage() {
               >
                 <span className={isHovered ? "text-blue-600" : ""}>ยอมรับ</span>{" "}
                 <button
-                  onClick={() => navigate("/terms")}
-                  className="text-blue-600 underline"
+                  type="button"
+                  onClick={() => setShowTermsPopup(true)}
+                  className="text-blue-600 underline font-medium"
                 >
                   ข้อตกลงและเงื่อนไข
                 </button>{" "}
                 และ{" "}
                 <button
-                  onClick={() => navigate("/policy")}
-                  className="text-blue-600 underline"
+                  type="button"
+                  onClick={() => setShowPolicyPopup(true)}
+                  className="text-blue-600 underline font-medium"
                 >
                   นโยบายความเป็นส่วนตัว
                 </button>
@@ -287,13 +297,19 @@ function TechnicianRegisterPage() {
           <div className="mt-4 text-center">
             <button
               onClick={() => navigate("/technician")}
-              className="text-blue-600 hover:underline"
+              className="text-blue-600 underline font-medium"
             >
               กลับไปหน้าเข้าสู่ระบบช่างเทคนิค
             </button>
           </div>
         </div>
       </div>
+      {showPolicyPopup && (
+        <PolicyPopup onClose={() => setShowPolicyPopup(false)} />
+      )}
+      {showTermsPopup && (
+        <TermsPopup onClose={() => setShowTermsPopup(false)} />
+      )}
     </>
   );
 }

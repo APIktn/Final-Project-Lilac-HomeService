@@ -43,7 +43,7 @@ function TechnicianLoginPage() {
     <>
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="w-full max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md">
-          <h2 className="text-2xl font-medium mb-6 text-center text-blue-900">
+          <h2 className="text-2xl font-medium mb-6 text-center text-blue-950">
             เข้าสู่ระบบช่างเทคนิค
           </h2>
           <form onSubmit={handleSubmit}>
@@ -121,13 +121,15 @@ function TechnicianLoginPage() {
               </button>
             </div>
           </form>
-          <div className="mt-4 text-center flex justify-center">
-            <p className="text-gray-700">ยังไม่มีบัญชีผู้ใช้?</p>
+          <div className="mt-4 text-center flex justify-center items-center space-x-1 ">
+            <span className="text-gray-700 whitespace-nowrap">
+              ยังไม่มีบัญชีผู้ใช้ Technician?
+            </span>
             <button
               onClick={() => navigate("/register/technician")}
-              className="text-blue-600 underline ml-2"
+              className="text-blue-600 font-medium underline whitespace-nowrap"
             >
-              ลงทะเบียนช่างเทคนิค
+              ลงทะเบียน
             </button>
           </div>
         </div>
