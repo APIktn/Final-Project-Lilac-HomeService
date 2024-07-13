@@ -61,6 +61,11 @@ function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (showPolicyPopup || showTermsPopup) {
+      return;
+    }
+
     const formData = {
       firstname,
       lastname,
