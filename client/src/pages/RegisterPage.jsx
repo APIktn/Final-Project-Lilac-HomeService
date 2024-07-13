@@ -5,6 +5,8 @@ import ExclamationIcon from "../assets/icons/exclamation-icon.svg";
 import { useNavigate } from "react-router-dom";
 import { checkRegisterErrors, updateErrors } from "../utils/errors";
 import Navbar from "../components/Navbar";
+import PolicyPopup from "../components/popup/PolicyPopup";
+import TermsPopup from "../components/popup/TermsPopup";
 
 function RegisterPage() {
   const [firstname, setFirstname] = useState("");
@@ -17,6 +19,8 @@ function RegisterPage() {
   const [errors, setErrors] = useState({});
   const { register, state } = useAuth();
   const navigate = useNavigate();
+  const [showPolicyPopup, setShowPolicyPopup] = useState(false);
+  const [showTermsPopup, setShowTermsPopup] = useState(false);
 
   const handleChange = (e) => {
     const { id, value, checked, type } = e.target;
@@ -57,6 +61,11 @@ function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (showPolicyPopup || showTermsPopup) {
+      return;
+    }
+
     const formData = {
       firstname,
       lastname,
@@ -256,15 +265,15 @@ function RegisterPage() {
               >
                 <span className={isHovered ? "text-blue-600" : ""}>ยอมรับ</span>{" "}
                 <button
-                  onClick={() => navigate("/terms")}
-                  className="text-blue-600 underline"
+                  onClick={() => setShowTermsPopup(true)}
+                  className="text-blue-600 underline font-medium"
                 >
                   ข้อตกลงและเงื่อนไข
                 </button>{" "}
                 และ{" "}
                 <button
-                  onClick={() => navigate("/policy")}
-                  className="text-blue-600 underline"
+                  onClick={() => setShowPolicyPopup(true)}
+                  className="text-blue-600 underline font-medium"
                 >
                   นโยบายความเป็นส่วนตัว
                 </button>
@@ -306,13 +315,19 @@ function RegisterPage() {
           <div className="mt-4 text-center">
             <button
               onClick={() => navigate("/login")}
-              className="text-blue-600 hover:underline"
+              className="text-blue-600 font-medium underline hover:underline"
             >
               กลับไปหน้าเข้าสู่ระบบ
             </button>
           </div>
         </div>
       </div>
+      {showPolicyPopup && (
+        <PolicyPopup onClose={() => setShowPolicyPopup(false)} />
+      )}{" "}
+      {showTermsPopup && (
+        <TermsPopup onClose={() => setShowTermsPopup(false)} />
+      )}{" "}
     </>
   );
 }
