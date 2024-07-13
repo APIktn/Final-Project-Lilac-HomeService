@@ -6,6 +6,8 @@ import ServiceList from "./ServiceList";
 import PolicyPage from "./PolicyPage";
 import TermsPage from "./TermsPage";
 import AdminLoginPage from "./AdminLoginPage";
+import TechnicianLoginPage from "./TechnicianLoginPage";
+import TechnicianRegisterPage from "./TechnicianRegisterPage";
 import NotFoundPage from "./NotFoundPage";
 
 function UnauthenticatedApp() {
@@ -19,6 +21,11 @@ function UnauthenticatedApp() {
         <Route path="/policy" element={<PolicyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/admin" element={<AdminLoginPage />} />
+        <Route path="/technician" element={<TechnicianLoginPage />} />
+        <Route
+          path="/register/technician"
+          element={<TechnicianRegisterPage />}
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>

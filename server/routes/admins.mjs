@@ -7,7 +7,7 @@ adminRouter.get("/", (req, res) => {
 });
 
 adminRouter.get("/getdata", (req, res) => {
-  res.json({ message: "นี่คือข้อมูลสำหรับแอดมิน" });
+  res.json({ message: "ข้อมูลสำหรับแอดมิน" });
 });
 
 export default adminRouter;

@@ -3,10 +3,15 @@ import servicesRouter from "./routes/servicecards.mjs";
 import cors from "cors";
 import authRouter from "./controllers/authController.mjs";
 import adminRouter from "./routes/admins.mjs";
+
 import cartsRouter from "./routes/cart-routes.mjs";
+
+import technicianRouter from "./routes/technicians.mjs";
+
 import {
   authenticateToken,
   authorizeAdmin,
+  authorizeTechnician,
 } from "./middlewares/authVerify.mjs";
 
 const app = express();
@@ -24,8 +29,19 @@ app.use("/auth", authRouter);
 
 app.use("/admin", authenticateToken, authorizeAdmin, adminRouter);
 
+
 app.use("/services", servicesRouter);
 app.use("/cart", cartsRouter);
+
+app.use(
+  "/technician",
+  authenticateToken,
+  authorizeTechnician,
+  technicianRouter
+);
+
+app.use("/", servicesRouter);
+
 
 app.get("/test", (req, res) => {
   return res.json("Server API is working 🚀");

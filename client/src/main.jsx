@@ -4,6 +4,7 @@ import App from "./App";
 import "./index.css";
 import { AuthProvider } from "./contexts/authentication";
 import { AdminAuthProvider } from "./contexts/adminAuthentication";
+import { TechnicianAuthProvider } from "./contexts/technicianAuthentication";
 import { BrowserRouter } from "react-router-dom";
 import jwtInterceptor from "./utils/jwtInterceptor";
 
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <AuthProvider>
         <AdminAuthProvider>
-          <App />
+          <TechnicianAuthProvider>
+            <App />
+          </TechnicianAuthProvider>
         </AdminAuthProvider>
       </AuthProvider>
     </BrowserRouter>
