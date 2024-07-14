@@ -6,6 +6,12 @@ export default {
       fontFamily: {
         prompt: ["Prompt", "sans-serif"],
       },
+      fontSize: {
+        "custom-12": "12px",
+      },
+      lineHeight: {
+        "custom-18": "18px",
+      },
     },
   },
   plugins: [],
