@@ -117,7 +117,7 @@ const Navbar_user = () => {
                 Admin Dashboard
               </CustomMenuItem>
             )}
-
+            <hr className="border-t-2 border-gray-300" />
             <CustomMenuItem
               onClick={() => {
                 logout();
