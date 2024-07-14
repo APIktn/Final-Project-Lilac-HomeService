@@ -13,14 +13,14 @@ const Body = () => {
             <img src={home_body} alt="Handy Guy" className="h-[400px] " />
           </div>
           <div className="ml-[131px] mt-[62px] ">
-            <h1 className="text-[40px] font-semibold text-white relative z-8">
+            <h1 className="text-[40px] font-semibold text-white relative z-10">
               <div>มาร่วมเป็นพนักงานซ่อม</div> <div>กับ HomeServices</div>
             </h1>
-            <p className="text-white font-normal text-[20px] mt-[25px] relative z-8">
+            <p className="text-white font-normal text-[20px] mt-[25px] relative z-10">
               <div>เข้ารับการฝึกอบรมที่ได้มาตรฐาน ฟรี!</div>
               <div>และยังได้รับค่าตอบแทนที่มากขึ้นกว่าเดิม</div>
             </p>
-            <h1 className="text-[32px] font-medium mt-[28px] pb-[55px] text-white relative z-8">
+            <h1 className="text-[32px] font-medium mt-[28px] pb-[55px] text-white relative z-10">
               ติดต่อมาที่อีเมล: job@homeservices.co
             </h1>
           </div>
@@ -37,14 +37,14 @@ const Body = () => {
         <div>
           <img src={home_body} alt="Handy Guy" />
           <div className="mx-[24px] mt-[32px] ">
-            <h1 className="text-[32px] font-semibold text-white relative z-8">
+            <h1 className="text-[32px] font-semibold text-white relative z-10">
               <div>มาร่วมเป็นพนักงานซ่อม</div> <div>กับ HomeServices</div>
             </h1>
-            <p className="text-white font-normal text-[16px] mt-[24px] relative z-8">
+            <p className="text-white font-normal text-[16px] mt-[24px] relative z-10">
               <div>เข้ารับการฝึกอบรมที่ได้มาตรฐาน ฟรี!</div>
               <div>และยังได้รับค่าตอบแทนที่มากขึ้นกว่าเดิม</div>
             </p>
-            <h1 className="text-[20px] font-medium mt-[24px] pb-[180px] text-white relative z-8 ">
+            <h1 className="text-[20px] font-medium mt-[24px] pb-[180px] text-white relative z-10 ">
               ติดต่อมาที่อีเมล: job@homeservices.co
             </h1>
           </div>
