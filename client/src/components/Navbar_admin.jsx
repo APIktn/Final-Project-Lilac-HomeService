@@ -44,20 +44,30 @@ const Navbar_admin = () => {
             <img
               src={HouseLogo}
               alt="HomeServices Logo"
-              className="h-8 sm:h-10"
+              className="h-6 sm:h-8"
             />
           </a>
-          <a href="/" className="text-blue-500 text-lg sm:text-2xl font-bold">
+          <a
+            href="/"
+            className="text-blue-600 pt-1 sm:pt-0 text-sm sm:text-2xl  font-medium"
+          >
             HomeServices
           </a>
+
           <a
             href="/servicelist"
-            className="text-black text-sm sm:text-base pt-1"
+            className=" pl-[60px] text-black font-normal sm:font-medium text-sm sm:text-base pt-1 hidden sm:block"
           >
             บริการของเรา
           </a>
         </div>
         <div className="flex items-center ml-2 sm:ml-4">
+          <a
+            href="/servicelist"
+            className="md:hidden pr-[10px] text-black font-normal sm:font-medium text-sm sm:text-base pt-1"
+          >
+            บริการของเรา
+          </a>
           <span className="text-gray-700 text-sm font-normal mt-1  hidden sm:block">
             {admin?.role === "admin" && "Admin : "}
             {admin?.firstname} {admin?.lastname}
