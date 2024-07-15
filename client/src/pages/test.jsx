@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
 
 function App() {
   const [apiData, setApiData] = useState(null);
@@ -7,24 +7,24 @@ function App() {
   const insertDataToSupabase = async (data) => {
     try {
       const response = await axios.get(
-        'http://localhost:4000/questions',
+        "http://localhost:4000/questions",
         data,
         {
           headers: {
-            'apikey': 'your-supabase-key',
-            'Authorization': `Bearer your-supabase-key`,
-            'Content-Type': 'application/json'
-          }
+            apikey: "your-supabase-key",
+            Authorization: `Bearer your-supabase-key`,
+            "Content-Type": "application/json",
+          },
         }
       );
-      console.log('Data inserted to Supabase:', response.data);
+      console.log("Data inserted to Supabase:", response.data);
     } catch (error) {
-      console.error('Error inserting data to Supabase:', error.message);
+      console.error("Error inserting data to Supabase:", error.message);
     }
   };
 
   const handleButtonClick = async () => {
-    const data = { column1: 'value1', column2: 'value2' }; // Replace with your data
+    const data = { column1: "value1", column2: "value2" }; // Replace with your data
     await insertDataToSupabase(data);
   };
 
@@ -36,4 +36,3 @@ function App() {
 }
 
 export default App;
-
