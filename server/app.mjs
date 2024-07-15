@@ -3,6 +3,7 @@ import servicesRouter from "./routes/servicecards.mjs";
 import cors from "cors";
 import authRouter from "./controllers/authController.mjs";
 import adminRouter from "./routes/admins.mjs";
+import serviceDetailRouter from "./routes/serviceDetail.mjs";
 
 import cartsRouter from "./routes/cart-routes.mjs";
 
@@ -41,6 +42,7 @@ app.use(
 );
 
 app.use("/", servicesRouter);
+app.use("/", serviceDetailRouter);
 
 
 app.get("/test", (req, res) => {
