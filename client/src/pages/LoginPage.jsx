@@ -142,11 +142,13 @@ function LoginPage() {
               </button>
             </div>
           </form>
-          <div className="mt-4 text-center flex justify-center">
-            <p className="text-gray-700">ยังไม่มีบัญชีผู้ใช้ HomeService?</p>
+          <div className="mt-4 text-center flex justify-center items-center space-x-1 ">
+            <span className="text-gray-700 whitespace-nowrap">
+              ยังไม่มีบัญชีผู้ใช้ HomeService?
+            </span>
             <button
               onClick={() => navigate("/register")}
-              className="text-blue-600 font-medium underline ml-2 "
+              className="text-blue-600 font-medium underline whitespace-nowrap"
             >
               ลงทะเบียน
             </button>
