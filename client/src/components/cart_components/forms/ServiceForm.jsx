@@ -127,6 +127,10 @@ function ServiceForm() {
                 </label>
                 <DesktopTimePicker
                   label="กรุณาเลือกเวลา"
+                  localeText={{
+                    okButtonLabel: "ยืนยัน",
+                  }}
+                  ampm={false}
                   slotProps={{
                     textField: {
                       sx: {
@@ -160,6 +164,17 @@ function ServiceForm() {
                           fontWeight: 100,
                           color: "#AAAAAA",
                           marginRight: 0.5,
+                        },
+                      },
+                    },
+                    actionBar: {
+                      sx: {
+                        "& .MuiButtonBase-root": {
+                          fontSize: "16px",
+                          fontFamily: "Prompt",
+                          fontWeight: 600,
+                          color: "#336DF2",
+                          textDecoration: "underline",
                         },
                       },
                     },
