@@ -7,6 +7,7 @@ import ServiceList_admin from "./ServiceList_admin";
 import CartPage_1 from "./CartPage_1_admin";
 import AdminService from "./AdminService";
 import AdminServiceCreate from "./AdminServiceCreate";
+import Upload from "./testCloudinary";
 
 function AdminAuthenticatedApp() {
   return (
@@ -15,12 +16,11 @@ function AdminAuthenticatedApp() {
         <Route path="/admin" element={<AdminDashboardPage />} />
         <Route path="/admin/service" element={<AdminService />} />
         <Route path="/admin/service/create" element={<AdminServiceCreate />} />
-        <Route path="/policy" element={<PolicyPage />} />
-        <Route path="/terms" element={<TermsPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/" element={<HomePage_admin />} />
         <Route path="/servicelist" element={<ServiceList_admin />} />
         <Route path="/cart/:service_name" element={<CartPage_1 />} />
+        <Route path="/testcloud" element={<Upload />} />
       </Routes>
     </div>
   );

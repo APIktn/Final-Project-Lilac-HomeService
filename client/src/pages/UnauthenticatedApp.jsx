@@ -7,6 +7,7 @@ import AdminLoginPage from "./AdminLoginPage";
 import TechnicianLoginPage from "./TechnicianLoginPage";
 import TechnicianRegisterPage from "./TechnicianRegisterPage";
 import NotFoundPage from "./NotFoundPage";
+import Upload from "./testCloudinary";
 
 function UnauthenticatedApp() {
   return (
@@ -23,6 +24,8 @@ function UnauthenticatedApp() {
           element={<TechnicianRegisterPage />}
         />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/testcloud" element={<Upload />} />
+        
       </Routes>
     </div>
   );
