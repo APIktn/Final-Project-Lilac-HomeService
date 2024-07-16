@@ -3,11 +3,9 @@ import servicesRouter from "./routes/servicecards.mjs";
 import cors from "cors";
 import authRouter from "./controllers/authController.mjs";
 import adminRouter from "./routes/admins.mjs";
-
+import uploadsRouter from "./routes/upload.mjs";
 import cartsRouter from "./routes/cart-routes.mjs";
-
 import technicianRouter from "./routes/technicians.mjs";
-
 import {
   authenticateToken,
   authorizeAdmin,
@@ -32,7 +30,7 @@ app.use("/admin", authenticateToken, authorizeAdmin, adminRouter);
 
 app.use("/services", servicesRouter);
 app.use("/cart", cartsRouter);
-
+app.use("/uploads", uploadsRouter);
 app.use(
   "/technician",
   authenticateToken,
