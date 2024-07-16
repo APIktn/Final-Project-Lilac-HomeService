@@ -1,7 +1,7 @@
 import Counter from "../utils/Counter";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 
-function ServiceDetail({ dataFromState, getSummaryOrder }) {
+function ServiceDetail({ dataFromState, getSummaryOrder, deleteSummaryOrder }) {
   if (!dataFromState || !dataFromState[0] || !dataFromState[0].service_list) {
     return <div>No data available</div>;
   }
@@ -36,6 +36,7 @@ function ServiceDetail({ dataFromState, getSummaryOrder }) {
                   dataFromState={dataFromState[0]}
                   getSummaryOrder={getSummaryOrder}
                   dataIndex={index}
+                  deleteSummaryOrder={deleteSummaryOrder}
                 />
               </div>
             </div>
