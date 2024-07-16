@@ -7,8 +7,8 @@ function CustomerAccount() {
   return (
     // pc version
     <div>
-      <div className="hidden md:block w-full h-auto md:basis-1/4 ">
-        <div className="fixed top-[55px] left-0 md:sticky md:top-0 w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-[8px] flex flex-col px-[24px] py-[16px] overflow-hidden ">
+      <div className="hidden md:block w-full h-auto ">
+        <div className="fixed top-[170px]   bg-white border-solid border-[1px] border-[#D8D8D8] rounded-[8px] flex flex-col px-[24px] py-[16px] overflow-hidden ">
           <p className="pb-[20px] border-solid border-[#CCD0D7] border-b-[1px] text-[20px] text-[#646C80]">
             บัญชีผู้ใช้
           </p>
