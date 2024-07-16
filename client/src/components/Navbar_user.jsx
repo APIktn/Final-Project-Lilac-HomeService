@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Menu, MenuItem } from "@mui/material";
 import { styled } from "@mui/system";
 import HouseLogo from "../assets/images/HouseLogo.png";
@@ -10,7 +11,6 @@ import history from "../assets/icons/history-icon.png";
 import logout1 from "../assets/icons/logout-icon.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication";
-import { useAdminAuth } from "../contexts/adminAuthentication";
 
 const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
   fontFamily: "Prompt",
@@ -19,6 +19,22 @@ const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
 const Navbar_user = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/user/profile", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+        setUserData(response.data.user);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,8 +49,7 @@ const Navbar_user = () => {
     handleMenuClose();
   };
 
-  const { state, logout } = useAuth();
-  const { user } = state;
+  const { logout } = useAuth();
 
   return (
     <nav className="bg-white shadow-md w-full">
@@ -58,18 +73,26 @@ const Navbar_user = () => {
           </a>
         </div>
         <div className="flex items-center ml-2 sm:ml-4">
-          <span className="text-gray-700 text-sm font-normal mt-1  hidden sm:block">
-            {user?.role === "admin" && "admin "}
-            {user?.firstname} {user?.lastname}
-            <span style={{ marginLeft: "5px" }}></span>
-          </span>
-          <button className="mr-2" onClick={handleAvatarClick}>
-            <img
-              src={user?.profile_image || avatar}
-              alt="avatar"
-              className="h-8 sm:h-6 rounded-full"
-            />
-          </button>
+          {userData && (
+            <>
+              <span className="text-gray-700 text-sm font-normal mt-1 hidden sm:block">
+                {userData.role === "admin" && "admin "}
+                {userData.firstname} {userData.lastname}
+                <span style={{ marginLeft: "5px" }}></span>
+              </span>
+              <button className="mr-2" onClick={handleAvatarClick}>
+                <img
+                  src={
+                    userData.select_image === "upload_image"
+                      ? userData.upload_image
+                      : userData.profile_image || avatar
+                  }
+                  alt="avatar"
+                  className="h-8 sm:h-6 rounded-full"
+                />
+              </button>
+            </>
+          )}
           <button>
             <img src={bell} alt="bell" className="h-8 sm:h-6" />
           </button>
@@ -95,8 +118,7 @@ const Navbar_user = () => {
               <img src={history} alt="history" className=" mr-1 h-8 sm:h-6" />
               ประวัติการซ่อม
             </CustomMenuItem>
-            {/* แสดงเฉพาะ admin */}
-            {user?.role === "admin" && (
+            {userData?.role === "admin" && (
               <CustomMenuItem
                 className="border-b-[1px]"
                 onClick={() => handleMenuItemClick("/admin")}
@@ -105,7 +127,6 @@ const Navbar_user = () => {
                 Admin Dashboard
               </CustomMenuItem>
             )}
-
             <CustomMenuItem
               onClick={() => {
                 logout();

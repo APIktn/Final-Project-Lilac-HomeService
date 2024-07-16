@@ -112,7 +112,7 @@ export const validateLogin = async (req, res, next) => {
 };
 
 export const validateUpdateProfile = async (req, res, next) => {
-  const { firstname, lastname, email, tel_num } = req.body;
+  const { firstname, lastname, email, tel_num, select_image } = req.body;
   const errors = [];
 
   if (!firstname) {
@@ -139,6 +139,10 @@ export const validateUpdateProfile = async (req, res, next) => {
     errors.push({ message: "กรุณากรอกกรอกอีเมล" });
   } else if (!isValidEmail(email)) {
     errors.push({ message: "กรุณากรอกกรอกอีเมลให้ถูกต้อง" });
+  }
+
+  if (select_image !== "profile_image" && select_image !== "upload_image") {
+    errors.push({ message: "กรุณาเลือกรูปโปรไฟล์ที่ถูกต้อง" });
   }
 
   if (errors.length > 0) {
