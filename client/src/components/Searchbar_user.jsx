@@ -19,7 +19,9 @@ const SearchBar = () => {
 
   const getServices = async () => {
     try {
-      const result = await axios.get(`http://localhost:4000/services/serviceslist`);
+      const result = await axios.get(
+        `http://localhost:4000/services/serviceslist`
+      );
       console.log("Fetched services:", result.data.data);
       setServices(result.data.data);
     } catch (error) {
@@ -159,7 +161,10 @@ const SearchBar = () => {
       ) : (
         <div className="p-4 mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-8 md:px-32 md:py-16">
           {filteredServices.map((service, index) => (
-            <ServiceCard key={`${service.service_id}-${index}`} service={service} />
+            <ServiceCard
+              key={`${service.service_id}-${index}`}
+              service={service}
+            />
           ))}
         </div>
       )}
