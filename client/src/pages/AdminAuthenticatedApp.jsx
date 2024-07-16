@@ -8,6 +8,7 @@ import CartPage_admin from "./CartPage_admin";
 import CustomerServiceList from "./CustomerServiceList";
 import CustomerServiceHistory from "./CustomerServiceHistory";
 import CustomerInfo from "./CustomerInfo";
+import UploadForm from "./Testcloud";
 
 function AdminAuthenticatedApp() {
   return (
@@ -24,6 +25,7 @@ function AdminAuthenticatedApp() {
           element={<CustomerServiceHistory />}
         />
         <Route path="/CustomerInfo" element={<CustomerInfo />} />
+        <Route path="/testcloud" element={<UploadForm />} />
       </Routes>
     </div>
   );
