@@ -4,6 +4,8 @@ import NotFoundPage from "./NotFoundPage";
 import ServiceList_user from "./ServiceList_user";
 import CustomerServiceList from "./CustomerServiceList";
 import CartPage from "./CartPage";
+import CustomerServiceHistory from "./CustomerServiceHistory";
+import CustomerInfo from "./CustomerInfo";
 
 function AuthenticatedApp() {
   return (
@@ -14,6 +16,11 @@ function AuthenticatedApp() {
         <Route path="/servicelist" element={<ServiceList_user />} />
         <Route path="/cart/:service_name" element={<CartPage />} />
         <Route path="/CustomerServiceList" element={<CustomerServiceList />} />
+        <Route
+          path="/CustomerServiceHistory"
+          element={<CustomerServiceHistory />}
+        />
+        <Route path="/CustomerInfo" element={<CustomerInfo />} />
       </Routes>
     </div>
   );

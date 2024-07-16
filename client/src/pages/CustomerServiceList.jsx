@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import ServiceListHeader from "../components/customer/ServiceListHeader";
 import ServiceListBody from "../components/customer/ServiceListBody";
 
-const ServiceList = () => {
+const CustomerServiceList = () => {
   return (
     <>
       <Navbar />
@@ -15,4 +15,4 @@ const ServiceList = () => {
   );
 };
 
-export default ServiceList;
+export default CustomerServiceList;
