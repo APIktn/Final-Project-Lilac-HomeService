@@ -12,7 +12,8 @@ function AuthenticatedApp() {
         <Route path="/" element={<HomePage_user />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/servicelist" element={<ServiceList_user />} />
-        <Route path="/cart/:service_name" element={<CartPage_1 />} />
+        <Route path="/cart/:service_name" element={<CartPage />} />
+        <Route path="/CustomerServiceList" element={<CustomerServiceList />} />
       </Routes>
     </div>
   );
