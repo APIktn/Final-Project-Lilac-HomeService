@@ -129,39 +129,59 @@ function UserProfilePage() {
           </div>
           <div className="p-8 mt-16">
             {isEditing ? (
-              <>
-                <input
-                  type="text"
-                  name="firstname"
-                  value={formData.firstname}
-                  onChange={handleInputChange}
-                  placeholder="First Name"
-                  className="w-full mb-4 p-2 border border-gray-300 rounded"
-                />
-                <input
-                  type="text"
-                  name="lastname"
-                  value={formData.lastname}
-                  onChange={handleInputChange}
-                  placeholder="Last Name"
-                  className="w-full mb-4 p-2 border border-gray-300 rounded"
-                />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Email"
-                  className="w-full mb-4 p-2 border border-gray-300 rounded"
-                />
-                <input
-                  type="text"
-                  name="tel_num"
-                  value={formData.tel_num}
-                  onChange={handleInputChange}
-                  placeholder="Phone Number"
-                  className="w-full mb-4 p-2 border border-gray-300 rounded"
-                />
+              <form>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    ชื่อ
+                  </label>
+                  <input
+                    type="text"
+                    name="firstname"
+                    value={formData.firstname}
+                    onChange={handleInputChange}
+                    placeholder="First Name"
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    นามสกุล
+                  </label>
+                  <input
+                    type="text"
+                    name="lastname"
+                    value={formData.lastname}
+                    onChange={handleInputChange}
+                    placeholder="Last Name"
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    อีเมล
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Email"
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    เบอร์โทรศัพท์
+                  </label>
+                  <input
+                    type="text"
+                    name="tel_num"
+                    value={formData.tel_num}
+                    onChange={handleInputChange}
+                    placeholder="Phone Number"
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
                     เลือกรูปโปรไฟล์
@@ -176,21 +196,24 @@ function UserProfilePage() {
                     <option value="upload_image">รูปโปรไฟล์ที่อัปโหลด</option>
                   </select>
                 </div>
-                <button
-                  onClick={handleSave}
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
-                  disabled={submitLoading}
-                >
-                  {submitLoading ? "กำลังบันทึก..." : "บันทึก"}
-                </button>
-              </>
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleSave}
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                    disabled={submitLoading}
+                  >
+                    {submitLoading ? "กำลังบันทึก..." : "บันทึก"}
+                  </button>
+                </div>
+              </form>
             ) : (
               <>
                 <h2 className="text-2xl font-medium mb-8 text-center text-blue-950">
                   {userData.firstname} {userData.lastname}
                 </h2>
-                <p>{userData.email}</p>
-                <p>{userData.tel_num}</p>
+                <p className="text-sm text-gray-700">{userData.email}</p>
+                <p className="text-sm text-gray-700">{userData.tel_num}</p>
               </>
             )}
           </div>
