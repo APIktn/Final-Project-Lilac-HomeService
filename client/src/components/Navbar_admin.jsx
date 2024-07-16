@@ -94,13 +94,15 @@ const Navbar_admin = () => {
               <img src={person} alt="person" className="mr-1 h-8 sm:h-6" />
               ข้อมูลผู้ใช้งาน
             </CustomMenuItem>
-            <CustomMenuItem onClick={() => handleMenuItemClick("/orders")}>
+            <CustomMenuItem
+              onClick={() => handleMenuItemClick("/CustomerServiceList")}
+            >
               <img src={order} alt="order" className="mr-1 h-8 sm:h-6" />
               รายการคำสั่งซ่อม
             </CustomMenuItem>
             <CustomMenuItem
               className="border-b-[1px]"
-              onClick={() => handleMenuItemClick("/history")}
+              onClick={() => handleMenuItemClick("/CustomerServiceHistory")}
             >
               <img src={history} alt="history" className=" mr-1 h-8 sm:h-6" />
               ประวัติการซ่อม
