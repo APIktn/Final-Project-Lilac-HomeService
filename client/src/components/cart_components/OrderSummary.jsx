@@ -80,16 +80,14 @@ function OrderSummary({ summaryOrder }) {
                   <p className="text-[14px] text-black"></p>
                 </div>
                 <div className="time-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700">เวลา</p>
+                  <p className="text-[14px] text-gray-700"></p>
                   <p className="text-[14px] text-black"></p>
                 </div>
                 <div className="address-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700 basis-1/2">สถานที่</p>
+                  <p className="text-[14px] text-gray-700 basis-1/2"></p>
                   <p className="text-[14px] text-black basis-1/2"></p>
                 </div>
               </div>
-
-              <hr className="mt-[8px] mb-[-8px] border-solid border-[1px] border-gray-300" />
             </AccordionDetails>
           </Accordion>
           <div className="px-[16px] pb-[16px] items-start">
@@ -146,22 +144,18 @@ function OrderSummary({ summaryOrder }) {
 
             <div className="logistics-summary flex flex-col gap-1">
               <div className="date-container flex flex-row justify-between">
-                <p className="text-[14px] text-gray-700">วันที่</p>
-                <p className="text-[14px] text-black">23 เม.ย. 2022</p>
+                <p className="text-[14px] text-gray-700"></p>
+                <p className="text-[14px] text-black"></p>
               </div>
               <div className="time-container flex flex-row justify-between">
-                <p className="text-[14px] text-gray-700">เวลา</p>
-                <p className="text-[14px] text-black">11.00 น.</p>
+                <p className="text-[14px] text-gray-700"></p>
+                <p className="text-[14px] text-black"></p>
               </div>
               <div className="address-container flex flex-row justify-between">
-                <p className="text-[14px] text-gray-700 basis-1/2">สถานที่</p>
-                <p className="text-[14px] text-black basis-1/2">
-                  444/4 คอนโดสุภาลัย เสนานิคม จตุจักร กรุงเทพฯ
-                </p>
+                <p className="text-[14px] text-gray-700 basis-1/2"></p>
+                <p className="text-[14px] text-black basis-1/2"></p>
               </div>
             </div>
-
-            <hr className="mt-[8px] mb-[-8px] border-solid border-[1px] border-gray-300" />
           </AccordionDetails>
         </Accordion>
         <div className="px-[16px] pb-[16px] items-start">

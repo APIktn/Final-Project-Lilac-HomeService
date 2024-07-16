@@ -32,6 +32,19 @@ function CartForm() {
     setSummaryOrder((oldOrderData) => [...oldOrderData, orderData]);
   };
 
+  const deleteSummaryOrder = (orderData) => {
+    const index = summaryOrder.findIndex(
+      (obj) => obj.service_lists === orderData
+    );
+
+    if (index !== -1) {
+      setSummaryOrder((oldOrderData) => [
+        ...oldOrderData.slice(0, index),
+        ...oldOrderData.slice(index + 1),
+      ]);
+    }
+  };
+
   useEffect(() => {
     getServices();
   }, []);
@@ -48,6 +61,7 @@ function CartForm() {
             <ServiceDetail
               dataFromState={services}
               getSummaryOrder={getSummaryOrder}
+              deleteSummaryOrder={deleteSummaryOrder}
             />
           ) : activeStep === 1 ? (
             <ServiceForm />
