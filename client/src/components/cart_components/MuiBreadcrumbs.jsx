@@ -15,8 +15,18 @@ function MuiBreadcrumbs({ dataFromState }) {
   ];
 
   return (
-    <div className="breadcrumb-container w-[206px] h-[46px] px-4 py-1 md:w-[300px] md:h-[68px] bg-white border-solid border-[1px] border-[#CCD0D7] rounded-[8px] md:gap-[12px] md:py-[4px] md:px-[32px]">
-      <Breadcrumbs separator="›" aria-label="breadcrumb" variant="subtitle1">
+    <div className="breadcrumb-container w-auto h-[46px] px-4 py-1 md:h-[68px] bg-white border-solid border-[1px] border-[#CCD0D7] rounded-[8px] md:gap-[12px] md:py-[4px] md:px-[32px] mr-auto">
+      <Breadcrumbs
+        separator="›"
+        aria-label="breadcrumb"
+        variant="subtitle1"
+        sx={{
+          color: "#B3B8C4",
+          fontSize: "16px",
+          fontFamily: "Prompt",
+          fontWeight: 500,
+        }}
+      >
         {breadcrumbs}
       </Breadcrumbs>
     </div>
