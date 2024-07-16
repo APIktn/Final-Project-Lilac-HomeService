@@ -14,6 +14,11 @@ function UserProfilePage() {
     email: "",
     tel_num: "",
     select_image: "profile_image",
+    ad_detail: "",
+    ad_subdistrict: "",
+    ad_district: "",
+    ad_province: "",
+    ad_moredetail: "",
   });
   const [submitLoading, setSubmitLoading] = useState(false);
 
@@ -32,6 +37,11 @@ function UserProfilePage() {
           email: response.data.user.email,
           tel_num: response.data.user.tel_num,
           select_image: response.data.user.select_image || "profile_image",
+          ad_detail: response.data.user.ad_detail || "",
+          ad_subdistrict: response.data.user.ad_subdistrict || "",
+          ad_district: response.data.user.ad_district || "",
+          ad_province: response.data.user.ad_province || "",
+          ad_moredetail: response.data.user.ad_moredetail || "",
         });
         setLoading(false);
       } else {
@@ -101,7 +111,7 @@ function UserProfilePage() {
     <>
       <Navbar_user />
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="w-11/12 max-w-md bg-white rounded-lg border border-gray-300 shadow-md relative">
+        <div className="w-full max-w-4xl mt-5 bg-white rounded-lg mx-5 lg:mx-0 border border-gray-300 shadow-md relative">
           <div className="relative">
             <div className="bg-blue-500 h-32 rounded-t-lg"></div>
             <button
@@ -115,9 +125,9 @@ function UserProfilePage() {
               />
             </button>
 
-            <div className="flex justify-center mb-4 relative">
+            <div className="flex justify-center lg:justify-start relative">
               <img
-                className="h-32 w-32 rounded-full object-cover absolute -bottom-16 border-4 border-white"
+                className="h-32 w-32 rounded-full lg:ml-10 object-cover absolute -bottom-16 border-4 border-white"
                 src={
                   formData.select_image === "profile_image"
                     ? userData.profile_image
@@ -127,10 +137,10 @@ function UserProfilePage() {
               />
             </div>
           </div>
-          <div className="p-8 mt-16">
+          <div className="p-8 pt-0 mt-16 lg:mt-0 ">
             {isEditing ? (
               <form>
-                <div className="mb-4">
+                <div className="mb-4 mt-20">
                   <label className="block text-sm font-medium text-gray-700">
                     ชื่อ
                   </label>
@@ -139,7 +149,7 @@ function UserProfilePage() {
                     name="firstname"
                     value={formData.firstname}
                     onChange={handleInputChange}
-                    placeholder="First Name"
+                    placeholder="กรุณากรอกชื่อ"
                     className="w-full p-2 border border-gray-300 rounded"
                   />
                 </div>
@@ -152,7 +162,7 @@ function UserProfilePage() {
                     name="lastname"
                     value={formData.lastname}
                     onChange={handleInputChange}
-                    placeholder="Last Name"
+                    placeholder="กรุณากรอกนามสกุล"
                     className="w-full p-2 border border-gray-300 rounded"
                   />
                 </div>
@@ -165,7 +175,7 @@ function UserProfilePage() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="Email"
+                    placeholder="กรุณากรอกอีเมล"
                     className="w-full p-2 border border-gray-300 rounded"
                   />
                 </div>
@@ -178,7 +188,7 @@ function UserProfilePage() {
                     name="tel_num"
                     value={formData.tel_num}
                     onChange={handleInputChange}
-                    placeholder="Phone Number"
+                    placeholder="กรุณากรอกเบอร์โทรศัพท์"
                     className="w-full p-2 border border-gray-300 rounded"
                   />
                 </div>
@@ -196,6 +206,71 @@ function UserProfilePage() {
                     <option value="upload_image">รูปโปรไฟล์ที่อัปโหลด</option>
                   </select>
                 </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    ที่อยู่
+                  </label>
+                  <input
+                    type="text"
+                    name="ad_detail"
+                    value={formData.ad_detail}
+                    onChange={handleInputChange}
+                    placeholder="กรุณากรอกที่อยู่"
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    แขวง / ตำบล
+                  </label>
+                  <input
+                    type="text"
+                    name="ad_subdistrict"
+                    value={formData.ad_subdistrict}
+                    onChange={handleInputChange}
+                    placeholder="กรุณากรอก แขวง / ตำบล"
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    เขต / อำเภอ
+                  </label>
+                  <input
+                    type="text"
+                    name="ad_district"
+                    value={formData.ad_district}
+                    onChange={handleInputChange}
+                    placeholder="กรุณากรอก เขต / อำเภอ"
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    จังหวัด
+                  </label>
+                  <input
+                    type="text"
+                    name="ad_province"
+                    value={formData.ad_province}
+                    onChange={handleInputChange}
+                    placeholder="กรุณากรอกจังหวัด"
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    ระบุข้อมูลเพิ่มเติม
+                  </label>
+                  <input
+                    type="text"
+                    name="ad_moredetail"
+                    value={formData.ad_moredetail}
+                    onChange={handleInputChange}
+                    placeholder=""
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                </div>
                 <div className="flex justify-end">
                   <button
                     type="button"
@@ -209,11 +284,34 @@ function UserProfilePage() {
               </form>
             ) : (
               <>
-                <h2 className="text-2xl font-medium mb-8 text-center text-blue-950">
+                <h2 className="text-2xl font-medium mb-8 mt-1 lg:text-left text-center text-blue-950 lg:pl-36">
                   {userData.firstname} {userData.lastname}
                 </h2>
-                <p className="text-sm text-gray-700">{userData.email}</p>
-                <p className="text-sm text-gray-700">{userData.tel_num}</p>
+                <div className="flex lg:flex-row flex-col justify-evenly ">
+                  <div>
+                    <h3>ข้อมูลส่วนตัว</h3>
+                    <p className="text-sm text-gray-700">{userData.email}</p>
+                    <p className="text-sm text-gray-700">{userData.tel_num}</p>
+                  </div>
+                  <div>
+                    <h3>ที่อยู่</h3>
+                    <p className="text-sm text-gray-700">
+                      {userData.ad_detail}
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      {userData.ad_subdistrict}
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      {userData.ad_district}
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      {userData.ad_province}
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      {userData.ad_moredetail}
+                    </p>
+                  </div>
+                </div>
               </>
             )}
           </div>

@@ -13,7 +13,7 @@ userRouter.get("/profile", authenticateToken, async (req, res) => {
     const { data: user, error } = await supabase
       .from("users")
       .select(
-        "user_id, firstname, lastname, email, tel_num, profile_image, upload_image, select_image, role"
+        "user_id, firstname, lastname, email, tel_num, profile_image, upload_image, select_image, ad_detail, ad_subdistrict, ad_district, ad_province, ad_moredetail"
       )
       .eq("user_id", user_id)
       .single();
@@ -36,7 +36,18 @@ userRouter.put(
   async (req, res) => {
     try {
       const { user_id } = req.user;
-      const { firstname, lastname, email, tel_num, select_image } = req.body;
+      const {
+        firstname,
+        lastname,
+        email,
+        tel_num,
+        select_image,
+        ad_detail,
+        ad_subdistrict,
+        ad_district,
+        ad_province,
+        ad_moredetail,
+      } = req.body;
 
       const { data: user, error } = await supabase
         .from("users")
@@ -63,6 +74,11 @@ userRouter.put(
         tel_num,
         profile_image: profileImage,
         select_image,
+        ad_detail,
+        ad_subdistrict,
+        ad_district,
+        ad_province,
+        ad_moredetail,
       };
 
       const { data, error: updateError } = await supabase

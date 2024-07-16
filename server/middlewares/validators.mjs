@@ -111,8 +111,44 @@ export const validateLogin = async (req, res, next) => {
   next();
 };
 
+export const validateUpdatePassword = async (req, res, next) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+  const errors = [];
+
+  if (!currentPassword) {
+    errors.push({ message: "กรุณากรอกรหัสผ่านเดิม" });
+  }
+
+  if (!newPassword) {
+    errors.push({ message: "กรุณากรอกรหัสผ่านใหม่" });
+  } else if (newPassword.length < 12) {
+    errors.push({ message: "รหัสผ่านใหม่ต้องมีอย่างน้อย 12 ตัวอักษร" });
+  }
+
+  if (newPassword !== confirmPassword) {
+    errors.push({ message: "รหัสผ่านใหม่ไม่ตรงกัน" });
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
+
+  next();
+};
+
 export const validateUpdateProfile = async (req, res, next) => {
-  const { firstname, lastname, email, tel_num, select_image } = req.body;
+  const {
+    firstname,
+    lastname,
+    email,
+    tel_num,
+    select_image,
+    ad_detail,
+    ad_subdistrict,
+    ad_district,
+    ad_province,
+    ad_moredetail,
+  } = req.body;
   const errors = [];
 
   if (!firstname) {
@@ -145,29 +181,24 @@ export const validateUpdateProfile = async (req, res, next) => {
     errors.push({ message: "กรุณาเลือกรูปโปรไฟล์ที่ถูกต้อง" });
   }
 
-  if (errors.length > 0) {
-    return res.status(400).json({ errors });
-  }
+  const addressFields = [ad_detail, ad_subdistrict, ad_district, ad_province];
+  const isAddressProvided = addressFields.some(
+    (field) => field !== undefined && field !== ""
+  );
 
-  next();
-};
-
-export const validateUpdatePassword = async (req, res, next) => {
-  const { currentPassword, newPassword, confirmPassword } = req.body;
-  const errors = [];
-
-  if (!currentPassword) {
-    errors.push({ message: "กรุณากรอกรหัสผ่านเดิม" });
-  }
-
-  if (!newPassword) {
-    errors.push({ message: "กรุณากรอกรหัสผ่านใหม่" });
-  } else if (newPassword.length < 12) {
-    errors.push({ message: "รหัสผ่านใหม่ต้องมีอย่างน้อย 12 ตัวอักษร" });
-  }
-
-  if (newPassword !== confirmPassword) {
-    errors.push({ message: "รหัสผ่านใหม่ไม่ตรงกัน" });
+  if (isAddressProvided) {
+    if (!ad_detail) {
+      errors.push({ message: "กรุณากรอกที่อยู่" });
+    }
+    if (!ad_subdistrict) {
+      errors.push({ message: "กรุณากรอกแขวง / ตำบล" });
+    }
+    if (!ad_district) {
+      errors.push({ message: "กรุณากรอกเขต / อำเภอ" });
+    }
+    if (!ad_province) {
+      errors.push({ message: "กรุณากรอกจังหวัด" });
+    }
   }
 
   if (errors.length > 0) {
