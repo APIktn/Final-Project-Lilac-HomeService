@@ -44,3 +44,11 @@
 body {
   @apply font-prompt;
 }
+
+.icon-edit {
+  filter: invert(100%) brightness(200%) contrast(100%);
+}
+
+.icon-edit:hover {
+  filter: invert(75%) brightness(100%) contrast(100%);
+}
