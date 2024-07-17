@@ -3,6 +3,8 @@ import supabase from "../utils/db.mjs";
 import { authenticateToken } from "../middlewares/authVerify.mjs";
 import { generateAvatarUrl } from "../utils/avatarGenerator.mjs";
 import { validateUpdateProfile } from "../middlewares/validators.mjs";
+import cloudinary from "../utils/cloudinary.mjs";
+import upload from "../middlewares/upload.mjs";
 
 const userRouter = Router();
 
@@ -28,6 +30,56 @@ userRouter.get("/profile", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน" });
   }
 });
+
+userRouter.post(
+  "/upload-profile-image",
+  authenticateToken,
+  upload.single("profile_image"),
+  async (req, res) => {
+    try {
+      const { user_id } = req.user;
+      const file = req.file;
+
+      if (!file) {
+        return res.status(400).json({ error: "ไม่มีไฟล์ที่อัปโหลด" });
+      }
+
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "profile_images" },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+        stream.end(file.buffer);
+      });
+
+      const { secure_url } = uploadResult;
+
+      const { data, error } = await supabase
+        .from("users")
+        .update({ upload_image: secure_url })
+        .eq("user_id", user_id);
+
+      if (error) {
+        console.error("เกิดข้อผิดพลาดในการอัปเดตรูปโปรไฟล์ผู้ใช้งาน:", error);
+        return res.status(500).json({ error: "อัปเดตรูปโปรไฟล์ล้มเหลว" });
+      }
+
+      res.json({
+        message: "อัปโหลดรูปโปรไฟล์สำเร็จ",
+        imageUrl: secure_url,
+      });
+    } catch (error) {
+      console.error("Error in /upload-profile-image:", error);
+      res.status(500).json({ error: "เกิดข้อผิดพลาด" });
+    }
+  }
+);
 
 userRouter.put(
   "/profile",
@@ -56,10 +108,8 @@ userRouter.put(
         .single();
 
       if (error) {
-        console.error("Error fetching user:", error);
-        return res
-          .status(400)
-          .json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน" });
+        console.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน:", error);
+        return res.status(400).json({ error: "ดึงข้อมูลผู้ใช้งานล้มเหลว" });
       }
 
       let profileImage = user.profile_image;
@@ -87,10 +137,8 @@ userRouter.put(
         .eq("user_id", user_id);
 
       if (updateError) {
-        console.error("Error updating user:", updateError);
-        return res
-          .status(400)
-          .json({ error: "เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้งาน" });
+        console.error("เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้งาน:", updateError);
+        return res.status(400).json({ error: "อัปเดตข้อมูลผู้ใช้งานล้มเหลว" });
       }
 
       console.log("User updated successfully:", data);
