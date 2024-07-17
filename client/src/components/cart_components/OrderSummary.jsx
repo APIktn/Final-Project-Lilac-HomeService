@@ -5,10 +5,13 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import { useContext, useEffect } from "react";
+import { SummaryContext } from "../../pages/CartPage";
 
 function OrderSummary({ summaryOrder }) {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const { netPrice, setNetPrice } = useContext(SummaryContext);
 
   const countProducts = (servicesArray) => {
     const counts = servicesArray.reduce((acc, service) => {
@@ -32,10 +35,24 @@ function OrderSummary({ summaryOrder }) {
 
   const summaryData = countProducts(summaryOrder);
 
-  const summaryPrice = summaryData.reduce(
-    (acc, curr) => (acc += curr.price * curr.count),
-    0
-  );
+  // const summaryPrice = summaryData.reduce(
+  //   (acc, curr) => (acc += curr.price * curr.count),
+  //   0
+  // );
+
+  const summaryPrice = function summaryPrice() {
+    const net = summaryData.reduce(
+      (acc, curr) => (acc += curr.price * curr.count),
+      0
+    );
+
+    setNetPrice(net);
+    return net;
+  };
+
+  useEffect(() => {
+    summaryPrice();
+  }, [summaryData]);
 
   if (!summaryOrder || !summaryOrder[0]) {
     return (
@@ -141,21 +158,6 @@ function OrderSummary({ summaryOrder }) {
               </div>
             ))}
             <hr className="mt-[8px] mb-[8px] border-solid border-[1px] border-gray-300" />
-
-            <div className="logistics-summary flex flex-col gap-1">
-              <div className="date-container flex flex-row justify-between">
-                <p className="text-[14px] text-gray-700"></p>
-                <p className="text-[14px] text-black"></p>
-              </div>
-              <div className="time-container flex flex-row justify-between">
-                <p className="text-[14px] text-gray-700"></p>
-                <p className="text-[14px] text-black"></p>
-              </div>
-              <div className="address-container flex flex-row justify-between">
-                <p className="text-[14px] text-gray-700 basis-1/2"></p>
-                <p className="text-[14px] text-black basis-1/2"></p>
-              </div>
-            </div>
           </AccordionDetails>
         </Accordion>
         <div className="px-[16px] pb-[16px] items-start">
@@ -164,7 +166,7 @@ function OrderSummary({ summaryOrder }) {
               รวม
             </p>
             <p className="text-[16px] font-prompt font-[500] text-black">
-              {summaryPrice} ฿
+              {netPrice} ฿
             </p>
           </div>
         </div>
