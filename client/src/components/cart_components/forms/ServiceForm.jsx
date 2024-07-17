@@ -4,8 +4,20 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
 import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import { TextField } from "@mui/material";
+import { useState } from "react";
 
 function ServiceForm() {
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [address, setAddress] = useState("");
+  const [selectedSubdistrict, setSelectedSubdistrict] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [moreInfo, setMoreInfo] = useState("");
+
+  console.log(selectedDate);
+  console.log(selectedTime);
+  console.log(address);
   return (
     <div className="background w-full min-h-full ">
       <div className="container w-full h-auto bg-white border-solid border-[1px] border-[#CCD0D7] rounded-[8px] flex flex-col p-4 md:p-6 md:gap-5">
@@ -16,16 +28,24 @@ function ServiceForm() {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <div className="date-and-time-picker-container flex flex-col gap-6 md:flex-row">
               <div className="date-picker-container flex flex-col gap-1 md:basis-1/2">
-                <label className="text-[16px] font-[500]">
+                <label
+                  htmlFor="selected-date"
+                  className="text-[16px] font-[500]"
+                >
                   วันที่สะดวกใช้บริการ
                 </label>
                 <DesktopDatePicker
                   label="กรุณาเลือกวันที่"
+                  value={selectedDate}
+                  onChange={(newValue) => {
+                    setSelectedDate(newValue);
+                  }}
                   slots={{
                     openPickerIcon: EventOutlinedIcon,
                   }}
                   slotProps={{
                     textField: {
+                      id: "selected-date",
                       sx: {
                         "& .MuiInputBase-root": {
                           fontSize: "16px",
@@ -36,7 +56,7 @@ function ServiceForm() {
                           borderRadius: "10px",
                           alignItems: "center",
                         },
-                        "& .MuiInputBase-root:focus": {
+                        "& .MuiInputBase-root.Mui-focused": {
                           fontSize: "16px",
                           fontFamily: "Prompt",
                           fontWeight: 500,
@@ -51,6 +71,9 @@ function ServiceForm() {
                           fontFamily: "Prompt",
                           color: "#646C80",
                           marginTop: "-5px",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          display: "none",
                         },
                         "& .MuiSvgIcon-root": {
                           fontSize: "20px",
@@ -122,17 +145,26 @@ function ServiceForm() {
               </div>
 
               <div className="time-picker-container flex flex-col gap-1 md:basis-1/2">
-                <label className="text-[16px] font-[500]">
+                <label
+                  htmlFor="selected-time"
+                  className="text-[16px] font-[500]"
+                >
                   เวลาที่สะดวกใช้บริการ
                 </label>
                 <DesktopTimePicker
                   label="กรุณาเลือกเวลา"
+                  value={selectedTime}
+                  onChange={(newValue) => {
+                    setSelectedTime(newValue);
+                  }}
                   localeText={{
                     okButtonLabel: "ยืนยัน",
                   }}
+                  renderInput={(params) => <TextField {...params} />}
                   ampm={false}
                   slotProps={{
                     textField: {
+                      id: "selected-time",
                       sx: {
                         "& .MuiInputBase-root": {
                           fontSize: "16px",
@@ -186,10 +218,17 @@ function ServiceForm() {
 
           <div className="address-subdistrict-container flex flex-col gap-6 md:flex-row">
             <div className="address-container flex flex-col gap-1 md:basis-1/2">
-              <label className="text-[16px] font-[500]">ที่อยู่</label>
+              <label htmlFor="address" className="text-[16px] font-[500]">
+                ที่อยู่
+              </label>
               <TextField
+                id="address"
                 fullWidth
                 label="กรุณากรอกที่อยู่"
+                value={address}
+                onChange={(e) => {
+                  setAddress(e.target.value);
+                }}
                 sx={{
                   "& .MuiInputBase-root": {
                     fontSize: "16px",
@@ -228,11 +267,21 @@ function ServiceForm() {
             </div>
 
             <div className="subdistrict-container flex flex-col gap-1 md:basis-1/2">
-              <label className="text-[16px] font-[500]">แขวง / ตำบล</label>
+              <label
+                htmlFor="selected-subdistrict"
+                className="text-[16px] font-[500]"
+              >
+                แขวง / ตำบล
+              </label>
               <TextField
+                id="selected-subdistrict"
                 fullWidth
                 select
                 label="เลือกแขวง / ตำบล"
+                value={selectedSubdistrict}
+                onChange={(e) => {
+                  setSelectedSubdistrict(e.target.value);
+                }}
                 sx={{
                   "& .MuiInputBase-root": {
                     fontSize: "16px",
@@ -273,11 +322,21 @@ function ServiceForm() {
 
           <div className="district-province-container flex flex-col gap-6 md:flex-row">
             <div className="district-container flex flex-col gap-1 md:basis-1/2">
-              <label className="text-[16px] font-[500]">เขต / อำเภอ</label>
+              <label
+                htmlFor="selected-district"
+                className="text-[16px] font-[500]"
+              >
+                เขต / อำเภอ
+              </label>
               <TextField
+                id="district"
                 fullWidth
                 select
                 label="เลือกเขต / อำเภอ"
+                value={selectedDistrict}
+                onChange={(e) => {
+                  setSelectedDistrict(e.target.value);
+                }}
                 sx={{
                   "& .MuiInputBase-root": {
                     fontSize: "16px",
@@ -316,11 +375,21 @@ function ServiceForm() {
             </div>
 
             <div className="province-container flex flex-col gap-1 md:basis-1/2">
-              <label className="text-[16px] font-[500]">จังหวัด</label>
+              <label
+                htmlFor="selected-province"
+                className="text-[16px] font-[500]"
+              >
+                จังหวัด
+              </label>
               <TextField
+                id="province"
                 fullWidth
                 select
                 label="เลือกจังหวัด"
+                value={selectedProvince}
+                onChange={(e) => {
+                  setSelectedProvince(e.target.value);
+                }}
                 sx={{
                   "& .MuiInputBase-root": {
                     fontSize: "16px",
@@ -359,14 +428,19 @@ function ServiceForm() {
             </div>
           </div>
 
-          <div className="district-province-container flex flex-col gap-6 md:flex-row">
-            <div className="district-container flex flex-col gap-1 md:w-full">
-              <label className="text-[16px] font-[500]">
+          <div className="more-info-container flex flex-col gap-6 md:flex-row">
+            <div className="more-info-sub-container flex flex-col gap-1 md:w-full">
+              <label htmlFor="more-info" className="text-[16px] font-[500]">
                 ระบุข้อมูลเพิ่มเติม
               </label>
               <TextField
+                id="more-info"
                 fullWidth
                 label="กรุณาระบุข้อมูลเพิ่มเติม"
+                value={moreInfo}
+                onChange={(e) => {
+                  setMoreInfo(e.target.value);
+                }}
                 sx={{
                   "& .MuiInputBase-root": {
                     fontSize: "16px",

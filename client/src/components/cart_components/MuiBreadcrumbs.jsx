@@ -6,12 +6,15 @@ function MuiBreadcrumbs({ dataFromState }) {
   }
 
   const breadcrumbs = [
-    <a className="font-prompt text-[14px] font-[400] md:text-[16px] md:font-[500] text-center text-gray-700">
+    <a
+      className="font-prompt text-[14px] font-[400] md:text-[16px] md:font-[500] text-center text-gray-700"
+      href="/"
+    >
       บริการของเรา
     </a>,
-    <a className="font-prompt text-[20px] font-[500] md:text-[32px] text-center text-blue-600">
+    <p className="font-prompt text-[20px] font-[500] md:text-[32px] text-center text-blue-600">
       {dataFromState[0].service_name}
-    </a>,
+    </p>,
   ];
 
   return (
