@@ -57,7 +57,7 @@ function OrderSummary({ summaryOrder }) {
   if (!summaryOrder || !summaryOrder[0]) {
     return (
       <div className="w-full md:basis-1/3 ">
-        <div className="fixed bottom-[72px] left-0 md:sticky md:top-0 w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-t-[8px] md:rounded-[8px] flex flex-col overflow-hidden z-20">
+        <div className="fixed bottom-[72px] left-0 md:sticky md:top-14 w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-t-[8px] md:rounded-[8px] flex flex-col overflow-hidden z-20">
           <Accordion
             disableGutters
             elevation={0}
