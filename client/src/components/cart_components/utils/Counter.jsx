@@ -1,15 +1,22 @@
 import { useState } from "react";
 
-function Counter() {
+function Counter({
+  dataFromState,
+  getSummaryOrder,
+  dataIndex,
+  deleteSummaryOrder,
+}) {
   const [counter, setCounter] = useState(0);
 
   const handlePlus = () => {
     setCounter(counter + 1);
+    getSummaryOrder(dataFromState.service_list[dataIndex]);
   };
 
   const handleMinus = () => {
     if (counter > 0) {
       setCounter(counter - 1);
+      deleteSummaryOrder(dataFromState.service_list[dataIndex].service_lists);
     }
   };
 

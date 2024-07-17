@@ -52,22 +52,26 @@ const Navbar_user = () => {
   const { logout } = useAuth();
 
   return (
-    <nav className="bg-white shadow-md w-full">
+    <nav className="bg-white shadow-md w-full sticky top-0 z-50">
       <div className="container mx-auto px-4 md:px-20 py-2 flex justify-between items-center">
         <div className="flex items-center space-x-2 sm:space-x-4">
           <a href="/">
             <img
               src={HouseLogo}
               alt="HomeServices Logo"
-              className="h-8 sm:h-10"
+              className="h-6 sm:h-8"
             />
           </a>
-          <a href="/" className="text-blue-500 text-lg sm:text-2xl font-bold">
+          <a
+            href="/"
+            className="text-blue-600  text-sm sm:text-2xl  font-medium"
+          >
             HomeServices
           </a>
+
           <a
             href="/servicelist"
-            className="text-black text-sm sm:text-base pt-1"
+            className=" pl-[60px] text-black font-normal sm:font-medium text-sm sm:text-base pt-1 hidden sm:block"
           >
             บริการของเรา
           </a>
@@ -103,17 +107,21 @@ const Navbar_user = () => {
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             transformOrigin={{ vertical: "top", horizontal: "right" }}
           >
-            <CustomMenuItem onClick={() => handleMenuItemClick("/profile")}>
+            <CustomMenuItem
+              onClick={() => handleMenuItemClick("/CustomerInfo")}
+            >
               <img src={person} alt="person" className="mr-1 h-8 sm:h-6" />
               ข้อมูลผู้ใช้งาน
             </CustomMenuItem>
-            <CustomMenuItem onClick={() => handleMenuItemClick("/orders")}>
+            <CustomMenuItem
+              onClick={() => handleMenuItemClick("/CustomerServiceList")}
+            >
               <img src={order} alt="order" className="mr-1 h-8 sm:h-6" />
               รายการคำสั่งซ่อม
             </CustomMenuItem>
             <CustomMenuItem
               className="border-b-[1px]"
-              onClick={() => handleMenuItemClick("/history")}
+              onClick={() => handleMenuItemClick("/CustomerServiceHistory")}
             >
               <img src={history} alt="history" className=" mr-1 h-8 sm:h-6" />
               ประวัติการซ่อม
@@ -127,6 +135,7 @@ const Navbar_user = () => {
                 Admin Dashboard
               </CustomMenuItem>
             )}
+            <hr className="border-t-2 border-gray-300" />
             <CustomMenuItem
               onClick={() => {
                 logout();

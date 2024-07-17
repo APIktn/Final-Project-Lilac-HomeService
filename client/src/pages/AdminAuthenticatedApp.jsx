@@ -4,8 +4,12 @@ import AdminDashboardPage from "./AdminDashboardPage";
 import NotFoundPage from "./NotFoundPage";
 import HomePage_admin from "./HomePage_admin";
 import ServiceList_admin from "./ServiceList_admin";
-import CartPage_1 from "./CartPage_1_admin";
 import TestAdmin from "./TestAdmin";
+import CartPage_admin from "./CartPage_admin";
+import CustomerServiceList from "./CustomerServiceList";
+import CustomerServiceHistory from "./CustomerServiceHistory";
+import CustomerInfo from "./CustomerInfo";
+import UploadForm from "./Testcloud";
 
 function AdminAuthenticatedApp() {
   return (
@@ -15,8 +19,15 @@ function AdminAuthenticatedApp() {
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/" element={<HomePage_admin />} />
         <Route path="/servicelist" element={<ServiceList_admin />} />
-        <Route path="/cart/:service_name" element={<CartPage_1 />} />
         <Route path="/test" element={<TestAdmin />} />
+        <Route path="/cart/:service_name" element={<CartPage_admin />} />
+        <Route path="/CustomerServiceList" element={<CustomerServiceList />} />
+        <Route
+          path="/CustomerServiceHistory"
+          element={<CustomerServiceHistory />}
+        />
+        <Route path="/CustomerInfo" element={<CustomerInfo />} />
+        <Route path="/testcloud" element={<UploadForm />} />
       </Routes>
     </div>
   );
