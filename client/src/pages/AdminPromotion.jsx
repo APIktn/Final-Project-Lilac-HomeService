@@ -12,8 +12,10 @@ import vectorAlert from "../assets/icons/Vector-alert.svg";
 import vectorClose from "../assets/icons/Vector-close.svg";
 import vectorSearch from "../assets/icons/Vector-search.svg";
 import { format } from "date-fns";
+import { ClipLoader } from "react-spinners";
 
 function AdminPromotion() {
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -88,6 +90,8 @@ function AdminPromotion() {
       setOriginalPromotionCode(result.data.data);
     } catch (error) {
       console.error("Error fetching promotion codes:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -122,7 +126,7 @@ function AdminPromotion() {
   const filteredPromotionCodes = filterPromotionCodes();
 
   const formatDateTime = (dateString) => {
-    return format(new Date(dateString), "dd/MM/yyyy hh:mm a");
+    return format(new Date(dateString), "dd/MM/yyyy hh:mma");
   };
 
   return (
@@ -190,72 +194,78 @@ function AdminPromotion() {
         </div>
 
         {/* Workspace */}
-        <div className="p-4 pt-8 flex-1 overflow-auto rounded-md shadow-md">
-          <div className="rounded-md shadow-md rounded-b-none">
-            <div
-              style={{ fontWeight: 400 }}
-              className="grid grid-cols-12 gap-4 items-center bg-[#E6E7EB] rounded-md p-2 shadow-md border border-[#EFEFF2] text-[14px] text-[#646C80]"
-            >
-              <div className="col-span-2 ml-3">Promotion Code</div>
-              <div className="col-span-1">ประเภท</div>
-              <div className="col-span-2">โควต้าการใช้(ครั้ง)</div>
-              <div className="col-span-2">ราคาที่ลด</div>
-              <div className="col-span-2">สร้างเมื่อ</div>
-              <div className="col-span-2">วันหมดอายุ</div>
-              <div className="col-span-1">Action</div>
+        {loading ? (
+          <div className="flex justify-center items-center w-full h-[500px]">
+            <ClipLoader size={200} color={"#123abc"} loading={loading} />
+          </div>
+        ) : (
+          <div className="p-4 pt-8 flex-1 overflow-auto rounded-md shadow-md">
+            <div className="rounded-md shadow-md rounded-b-none">
+              <div
+                style={{ fontWeight: 400 }}
+                className="grid grid-cols-12 gap-4 items-center bg-[#E6E7EB] rounded-md p-2 shadow-md border border-[#EFEFF2] text-[14px] text-[#646C80]"
+              >
+                <div className="col-span-2 ml-3">Promotion Code</div>
+                <div className="col-span-1">ประเภท</div>
+                <div className="col-span-2 ml-5">โควต้าการใช้(ครั้ง)</div>
+                <div className="col-span-2 -ml-5">ราคาที่ลด</div>
+                <div className="col-span-2 -ml-14">สร้างเมื่อ</div>
+                <div className="col-span-2 -ml-8">วันหมดอายุ</div>
+                <div className="col-span-1">Action</div>
+              </div>
+            </div>
+            <div className="bg-white p-4 rounded-md shadow-md rounded-t-none text-[#505666]">
+              {filteredPromotionCodes.map((item, index) => (
+                <div
+                  key={item.promo_id}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, index)}
+                  onDragOver={(e) => handleDragOver(e)}
+                  onDrop={(e) => handleDrop(e, index)}
+                  className="grid grid-cols-12 gap-4 items-center mb-4 bg-white rounded-md p-2 shadow-sm"
+                >
+                  <div className="col-span-2">{item.code}</div>
+                  <div className="col-span-1">
+                    {item.baht_discount ? "Fixed" : "Percent"}
+                  </div>
+                  {item.count === null ? (
+                    <div className="col-span-2 ml-5">0/{item.total_code}</div>
+                  ) : (
+                    <div className="col-span-2 ml-5">
+                      {item.count}/{item.total_code}
+                    </div>
+                  )}
+                  <div className="col-span-2 text-red-600 -ml-5">
+                    {item.baht_discount
+                      ? `-${item.baht_discount} ฿`
+                      : `-${item.percent_discount} %`}
+                  </div>
+
+                  <div className="col-span-2 -ml-14">
+                    {formatDateTime(item.created_at)}
+                  </div>
+                  <div className="col-span-2 -ml-5">
+                    {formatDateTime(item.expired_date)}
+                  </div>
+                  <div className="col-span-1 flex space-x-2 justify-between">
+                    <img
+                      src={vectorBin}
+                      alt="Bin"
+                      className="cursor-pointer"
+                      onClick={() => handleDeleteClick(item)}
+                    />
+                    <img
+                      src={vectorEdit}
+                      alt="Edit"
+                      className="cursor-pointer"
+                      onClick={() => navigate(`/admin/promotion/view`)}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-          <div className="bg-white p-4 rounded-md shadow-md rounded-t-none">
-            {filteredPromotionCodes.map((item, index) => (
-              <div
-                key={item.promo_id}
-                draggable
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDragOver={(e) => handleDragOver(e)}
-                onDrop={(e) => handleDrop(e, index)}
-                className="grid grid-cols-12 gap-4 items-center mb-4 bg-white rounded-md p-2 shadow-sm"
-              >
-                <div className="col-span-2">{item.code}</div>
-                <div className="col-span-1">
-                  {item.baht_discount ? "Fixed" : "Percent"}
-                </div>
-                {item.count === null ? (
-                  <div className="col-span-2">0/{item.total_code}</div>
-                ) : (
-                  <div className="col-span-2">
-                    {item.count}/{item.total_code}
-                  </div>
-                )}
-                <div className="col-span-2 text-red-600">
-                  {item.baht_discount
-                    ? `-${item.baht_discount} ฿`
-                    : `-${item.percent_discount} %`}
-                </div>
-
-                <div className="col-span-2">
-                  {formatDateTime(item.created_at)}
-                </div>
-                <div className="col-span-2">
-                  {formatDateTime(item.expired_date)}
-                </div>
-                <div className="col-span-1 flex space-x-2 justify-between">
-                  <img
-                    src={vectorBin}
-                    alt="Bin"
-                    className="cursor-pointer"
-                    onClick={() => handleDeleteClick(item)}
-                  />
-                  <img
-                    src={vectorEdit}
-                    alt="Edit"
-                    className="cursor-pointer"
-                    onClick={() => navigate(`/admin/promotion/view`)}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Delete Confirmation Modal */}
