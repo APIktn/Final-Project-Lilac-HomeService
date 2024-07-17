@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar_user from "../components/Navbar_user";
 import editIcon from "../assets/icons/edit-icon.png";
 import { ClipLoader } from "react-spinners";
+import PasswordChangePopup from "../components/popup/PasswordChangePopup";
 
 function UserProfilePage() {
   const [userData, setUserData] = useState(null);
@@ -23,6 +24,7 @@ function UserProfilePage() {
   });
   const [profileImage, setProfileImage] = useState(null);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const [isPasswordPopupOpen, setIsPasswordPopupOpen] = useState(false);
 
   useEffect(() => {
     fetchUserData();
@@ -298,7 +300,14 @@ function UserProfilePage() {
                       className="w-full p-2 border border-gray-300 rounded"
                     />
                   </div>
-                  <div className="flex justify-end">
+                  <div className="flex justify-end space-x-4">
+                    <button
+                      type="button"
+                      onClick={() => setIsPasswordPopupOpen(true)}
+                      className="bg-blue-500 text-white px-4 py-2 rounded"
+                    >
+                      เปลี่ยนรหัสผ่าน
+                    </button>
                     <button
                       type="button"
                       onClick={handleSave}
@@ -345,6 +354,9 @@ function UserProfilePage() {
               )}
             </div>
           </div>
+        )}
+        {isPasswordPopupOpen && (
+          <PasswordChangePopup onClose={() => setIsPasswordPopupOpen(false)} />
         )}
       </div>
     </>
