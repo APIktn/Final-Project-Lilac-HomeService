@@ -6,6 +6,7 @@ import adminRouter from "./routes/admins.mjs";
 import uploadsRouter from "./routes/upload.mjs";
 import cartsRouter from "./routes/cart-routes.mjs";
 import technicianRouter from "./routes/technicians.mjs";
+import promotionRouter from "./routes/admin-promotion.mjs";
 import {
   authenticateToken,
   authorizeAdmin,
@@ -26,7 +27,7 @@ app.use(express.json());
 app.use("/auth", authRouter);
 
 app.use("/admin", authenticateToken, authorizeAdmin, adminRouter);
-
+app.use("/promotion", promotionRouter);
 
 app.use("/services", servicesRouter);
 app.use("/cart", cartsRouter);
@@ -39,7 +40,6 @@ app.use(
 );
 
 app.use("/", servicesRouter);
-
 
 app.get("/test", (req, res) => {
   return res.json("Server API is working 🚀");
