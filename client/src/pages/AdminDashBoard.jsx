@@ -580,7 +580,7 @@ function AdminDashboard() {
                     />
                   </div>
                   <div className="col-span-1">
-                    <p>{item.category_id}</p>
+                    <p>{index+1}</p>
                   </div>
                   <div className="col-span-3">{item.category_name}</div>
                   <div className="col-span-3">{formatDateTime(item.created_at)}</div>
