@@ -4,22 +4,30 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
 import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import { TextField, MenuItem } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { CartContext } from "../../../contexts/cartContext";
 
 function ServiceForm() {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [address, setAddress] = useState("");
-  const [provinces, setProvinces] = useState([]);
-  const [amphures, setAmphures] = useState([]);
-  const [tambons, setTambons] = useState([]);
-  const [selected, setSelected] = useState({
-    province_id: undefined,
-    amphure_id: undefined,
-    tambon_id: undefined,
-  });
-  const [moreInfo, setMoreInfo] = useState("");
+  const {
+    selectedDate,
+    setSelectedDate,
+    selectedTime,
+    setSelectedTime,
+    address,
+    setAddress,
+    provinces,
+    setProvinces,
+    amphures,
+    setAmphures,
+    tambons,
+    setTambons,
+    selected,
+    setSelected,
+    moreInfo,
+    setMoreInfo,
+    setSelectedNames,
+  } = useContext(CartContext);
 
   useEffect(() => {
     (() => {
@@ -63,7 +71,21 @@ function ServiceForm() {
 
       const input = event.target.value;
       const dependId = input ? Number(input) : undefined;
-      setSelected((prev) => ({ ...prev, ...unSelectChilds, [id]: dependId }));
+
+      const selectedItem = list.find((item) => item.id === dependId);
+      const selectedName = selectedItem ? selectedItem.name_th : "";
+
+      setSelected((prev) => ({
+        ...prev,
+        ...unSelectChilds,
+        [id]: dependId,
+      }));
+
+      setSelectedNames((prev) => ({
+        ...prev,
+        ...unSelectChilds,
+        [id.replace("_id", "")]: selectedName,
+      }));
 
       if (!input) return;
 
@@ -417,9 +439,12 @@ function ServiceForm() {
 
             <div className="subdistrict-container flex flex-col gap-1 md:basis-1/2">
               <DropdownList
-                label="แขวง / ตำบล "
-                id="tambon_id"
-                list={tambons}
+                label="จังหวัด "
+                id="province_id"
+                list={provinces}
+                child="amphure"
+                childsId={["amphure_id", "tambon_id"]}
+                setChilds={[setAmphures, setTambons]}
               />
             </div>
           </div>
@@ -438,12 +463,9 @@ function ServiceForm() {
 
             <div className="province-container flex flex-col gap-1 md:basis-1/2">
               <DropdownList
-                label="จังหวัด "
-                id="province_id"
-                list={provinces}
-                child="amphure"
-                childsId={["amphure_id", "tambon_id"]}
-                setChilds={[setAmphures, setTambons]}
+                label="แขวง / ตำบล "
+                id="tambon_id"
+                list={tambons}
               />
             </div>
           </div>
