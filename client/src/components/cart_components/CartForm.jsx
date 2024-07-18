@@ -4,7 +4,7 @@ import Stepper from "./stepper/Stepper";
 import OrderSummary from "./OrderSummary";
 import ServiceDetail from "./forms/ServiceDetail";
 import { useContext, useState, useEffect } from "react";
-import { CartContext } from "../../pages/CartPage";
+import { CartContext } from "../../contexts/cartContext";
 import ServiceForm from "./forms/ServiceForm";
 import ServicePayment from "./forms/ServicePayment";
 import { useParams } from "react-router-dom";

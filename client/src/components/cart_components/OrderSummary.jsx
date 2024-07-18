@@ -6,12 +6,13 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useContext, useEffect } from "react";
-import { SummaryContext } from "../../pages/CartPage";
+import { CartContext } from "../../contexts/cartContext";
 
 function OrderSummary({ summaryOrder }) {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
-  const { netPrice, setNetPrice } = useContext(SummaryContext);
+  const { activeStep, netPrice, setNetPrice, logisticsInfo } =
+    useContext(CartContext);
 
   const countProducts = (servicesArray) => {
     const counts = servicesArray.reduce((acc, service) => {
@@ -157,6 +158,27 @@ function OrderSummary({ summaryOrder }) {
                 <p className="text-[14px]">{item.count} รายการ</p>
               </div>
             ))}
+            {activeStep === 2 && (
+              <div className="logistics-summary flex flex-col gap-1">
+                <hr className="mt-[8px] mb-[8px] border-solid border-[1px] border-gray-300" />
+                <div className="date-container flex flex-row justify-between">
+                  <p className="text-[14px] text-gray-700">วันที่</p>
+                  <p className="text-[14px] text-black text-end">
+                    {logisticsInfo.date}
+                  </p>
+                </div>
+                <div className="time-container flex flex-row justify-between">
+                  <p className="text-[14px] text-gray-700">เวลา</p>
+                  <p className="text-[14px] text-black text-end">{`${logisticsInfo.time} น.`}</p>
+                </div>
+                <div className="address-container flex flex-row justify-between">
+                  <p className="text-[14px] text-gray-700 basis-1/2">สถานที่</p>
+                  <p className="text-[14px] text-black basis-1/2 text-end">
+                    {logisticsInfo.place}
+                  </p>
+                </div>
+              </div>
+            )}
             <hr className="mt-[8px] mb-[8px] border-solid border-[1px] border-gray-300" />
           </AccordionDetails>
         </Accordion>
