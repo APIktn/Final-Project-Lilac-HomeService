@@ -8,6 +8,7 @@ import cartsRouter from "./routes/cart-routes.mjs";
 import technicianRouter from "./routes/technicians.mjs";
 import promotionRouter from "./routes/admin-promotion.mjs";
 import categoriesRouter from "./routes/admin-categories.mjs";
+import adminserviceRouter from "./routes/adminpost.mjs";
 
 import {
   authenticateToken,
@@ -41,6 +42,8 @@ app.use(
   authorizeTechnician,
   technicianRouter
 );
+
+app.use("/adminservice", adminserviceRouter);
 
 app.use("/", servicesRouter);
 

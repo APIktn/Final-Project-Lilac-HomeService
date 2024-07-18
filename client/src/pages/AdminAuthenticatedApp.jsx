@@ -18,7 +18,7 @@ function AdminAuthenticatedApp() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/test" element={<AdminDashboardPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/" element={<HomePage_admin />} />
         <Route path="/servicelist" element={<ServiceList_admin />} />
@@ -36,8 +36,7 @@ function AdminAuthenticatedApp() {
           element={<AdminCreatePromotion />}
         />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/adminservicecreated" element={<AdminServiceCreate />} />
-
+        <Route path="/admin" element={<AdminServiceCreate />} />
       </Routes>
     </div>
   );

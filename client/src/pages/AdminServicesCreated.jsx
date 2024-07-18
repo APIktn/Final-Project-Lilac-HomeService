@@ -11,9 +11,7 @@ import vectorAlert from "../assets/icons/Vector-alert.svg";
 import vectorClose from "../assets/icons/Vector-close.svg";
 import vectorUpload from "../assets/icons/Vector-upload.svg";
 import vectorDragDrop from "../assets/icons/Vector-dragdrop.svg";
-import axios from 'axios';
-
-
+import axios from "axios";
 
 function AdminServiceCreate() {
   const [servicename, setServicename] = useState("");
@@ -26,28 +24,26 @@ function AdminServiceCreate() {
   const [categoryName, setCategoryName] = useState("");
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [message, setMessage] = useState('');
-
-
+  const [message, setMessage] = useState("");
 
   const categories = [
     { category: "บริการห้องครัว" },
     { category: "บริการห้องน้ำ" },
     { category: "บริการห้องนั่งเล่น" },
     { category: "บริการทั่วไป" },
-      ];
+  ];
 
   const handleCreate = () => {
-    if (categoryName.trim()) {    
+    if (categoryName.trim()) {
       onCategoryCreate({
         id: Date.now().toString(),
         category: categoryName.trim(),
         created: new Date().toLocaleString(),
         modified: new Date().toLocaleString(),
-      });      
-      navigate("/admindashboard");      
+      });
+      navigate("/admindashboard");
       setCategoryName("");
-    } else {      
+    } else {
       alert("Please enter a category name.");
     }
   };
@@ -100,35 +96,35 @@ function AdminServiceCreate() {
   };
 
   const handleFileChange = (e) => {
-    console.log(e.target.files[0])
-      const file = e.target.files[0];
-      if (
+    console.log(e.target.files[0]);
+    const file = e.target.files[0];
+    if (
       file &&
       file.size <= 5 * 1024 * 1024 &&
       (file.type === "image/png" || file.type === "image/jpeg")
     ) {
       setUploadedImage(file);
-      e.target.value = null; 
+      e.target.value = null;
     } else {
-      alert("Please upload a valid image file (PNG, JPG) with size up to 5 MB.");
-      e.target.value = null; 
+      alert(
+        "Please upload a valid image file (PNG, JPG) with size up to 5 MB."
+      );
+      e.target.value = null;
     }
   };
 
-  
-  
-const handleDeleteImage = () => {
-  setUploadedImage(null);
-};
+  const handleDeleteImage = () => {
+    setUploadedImage(null);
+  };
 
-    const handleDragEnter = (e) => {
+  const handleDragEnter = (e) => {
     e.preventDefault();
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
   };
-  
+
   const handleDropUpload = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
@@ -156,204 +152,167 @@ const handleDeleteImage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setUploading(true);
-    const data = new FormData();
-    data.append('file', file);
-        
-
-    try {
-      // Upload file to Cloudinary
-      const cloudinaryResponse = await axios.post('http://localhost:4000/uploads/upload', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        onUploadProgress: (e) => {
-          console.log(e.loaded / e.total);
-        },
-      });
-
-      // Handle Cloudinary response
-      console.log('Cloudinary response:', cloudinaryResponse.data);
-
-      // Prepare data for Supabase
-      const photoData = {        
-        upload_image: cloudinaryResponse.data.secure_url, // Assuming this is the Cloudinary URL
-      };
-
-      // Send data to Supabase
-      const supabaseResponse = await axios.post('http://localhost:4000/uploads/create', photoData, {
-        headers: { 'Content-Type': 'application/json' },
-        
-      });
-
-      console.log('Supabase response:', supabaseResponse.data);
-
-      
-      setFile(null);      
-    } catch (error) {
-      console.error('Error uploading to the backend server', error);
-      
-    } 
   };
 
   return (
     <form id="upload-form" onSubmit={handleSubmit}>
-    <div className="flex h-screen">
-      {/* Sidebar */}
-      <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
-        <div>
-          <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6">
-            <img src={vectorHouse} alt="House" className="mr-2" />
-            <span>Homeservice</span>
-          </div>
-          <div
-            className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-            onClick={() => navigate("/admin")}
-          >
-            <img src={vectorCategory} alt="Category" className="mr-2" />
-            <span className="text-white">หมวดหมู่</span>
-          </div>
-          <div
-            className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-            onClick={() => navigate("/admin/service")}
-          >
-            <img src={vectorService} alt="Service" className="mr-2" />
-            <span className="text-white">บริการ</span>
+      <div className="flex h-screen">
+        {/* Sidebar */}
+        <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
+          <div>
+            <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6">
+              <img src={vectorHouse} alt="House" className="mr-2" />
+              <span>Homeservice</span>
+            </div>
+            <div
+              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+              onClick={() => navigate("/admin")}
+            >
+              <img src={vectorCategory} alt="Category" className="mr-2" />
+              <span className="text-white">หมวดหมู่</span>
+            </div>
+            <div
+              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+              onClick={() => navigate("/admin/service")}
+            >
+              <img src={vectorService} alt="Service" className="mr-2" />
+              <span className="text-white">บริการ</span>
+            </div>
+            <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
+              <img
+                src={vectorPromotionCode}
+                alt="Promotion Code"
+                className="mr-2"
+              />
+              <span className="text-white">Promotion Code</span>
+            </div>
           </div>
           <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
-            <img
-              src={vectorPromotionCode}
-              alt="Promotion Code"
-              className="mr-2"
-            />
-            <span className="text-white">Promotion Code</span>
-          </div>
-        </div>
-        <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
-          <img src={vectorLogout} alt="Logout" className="mr-2" />
-          <span className="text-white">ออกจากระบบ</span>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-[#EFEFF2]">
-        {/* Admin Topbar */}
-        <div className="bg-white p-4 flex justify-between items-center">
-          <div className="text-lg">เพิ่ม Promotion Code</div>
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => navigate("/admindashboard")}
-              className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-40 h-11"
-            >
-              ยกเลิก
-            </button>
-            <button
-              type="submit"
-              onClick={handleCreate}
-              className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
-            >
-              สร้าง
-            </button>
+            <img src={vectorLogout} alt="Logout" className="mr-2" />
+            <span className="text-white">ออกจากระบบ</span>
           </div>
         </div>
 
-        {/* Workspace */}
-        <div className="p-4 pt-8 flex-1 overflow-auto rounded-md shadow-md">
-          <div className="rounded-md shadow-md rounded-b-none"></div>
-          <div className="bg-white p-4 rounded-md shadow-md ">
-            {/* Form for Uploading Picture for Service */}
-            <div className="border-b border-[#CCD0D7] mb-4 pb-4">
-              <div className="mb-4 w-[1072px]">
-                <div className="flex items-center mb-2">
-                  <div >
-                    <label className="block">
-                      ชื่อบริการ<span className="text-red-500">*</span>
-                    </label>
-                  </div>
-                  <input
-                    id="servicename"
-                    name="servicename"
-                    type="text"
-                    placeholder="Enter username here"
-                    onChange={(event) => {
-                      setServicename(event.target.value);
-                    }}
-                    value={servicename}
-                    className="border border-gray-300 rounded-md p-2  w-[433px]"
-                  />
-                  </div>
-                <div className="flex items-center mb-2">
-                <label className="block">
-        หมวดหมู่<span className="text-red-500">*</span>
-      </label>
-      <select
-        className="border border-gray-300 rounded-md p-2 w-[433px]"
-        value={categoryName}
-        onChange={(e) => setCategoryName(e.target.value)}
-      >
-        <option value="">เลือกหมวดหมู่</option>
-        {categories.map((option, index) => (
-          <option key={index} value={option.category}>
-            {option.category}
-          </option>
-        ))}
-      </select>
-                </div>
-                <div className="flex items-center mb-2 ">
-                  <label className="block">
-                    รูปภาพ<span className="text-red-500">*</span>
-                  </label>
-                  <div className ="Upload-image" >
-                  
-                    <div
-                      className="border border-dashed border-gray-300 rounded-md p-4 flex flex-col items-center justify-center w-[433px] h-[143px]"
-                      onDragEnter={handleDragEnter}
-                      onDragLeave={handleDragLeave}
-                      onDragOver={handleDragOver}
-                      onDrop={handleDropUpload}
-                    >
-                      {uploadedImage ? (
-                 <div className="image-preview-container w-[350px] h-[140px] ">
-                 <img
-                 className="image-preview w-[350px] h-[140px]  object-cover"
-                 src={URL.createObjectURL(uploadedImage)}
-                  alt="Preview"
-                 />
-                 </div>
-                ) : (
-                <label htmlFor="upload">           
-                    <div className="flex flex-col items-center cursor-pointer">
-                    <img
-                     src={vectorUpload}
-                     alt="Upload"
-                     className="mb-2 w-[48px] h-[46px]"
-                     />
-                     <p className="text-gray-500">
-                         อัพโหลดรูปภาพ หรือลากและวางที่นี่
-                     </p>
-                     <p className="text-gray-500">
-                         PNG, JPG ขนาดไม่เกิน 5 MB
-                      </p>
-                      </div>          
-            <input
-              id="upload"
-              name="image-service"
-              type="file"
-              onChange={handleFileChange}
-              hidden
-            />
-          </label>
-        )}
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col bg-[#EFEFF2]">
+          {/* Admin Topbar */}
+          <div className="bg-white p-4 flex justify-between items-center">
+            <div className="text-lg">เพิ่ม Promotion Code</div>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => navigate("/admindashboard")}
+                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-40 h-11"
+              >
+                ยกเลิก
+              </button>
+              <button
+                type="submit"
+                onClick={handleCreate}
+                className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
+              >
+                สร้าง
+              </button>
+            </div>
+          </div>
+
+          {/* Workspace */}
+          <div className="p-4 pt-8 flex-1 overflow-auto rounded-md shadow-md">
+            <div className="rounded-md shadow-md rounded-b-none"></div>
+            <div className="bg-white p-4 rounded-md shadow-md ">
+              {/* Form for Uploading Picture for Service */}
+              <div className="border-b border-[#CCD0D7] mb-4 pb-4">
+                <div className="mb-4 w-[1072px]">
+                  <div className="flex items-center mb-2">
+                    <div>
+                      <label className="block">
+                        ชื่อบริการ<span className="text-red-500">*</span>
+                      </label>
                     </div>
-                    </div>                                                        
+                    <input
+                      id="servicename"
+                      name="servicename"
+                      type="text"
+                      placeholder="Enter username here"
+                      onChange={(event) => {
+                        setServicename(event.target.value);
+                      }}
+                      value={servicename}
+                      className="border border-gray-300 rounded-md p-2  w-[433px]"
+                    />
                   </div>
-                    <span className="text-gray-500 mt-2 ml-[50px]">
-                      ขนาดภาพที่แนะนำ: 1440px x 225px
-                    </span>
-                    <button
-                      className="underline prompt text-[16px] text-[#336DF2] ml-[120px]"
-                      onClick={handleDeleteImage}
+                  <div className="flex items-center mb-2">
+                    <label className="block">
+                      หมวดหมู่<span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      className="border border-gray-300 rounded-md p-2 w-[433px]"
+                      value={categoryName}
+                      onChange={(e) => setCategoryName(e.target.value)}
                     >
-                      ลบรูปภาพ
-                    </button>
+                      <option value="">เลือกหมวดหมู่</option>
+                      {categories.map((option, index) => (
+                        <option key={index} value={option.category}>
+                          {option.category}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex items-center mb-2 ">
+                    <label className="block">
+                      รูปภาพ<span className="text-red-500">*</span>
+                    </label>
+                    <div className="Upload-image">
+                      <div
+                        className="border border-dashed border-gray-300 rounded-md p-4 flex flex-col items-center justify-center w-[433px] h-[143px]"
+                        onDragEnter={handleDragEnter}
+                        onDragLeave={handleDragLeave}
+                        onDragOver={handleDragOver}
+                        onDrop={handleDropUpload}
+                      >
+                        {uploadedImage ? (
+                          <div className="image-preview-container w-[350px] h-[140px] ">
+                            <img
+                              className="image-preview w-[350px] h-[140px]  object-cover"
+                              src={URL.createObjectURL(uploadedImage)}
+                              alt="Preview"
+                            />
+                          </div>
+                        ) : (
+                          <label htmlFor="upload">
+                            <div className="flex flex-col items-center cursor-pointer">
+                              <img
+                                src={vectorUpload}
+                                alt="Upload"
+                                className="mb-2 w-[48px] h-[46px]"
+                              />
+                              <p className="text-gray-500">
+                                อัพโหลดรูปภาพ หรือลากและวางที่นี่
+                              </p>
+                              <p className="text-gray-500">
+                                PNG, JPG ขนาดไม่เกิน 5 MB
+                              </p>
+                            </div>
+                            <input
+                              id="upload"
+                              name="image-service"
+                              type="file"
+                              onChange={handleFileChange}
+                              hidden
+                            />
+                          </label>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-gray-500 mt-2 ml-[50px]">
+                    ขนาดภาพที่แนะนำ: 1440px x 225px
+                  </span>
+                  <button
+                    className="underline prompt text-[16px] text-[#336DF2] ml-[120px]"
+                    onClick={handleDeleteImage}
+                  >
+                    ลบรูปภาพ
+                  </button>
                 </div>
               </div>
             </div>
@@ -451,29 +410,30 @@ const handleDeleteImage = () => {
         </div>
         {showDeleteModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                <div className="bg-white p-4 rounded-md shadow-md">
-                  <div className="text-lg mb-4">
-                  คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?
-                  </div>
-                  <div className="flex justify-end space-x-4">
-                    <button
-                      onClick={handleDeleteCancel}
-                      className="bg-gray-200 text-gray-700 py-2 px-4 rounded-md"
-                      >
-                      ยกเลิก
-                    </button>
-                    <button
-                      onClick={handleDeleteConfirm}
-                      className="bg-red-500 text-white py-2 px-4 rounded-md"
-                      >
-                      ลบ
-                    </button>
-                  </div>
-                </div>
+            <div className="bg-white p-4 rounded-md shadow-md">
+              <div className="text-lg mb-4">
+                คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?
               </div>
-                )}               
-        </div>  
-        </form>
-      )}
-           
+              <div className="flex justify-end space-x-4">
+                <button
+                  onClick={handleDeleteCancel}
+                  className="bg-gray-200 text-gray-700 py-2 px-4 rounded-md"
+                >
+                  ยกเลิก
+                </button>
+                <button
+                  onClick={handleDeleteConfirm}
+                  className="bg-red-500 text-white py-2 px-4 rounded-md"
+                >
+                  ลบ
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </form>
+  );
+}
+
 export default AdminServiceCreate;
