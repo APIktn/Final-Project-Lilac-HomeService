@@ -149,37 +149,49 @@ function OrderSummary({ summaryOrder }) {
               />
             }
           >
-            <p className="font-prompt font-[500] text-gray-700">สรุปรายการ</p>
+            <p className="font-prompt font-[500] text-[16px] md:font-[400] md:text-[20px] text-gray-700">
+              สรุปรายการ
+            </p>
           </AccordionSummary>
           <AccordionDetails>
             {summaryData.map((item) => (
               <div className="service-summary flex flex-row justify-between">
-                <p className="text-[14px]">{item.name}</p>
-                <p className="text-[14px]">{item.count} รายการ</p>
+                <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black">
+                  {item.name}
+                </p>
+                <p className="font-prompt font-[400] md:font-[300] text-[14px] text-[#646C80]">
+                  {item.count} รายการ
+                </p>
               </div>
             ))}
             {activeStep === 2 && (
               <div className="logistics-summary flex flex-col gap-1">
-                <hr className="mt-[8px] mb-[8px] border-solid border-[1px] border-gray-300" />
+                <hr className="mt-6 mb-6 border-solid border-[1px] border-[#CCD0D7] " />
                 <div className="date-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700">วันที่</p>
-                  <p className="text-[14px] text-black text-end">
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-gray-700">
+                    วันที่
+                  </p>
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black text-end">
                     {logisticsInfo.date}
                   </p>
                 </div>
                 <div className="time-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700">เวลา</p>
-                  <p className="text-[14px] text-black text-end">{`${logisticsInfo.time} น.`}</p>
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-gray-700">
+                    เวลา
+                  </p>
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black text-end">{`${logisticsInfo.time} น.`}</p>
                 </div>
                 <div className="address-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700 basis-1/2">สถานที่</p>
-                  <p className="text-[14px] text-black basis-1/2 text-end">
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-gray-700 basis-1/2">
+                    สถานที่
+                  </p>
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black basis-1/2 text-end">
                     {logisticsInfo.place}
                   </p>
                 </div>
               </div>
             )}
-            <hr className="mt-[8px] mb-[8px] border-solid border-[1px] border-gray-300" />
+            <hr className="mt-6 mb-[8px] border-solid border-[1px] border-[#CCD0D7]" />
           </AccordionDetails>
         </Accordion>
         <div className="px-[16px] pb-[16px] items-start">
@@ -187,7 +199,7 @@ function OrderSummary({ summaryOrder }) {
             <p className="text-[16px] font-[400] font-prompt text-gray-700">
               รวม
             </p>
-            <p className="text-[16px] font-prompt font-[500] text-black">
+            <p className="text-[16px] font-prompt font-[500] md:font-[600] text-black">
               {netPrice} ฿
             </p>
           </div>
