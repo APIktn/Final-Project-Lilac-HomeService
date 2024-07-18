@@ -57,6 +57,8 @@ app.use("/adminservice", adminserviceRouter);
 app.use("/user", userRouter);
 
 
+app.use("/adminservice", adminserviceRouter);
+
 app.use("/", servicesRouter);
 
 
