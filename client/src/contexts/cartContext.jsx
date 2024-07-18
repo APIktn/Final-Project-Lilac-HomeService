@@ -25,6 +25,15 @@ const CartContextProvider = (props) => {
 
   const [logisticsInfo, setLogisticsInfo] = useState();
 
+  const [counters, setCounters] = useState({});
+
+  const updateCounter = (id, value) => {
+    setCounters((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
   const contextValue = {
     activeStep,
     setActiveStep,
@@ -50,6 +59,8 @@ const CartContextProvider = (props) => {
     setSelectedNames,
     logisticsInfo,
     setLogisticsInfo,
+    counters,
+    updateCounter,
   };
 
   return (

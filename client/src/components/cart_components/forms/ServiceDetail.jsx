@@ -33,6 +33,7 @@ function ServiceDetail({ dataFromState, getSummaryOrder, deleteSummaryOrder }) {
               </div>
               <div className="pl-2 flex items-start justify-end">
                 <Counter
+                  key={index}
                   dataFromState={dataFromState[0]}
                   getSummaryOrder={getSummaryOrder}
                   dataIndex={index}
