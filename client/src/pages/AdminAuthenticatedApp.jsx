@@ -11,6 +11,7 @@ import CustomerInfo from "./CustomerInfo";
 import UploadForm from "./Testcloud";
 import AdminCreatePromotion from "./AdminCreatePromotion";
 import AdminPromotion from "./AdminPromotion";
+import AdminDashboard from "./AdminDashBoard";
 
 function AdminAuthenticatedApp() {
   return (
@@ -33,6 +34,7 @@ function AdminAuthenticatedApp() {
           path="/admin/promotion/create"
           element={<AdminCreatePromotion />}
         />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </div>
   );
