@@ -12,6 +12,7 @@ import UploadForm from "./Testcloud";
 import AdminCreatePromotion from "./AdminCreatePromotion";
 import AdminPromotion from "./AdminPromotion";
 import AdminDashboard from "./AdminDashBoard";
+import AdminServiceCreate from "./AdminServicesCreated";
 
 function AdminAuthenticatedApp() {
   return (
@@ -35,6 +36,8 @@ function AdminAuthenticatedApp() {
           element={<AdminCreatePromotion />}
         />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/adminservicecreated" element={<AdminServiceCreate />} />
+
       </Routes>
     </div>
   );
