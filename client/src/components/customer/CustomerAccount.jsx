@@ -1,9 +1,12 @@
 import React from "react";
-import person from "../../assets/icons/person-icon.png";
+import person from "../../assets/icons/person-i.svg";
 import order from "../../assets/icons/order-icon.png";
 import history from "../../assets/icons/history-icon.png";
+import { useLocation } from "react-router-dom";
 
 function CustomerAccount() {
+  const location = useLocation();
+  const currentPath = location.pathname;
   return (
     // pc version
 
@@ -20,7 +23,11 @@ function CustomerAccount() {
                 <img src={person} alt="person" className="mr-1 h-8 sm:h-6" />
                 <a
                   href="/CustomerInfo"
-                  className="text-[16px] p-[12px] hover:text-[#1852D6]"
+                  className={`text-[16px] p-[12px] ${
+                    currentPath === "/CustomerInfo"
+                      ? "text-[#1852D6]"
+                      : "hover:text-[#9AA1B0]"
+                  }`}
                 >
                   ข้อมูลผู้ใช้งาน
                 </a>
@@ -29,7 +36,11 @@ function CustomerAccount() {
                 <img src={order} alt="order" className="mr-1 h-8 sm:h-6 " />
                 <a
                   href="/CustomerServiceList"
-                  className="text-[16px] p-[12px] hover:text-[#1852D6]"
+                  className={`text-[16px] p-[12px] ${
+                    currentPath === "/CustomerServiceList"
+                      ? "text-[#1852D6]"
+                      : "hover:text-[#9AA1B0]"
+                  }`}
                 >
                   รายการคำสั่งซ่อม
                 </a>
@@ -38,7 +49,11 @@ function CustomerAccount() {
                 <img src={history} alt="history" className="mr-1 h-8 sm:h-6" />
                 <a
                   href="/CustomerServiceHistory"
-                  className="text-[16px] p-[12px] hover:text-[#1852D6]"
+                  className={`text-[16px] p-[12px] ${
+                    currentPath === "/CustomerServiceHistory"
+                      ? "text-[#1852D6]"
+                      : "hover:text-[#9AA1B0]"
+                  }`}
                 >
                   ประวัติการซ่อม
                 </a>
@@ -51,14 +66,21 @@ function CustomerAccount() {
       {/* fixed top-[44px] w-full px-[16px] pt-[12px] pb-[8px] z-40  */}
 
       <div className="block sm:hidden  bg-[#F3F4F6] px-1 py-5">
-        <div className="bg-white rounded-[8px] border border-[#CCD0D7] border-[1px]">
+        <div className="bg-white rounded-[8px]border-[#CCD0D7] border-[1px]">
           <p className="p-[8px] border-solid border-[#CCD0D7] border-b-[1px] text-[20px] text-[#646C80]">
             บัญชีผู้ใช้
           </p>
           <div className="flex flex-row items-center  justify-between px-[16px]">
             <div className="flex items-center mb-2">
               <img src={person} alt="person" className="h-[24px]" />
-              <a href="/CustomerInfo" className="text-[14px] p-[12px]">
+              <a
+                href="/CustomerInfo"
+                className={`text-[14px] p-[12px] ${
+                  currentPath === "/CustomerInfo"
+                    ? "text-[#1852D6]"
+                    : "hover:text-[#9AA1B0]"
+                }`}
+              >
                 ข้อมูล
                 <br />
                 ผู้ใช้งาน
@@ -66,7 +88,14 @@ function CustomerAccount() {
             </div>
             <div className="flex items-center mb-2">
               <img src={order} alt="order" className="h-[24px]" />
-              <a href="/CustomerServiceList" className="text-[14px] p-[12px]">
+              <a
+                href="/CustomerServiceList"
+                className={`text-[14px] p-[12px] ${
+                  currentPath === "/CustomerServiceList"
+                    ? "text-[#1852D6]"
+                    : "hover:text-[#9AA1B0]"
+                }`}
+              >
                 รายการ
                 <br />
                 คำสั่งซ่อม
@@ -76,7 +105,11 @@ function CustomerAccount() {
               <img src={history} alt="history" className="h-[24px]" />
               <a
                 href="/CustomerServiceHistory"
-                className="text-[14px] p-[12px]"
+                className={`text-[14px] p-[12px] ${
+                  currentPath === "/CustomerServiceHistory"
+                    ? "text-[#1852D6]"
+                    : "hover:text-[#9AA1B0]"
+                }`}
               >
                 ประวัติ
                 <br />
