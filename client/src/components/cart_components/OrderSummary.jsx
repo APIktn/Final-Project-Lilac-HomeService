@@ -191,6 +191,16 @@ function OrderSummary({ summaryOrder }) {
                     {logisticsInfo.place}
                   </p>
                 </div>
+                {logisticsInfo.moreInfos && (
+                  <div className="more-info-container flex flex-row justify-between">
+                    <p className="font-prompt font-[400] md:font-[300] text-[14px] text-gray-700 basis-1/2">
+                      ข้อมูลเพิ่มเติม
+                    </p>
+                    <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black basis-1/2 text-end">
+                      {logisticsInfo.moreInfos}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
             <hr className="mt-6 mb-[8px] border-solid border-[1px] border-[#CCD0D7]" />

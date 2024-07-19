@@ -23,7 +23,7 @@ const CartContextProvider = (props) => {
   });
   const [moreInfo, setMoreInfo] = useState("");
 
-  const [logisticsInfo, setLogisticsInfo] = useState();
+  const [logisticsInfo, setLogisticsInfo] = useState({});
 
   const [counters, setCounters] = useState({});
 
