@@ -8,6 +8,10 @@ import uploadsRouter from "./routes/upload.mjs";
 import cartsRouter from "./routes/cart-routes.mjs";
 import technicianRouter from "./routes/technicians.mjs";
 
+import promotionRouter from "./routes/admin-promotion.mjs";
+import categoriesRouter from "./routes/admin-categories.mjs";
+
+
 import {
   authenticateToken,
   authorizeAdmin,
@@ -28,6 +32,10 @@ app.use(express.json());
 app.use("/auth", authRouter);
 
 app.use("/admin", authenticateToken, authorizeAdmin, adminRouter);
+app.use("/promotion", promotionRouter);
+
+
+app.use("/categories", categoriesRouter);
 
 app.use("/services", servicesRouter);
 app.use("/cart", cartsRouter);
@@ -41,7 +49,9 @@ app.use(
 
 app.use("/user", userRouter);
 
+
 app.use("/", servicesRouter);
+
 
 app.get("/test", (req, res) => {
   return res.json("Server API is working 🚀");

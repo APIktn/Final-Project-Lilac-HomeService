@@ -10,6 +10,11 @@ import CustomerServiceList from "./CustomerServiceList";
 import CustomerServiceHistory from "./CustomerServiceHistory";
 import CustomerInfo from "./CustomerInfo";
 import UploadForm from "./Testcloud";
+import AdminCreatePromotion from "./AdminCreatePromotion";
+import AdminPromotion from "./AdminPromotion";
+import AdminDashboard from "./AdminDashBoard";
+import AdminServiceCreate from "./AdminServicesCreated";
+import DashBoardService from "./AdminServicesList";
 
 function AdminAuthenticatedApp() {
   return (
@@ -28,6 +33,15 @@ function AdminAuthenticatedApp() {
         />
         <Route path="/CustomerInfo" element={<CustomerInfo />} />
         <Route path="/testcloud" element={<UploadForm />} />
+        <Route path="/admin/promotion" element={<AdminPromotion />} />
+        <Route
+          path="/admin/promotion/create"
+          element={<AdminCreatePromotion />}
+        />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/adminservicecreated" element={<AdminServiceCreate />} />
+        <Route path="/admin/servicelist" element={<DashBoardService />} />
+
       </Routes>
     </div>
   );

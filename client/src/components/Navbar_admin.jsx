@@ -111,7 +111,7 @@ const Navbar_admin = () => {
             {/* {user?.role === "admin" && ( */}
             <CustomMenuItem
               className="border-b-[1px]"
-              onClick={() => handleMenuItemClick("/admin")}
+              onClick={() => handleMenuItemClick("/admin/dashboard")}
             >
               <img src={history} alt="admin" className="mr-1 h-8 sm:h-6" />
               Admin Dashboard
