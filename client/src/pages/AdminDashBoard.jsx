@@ -370,73 +370,12 @@ function AdminDashboard() {
     e.preventDefault();
   };
 
-  // const handleDrop = (e, droppedIndex) => {
-  //   e.preventDefault();
-  //   const draggedIndex = parseInt(e.dataTransfer.getData("draggedIndex"));
-  //   const draggedItem = categories[draggedIndex];
-
-  //   let newItems = categories.filter((item, index) => index !== draggedIndex);
-
-  //   newItems.splice(droppedIndex, 0, draggedItem);
-
-  //   newItems = newItems.map((item, index) => ({
-  //     ...item,
-  //     ลำดับที่: index + 1,
-  //   }));
-
-  //   setCategories(newItems);
-  //   setFilteredItems(newItems);
-  // };
-
-  const handleCategoryCreate = (newCategory) => {
-    const updatedItems = [...categories, newCategory];
-    setCategories(updatedItems);
-    setFilteredItems(updatedItems);
-  };
-
-  const handleSearch = (e) => {
-    const searchValue = e.target.value.toLowerCase();
-    setSearchTerm(searchValue);
-    const filtered = categories.filter((item) =>
-      item.category.toLowerCase().includes(searchValue)
-    );
-    setFilteredItems(filtered);
-  };
-
-  const handleDeleteClick = (item) => {
-    setItemToDelete(item);
-    setShowDeleteModal(true);
-  };
-
-  const handleDeleteConfirm = async () => {
-    try {
-      await axios.delete(
-        `http://localhost:4000/categories/${itemToDelete.category_id}`
-      );
-      setOriginalPromotionCode((prevItems) =>
-        prevItems.filter(
-          (prevItem) => prevItem.category_id !== itemToDelete.category_id
-        )
-      );
-      setShowDeleteModal(false);
-      setItemToDelete(null);
-    } catch (error) {
-      console.error("Error deleting category:", error);
-    }
-  };
-
-  const handleDeleteCancel = () => {
-    setShowDeleteModal(false);
-    setItemToDelete(null);
-  };
-
   const handleDrop = async (e, droppedIndex) => {
     e.preventDefault();
     const draggedIndex = parseInt(e.dataTransfer.getData("draggedIndex"));
     const draggedItem = categories[draggedIndex];
 
     let newItems = categories.filter((item, index) => index !== draggedIndex);
-
     newItems.splice(droppedIndex, 0, draggedItem);
 
     newItems = newItems.map((item, index) => ({
@@ -459,6 +398,47 @@ function AdminDashboard() {
     } catch (error) {
       console.error("Error updating category order on the server:", error);
     }
+  };
+
+  const handleSearch = (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+    const filtered = categories.filter((item) =>
+      item.category_name.toLowerCase().includes(searchValue)
+    );
+    setFilteredItems(filtered);
+  };
+
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:4000/categories/${itemToDelete.category_id}`
+      );
+      setCategories((prevItems) =>
+        prevItems.filter(
+          (prevItem) => prevItem.category_id !== itemToDelete.category_id
+        )
+      );
+      setFilteredItems((prevItems) =>
+        prevItems.filter(
+          (prevItem) => prevItem.category_id !== itemToDelete.category_id
+        )
+      );
+      setShowDeleteModal(false);
+      setItemToDelete(null);
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setItemToDelete(null);
   };
 
   const formatDateTime = (dateString) => {
@@ -484,7 +464,7 @@ function AdminDashboard() {
             </div>
             <div
               className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/servicelist")}
+              onClick={() => navigate("/admin/service")}
             >
               <img src={vectorService} alt="Service" className="mr-2" />
               <span className="text-white">บริการ</span>
@@ -561,27 +541,16 @@ function AdminDashboard() {
               {filteredItems.map((item, index) => (
                 <div
                   key={item.id}
+                  className="grid grid-cols-12 gap-4 items-center border-b-2 p-2 text-[14px] text-[#646C80]"
                   draggable
                   onDragStart={(e) => handleDragStart(e, index)}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, index)}
-                  className="grid grid-cols-12 gap-4 items-center mb-4 bg-white rounded-md p-2 shadow-sm"
                 >
-                  <div className="col-span-1 flex items-center cursor-grab">
-                    <img
-                      src={vectorDragDrop}
-                      alt="DragDrop"
-                      className="mr-2 cursor-grab"
-                    />
-                    <img
-                      src={vectorDragDrop}
-                      alt="DragDrop"
-                      className="mr-2 cursor-grab"
-                    />
-                  </div>
                   <div className="col-span-1">
-                    <p>{index + 1}</p>
+                    <img src={vectorDragDrop} alt="DragDrop" />
                   </div>
+                  <div className="col-span-1">{item.position_id}</div>
                   <div className="col-span-3">{item.category_name}</div>
                   <div className="col-span-3">
                     {formatDateTime(item.created_at)}
@@ -589,10 +558,10 @@ function AdminDashboard() {
                   <div className="col-span-3">
                     {formatDateTime(item.updated_at)}
                   </div>
-                  <div className="col-span-1 flex space-x-2 justify-between">
+                  <div className="col-span-1 flex space-x-4">
                     <img
                       src={vectorBin}
-                      alt="Bin"
+                      alt="Delete"
                       className="cursor-pointer"
                       onClick={() => handleDeleteClick(item)}
                     />
@@ -601,11 +570,7 @@ function AdminDashboard() {
                       alt="Edit"
                       className="cursor-pointer"
                       onClick={() =>
-                        navigate(
-                          `/admindashboard/category/${encodeURIComponent(
-                            item.category
-                          )}`
-                        )
+                        navigate(`/admin/category/edit/${item.category_id}`)
                       }
                     />
                   </div>
@@ -615,38 +580,34 @@ function AdminDashboard() {
           </div>
         )}
       </div>
+
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="relative flex flex-col bg-white w-[360px] h-[270px] p-6 rounded-lg justify-center items-center">
-            {/* Close Button */}
-            <img
-              src={vectorClose}
-              alt="Close"
-              className="absolute top-4 right-4 cursor-pointer"
-              onClick={handleDeleteCancel}
-            />
-
-            {/* Modal Content */}
-            <div className="flex mb-4 flex-col items-center">
-              <img src={vectorAlert} alt="Alert" className="mr-2" />
-              <span className="text-lg">ยืนยันการลบรายการ?</span>
+          <div className="bg-white p-8 rounded-md shadow-md">
+            <div className="flex justify-between items-center mb-4">
+              <img src={vectorAlert} alt="Alert" />
+              <img
+                src={vectorClose}
+                alt="Close"
+                className="cursor-pointer"
+                onClick={handleDeleteCancel}
+              />
             </div>
-            <div className="mb-4">
-              คุณต้องการลบรายการ ‘{itemToDelete?.category}’ ใช่หรือไม่
-            </div>
-            <div className="flex justify-center space-x-4">
+            <p className="text-center mb-4">
+              คุณแน่ใจหรือไม่ว่าต้องการลบหมวดหมู่ "{itemToDelete?.category_name}
+              " ?
+            </p>
+            <div className="flex justify-center">
               <button
                 onClick={handleDeleteConfirm}
-                className="bg-[#336DF2] text-white py-2 px-4 rounded-md"
-                style={{ padding: "10px 24px", borderRadius: "8px" }}
+                className="bg-[#336DF2] text-white py-2 px-4 rounded-md mr-2"
               >
-                ลบรายการ
+                ยืนยัน
               </button>
               <button
                 onClick={handleDeleteCancel}
-                className="bg-white text-[#336DF2] py-2 px-4 rounded-md border border-[#336DF2]"
-                style={{ padding: "10px 24px", borderRadius: "8px" }}
+                className="bg-gray-300 text-black py-2 px-4 rounded-md"
               >
                 ยกเลิก
               </button>
