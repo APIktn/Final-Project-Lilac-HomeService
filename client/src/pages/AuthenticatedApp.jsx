@@ -6,6 +6,7 @@ import CustomerServiceList from "./CustomerServiceList";
 import CartPage from "./CartPage";
 import CustomerServiceHistory from "./CustomerServiceHistory";
 import CustomerInfo from "./CustomerInfo";
+import SuccessPage from "../components/cart_components/SuccessPage";
 
 function AuthenticatedApp() {
   return (
@@ -21,6 +22,7 @@ function AuthenticatedApp() {
           element={<CustomerServiceHistory />}
         />
         <Route path="/CustomerInfo" element={<CustomerInfo />} />
+        <Route path="/success" element={<SuccessPage />} />
       </Routes>
     </div>
   );
