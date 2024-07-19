@@ -449,7 +449,7 @@ function AdminDashboard() {
 
     // Update the order on the server
     try {
-      await axios.patch("http://localhost:4000/categories/reorder1", {
+      await axios.patch("http://localhost:4000/categories/reorder", {
         categories: newItems.map((item) => ({
           category_id: item.category_id,
           position_id: item.position_id,

@@ -7,7 +7,7 @@ import userRouter from "./routes/users.mjs";
 import uploadsRouter from "./routes/upload.mjs";
 import cartsRouter from "./routes/cart-routes.mjs";
 import technicianRouter from "./routes/technicians.mjs";
-
+import adminserviceslistRouter from "./routes/admin-serviceslist.mjs";
 import promotionRouter from "./routes/admin-promotion.mjs";
 import categoriesRouter from "./routes/admin-categories.mjs";
 
@@ -33,6 +33,7 @@ app.use("/auth", authRouter);
 
 app.use("/admin", authenticateToken, authorizeAdmin, adminRouter);
 app.use("/promotion", promotionRouter);
+app.use("/adminserviceslist", adminserviceslistRouter);
 
 
 app.use("/categories", categoriesRouter);
