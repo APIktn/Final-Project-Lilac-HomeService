@@ -83,7 +83,9 @@ function OrderSummary({ summaryOrder }) {
                 />
               }
             >
-              <p className="font-prompt font-[500] text-gray-700">สรุปรายการ</p>
+              <p className="font-prompt font-[500] text-[16px] md:font-[400] md:text-[20px] text-gray-700">
+                สรุปรายการ
+              </p>
             </AccordionSummary>
             <AccordionDetails>
               <div className="service-summary flex flex-row justify-between">

@@ -16,6 +16,26 @@ export default function StepButtons() {
     setLogisticsInfo,
   } = useContext(CartContext);
 
+  const monthMap = {
+    0: "ม.ค.",
+    1: "ก.พ.",
+    2: "มี.ค.",
+    3: "เม.ย.",
+    4: "พ.ค.",
+    5: "มิ.ย.",
+    6: "ก.ค.",
+    7: "ส.ค.",
+    8: "ก.ย.",
+    9: "ต.ค.",
+    10: "พ.ย.",
+    11: "ธ.ค.",
+  };
+
+  const getMonthInTh = (compareValue) => {
+    const monthTh = monthMap[compareValue];
+    return monthTh;
+  };
+
   const handleNext = (e) => {
     e.preventDefault();
     if (activeStep < steps.length) {
@@ -23,7 +43,9 @@ export default function StepButtons() {
     }
 
     setLogisticsInfo({
-      date: `${selectedDate.$D} ${selectedDate.$M} ${selectedDate.$y}`,
+      date: `${selectedDate.$D} ${getMonthInTh(selectedDate.$M)} ${
+        selectedDate.$y
+      }`,
       time: `${selectedTime.$H}.${selectedTime.$m} `,
       place: `${address} ${selectedNames.tambon} ${selectedNames.amphure} ${selectedNames.province}`,
     });
