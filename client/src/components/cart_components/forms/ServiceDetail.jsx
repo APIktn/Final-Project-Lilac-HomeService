@@ -15,7 +15,11 @@ function ServiceDetail({ dataFromState, getSummaryOrder, deleteSummaryOrder }) {
         <div className="list-container flex flex-col py-2">
           {dataFromState[0].service_list.map((item, index) => (
             <div
-              className="list-detail-container border-solid border-b-[1px] border-gray-300 py-4 md:py-6 flex flex-row justify-between"
+              className={
+                !(index === dataFromState[0].service_list.length - 1)
+                  ? `list-detail-container border-solid border-b-[1px] border-gray-300 py-4 md:py-6 flex flex-row justify-between`
+                  : `list-detail-container py-4 md:py-6 flex flex-row justify-between`
+              }
               key={item.id}
             >
               <div className="detail flex flex-col gap-1 ">
