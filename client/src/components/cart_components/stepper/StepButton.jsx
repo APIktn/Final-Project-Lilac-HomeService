@@ -49,7 +49,7 @@ export default function StepButtons() {
         date: `${selectedDate.$D} ${getMonthInTh(selectedDate.$M)} ${
           selectedDate.$y
         }`,
-        time: `${selectedTime.$H}.${selectedTime.$m}`,
+        time: `${selectedTime.$H}.${String(selectedTime.$m).padStart(2, "0")}`,
         place: `${address} ${selectedNames.tambon} ${selectedNames.amphure} ${selectedNames.province}`,
       };
 
