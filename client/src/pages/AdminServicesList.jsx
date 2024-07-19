@@ -159,10 +159,12 @@ function DashBoardService() {
       {/* Sidebar */}
       <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
         <div>
-          <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"
-          onClick={() => navigate("/")}>
+          <div
+            className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"
+            onClick={() => navigate("/")}
+          >
             <img src={vectorHouse} alt="House" className="mr-2" />
-            <span>Homeservice</span>
+            <span className="text-[#336DF2] text-[20px]">Homeservice</span>
           </div>
           <div
             className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
@@ -171,7 +173,7 @@ function DashBoardService() {
             <img src={vectorCategory} alt="Category" className="mr-2" />
             <span className="text-white">หมวดหมู่</span>
           </div>
-          <div className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
+          <div className="flex items-center mb-4 p-2 rounded-md bg-[#022B87] cursor-pointer">
             <img src={vectorService} alt="Service" className="mr-2" />
             <span className="text-white">บริการ</span>
           </div>
@@ -214,7 +216,11 @@ function DashBoardService() {
               />
             </div>
             <button
-              onClick={() => navigate("/adminservicecreated")}
+
+           
+
+              onClick={() => navigate("/admin/service/create")}
+
               className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
             >
               เพิ่มบริการ +
@@ -262,7 +268,7 @@ function DashBoardService() {
                     <img
                       src={vectorDragDrop}
                       alt="DragDrop"
-                      className="mr-2 cursor-grab"
+                      className="mr-2 cursor-grab -ml-1"
                     />
                   </div>
                   <div className="col-span-1">{index + 1}</div>
