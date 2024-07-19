@@ -88,26 +88,7 @@ function OrderSummary({ summaryOrder }) {
               </p>
             </AccordionSummary>
             <AccordionDetails>
-              <div className="service-summary flex flex-row justify-between">
-                <p className="text-[14px]"></p>
-                <p className="text-[14px]">0 รายการ</p>
-              </div>
               <hr className="mt-[8px] mb-[8px] border-solid border-[1px] border-gray-300" />
-
-              <div className="logistics-summary flex flex-col gap-1">
-                <div className="date-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700"></p>
-                  <p className="text-[14px] text-black"></p>
-                </div>
-                <div className="time-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700"></p>
-                  <p className="text-[14px] text-black"></p>
-                </div>
-                <div className="address-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700 basis-1/2"></p>
-                  <p className="text-[14px] text-black basis-1/2"></p>
-                </div>
-              </div>
             </AccordionDetails>
           </Accordion>
           <div className="px-[16px] pb-[16px] items-start">
