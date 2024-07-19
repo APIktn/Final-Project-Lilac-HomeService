@@ -52,3 +52,13 @@ body {
 .icon-edit:hover {
   filter: invert(75%) brightness(100%) contrast(100%);
 }
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Remove spinner controls for Firefox */
+}

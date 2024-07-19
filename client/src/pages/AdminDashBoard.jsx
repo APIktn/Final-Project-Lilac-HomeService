@@ -50,7 +50,6 @@
 //   const [categories, setCategories] = useState([]);
 //   const [loading, setLoading] = useState(true);
 
-  
 //   const navigate = useNavigate();
 
 //   const getCategories = async () => {
@@ -170,7 +169,7 @@
 //       </div>
 
 //       {/* Main Content */}
-      
+
 //       <div className="flex-1 flex flex-col bg-[#EFEFF2]">
 //         {/* Admin Topbar */}
 //         <div className="bg-white p-4 flex justify-between items-center">
@@ -319,7 +318,6 @@
 
 // export default AdminDashboard;
 
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import vectorCategory from "../assets/icons/Vector-category.svg";
@@ -424,7 +422,6 @@ function AdminDashboard() {
       setItemToDelete(null);
     } catch (error) {
       console.error("Error deleting category:", error);
-      
     }
   };
 
@@ -437,30 +434,30 @@ function AdminDashboard() {
     e.preventDefault();
     const draggedIndex = parseInt(e.dataTransfer.getData("draggedIndex"));
     const draggedItem = categories[draggedIndex];
-  
+
     let newItems = categories.filter((item, index) => index !== draggedIndex);
-  
+
     newItems.splice(droppedIndex, 0, draggedItem);
-  
+
     newItems = newItems.map((item, index) => ({
       ...item,
       position_id: index + 1, // Assuming you use this for ordering
     }));
-  
+
     setCategories(newItems);
     setFilteredItems(newItems);
-  
+
     // Update the order on the server
     try {
-      await axios.patch('http://localhost:4000/categories/reorder1', {
+      await axios.patch("http://localhost:4000/categories/reorder1", {
         categories: newItems.map((item) => ({
           category_id: item.category_id,
-        position_id: item.position_id,
-        category_name: item.category_name,
+          position_id: item.position_id,
+          category_name: item.category_name,
         })),
       });
     } catch (error) {
-      console.error('Error updating category order on the server:', error);
+      console.error("Error updating category order on the server:", error);
     }
   };
 
@@ -473,13 +470,15 @@ function AdminDashboard() {
       {/* Sidebar */}
       <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
         <div>
-          <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6" 
-          onClick={() => navigate("/")}>
+          <div
+            className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"
+            onClick={() => navigate("/")}
+          >
             <img src={vectorHouse} alt="House" className="mr-2" />
-            <span>Homeservice</span>
+            <span className="text-[#336DF2] text-[20px]">Homeservice</span>
           </div>
           <div>
-            <div className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
+            <div className="flex items-center mb-4 p-2 rounded-md bg-[#022B87] cursor-pointer">
               <img src={vectorCategory} alt="Category" className="mr-2" />
               <span className="text-white">หมวดหมู่</span>
             </div>
@@ -581,11 +580,15 @@ function AdminDashboard() {
                     />
                   </div>
                   <div className="col-span-1">
-                    <p>{index+1}</p>
+                    <p>{index + 1}</p>
                   </div>
                   <div className="col-span-3">{item.category_name}</div>
-                  <div className="col-span-3">{formatDateTime(item.created_at)}</div>
-                  <div className="col-span-3">{formatDateTime(item.updated_at)}</div>
+                  <div className="col-span-3">
+                    {formatDateTime(item.created_at)}
+                  </div>
+                  <div className="col-span-3">
+                    {formatDateTime(item.updated_at)}
+                  </div>
                   <div className="col-span-1 flex space-x-2 justify-between">
                     <img
                       src={vectorBin}

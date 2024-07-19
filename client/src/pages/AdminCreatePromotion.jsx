@@ -198,9 +198,12 @@ function AdminCreatePromotion() {
         {/* Sidebar */}
         <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
           <div>
-            <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"onClick={() => navigate("/")}>
+            <div
+              className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"
+              onClick={() => navigate("/")}
+            >
               <img src={vectorHouse} alt="House" className="mr-2" />
-              <span>Homeservice</span>
+              <span className="text-[#336DF2] text-[20px]">Homeservice</span>
             </div>
             <div
               className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
@@ -209,13 +212,17 @@ function AdminCreatePromotion() {
               <img src={vectorCategory} alt="Category" className="mr-2" />
               <span className="text-white">หมวดหมู่</span>
             </div>
-            <div className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-            onClick={() => navigate("/admin/servicelist")}>
+            <div
+              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+              onClick={() => navigate("/admin/servicelist")}
+            >
               <img src={vectorService} alt="Service" className="mr-2" />
               <span className="text-white">บริการ</span>
             </div>
-            <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-            onClick={() => navigate("/admin/promotion")}>
+            <div
+              className="flex items-center p-2 rounded-md bg-[#022B87] cursor-pointer"
+              onClick={() => navigate("/admin/promotion")}
+            >
               <img
                 src={vectorPromotionCode}
                 alt="Promotion Code"
@@ -247,12 +254,12 @@ function AdminCreatePromotion() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <button
+              <div
                 onClick={handleCancel}
-                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-40 h-11"
+                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-40 h-11 text-center cursor-pointer"
               >
                 ยกเลิก
-              </button>
+              </div>
 
               {createCode ? (
                 <button
@@ -348,7 +355,6 @@ function AdminCreatePromotion() {
                       type="number"
                       value={promotionFixed}
                       onChange={(e) => setPromotionFixed(e.target.value)}
-                      placeholder="฿"
                       className={`w-[140px] border border-[#CCD0D7] p-[10px_16px] rounded-[8px] ${
                         errors.promotionFixed ? "border-red-500" : ""
                       }`}
@@ -357,6 +363,7 @@ function AdminCreatePromotion() {
                         (!errors.promotionFixed && createCode === true)
                       } // Disable input when not selected
                     />
+                    <span className="ml-3">฿</span>
                     <div className="ml-5">
                       {errors.promotionFixed && (
                         <p className="text-red-500 text-xs">
@@ -393,7 +400,6 @@ function AdminCreatePromotion() {
                       type="number"
                       value={promotionPercent}
                       onChange={(e) => setPromotionPercent(e.target.value)}
-                      placeholder="%"
                       className={`w-[140px] border border-[#CCD0D7] p-[10px_16px] rounded-[8px] ${
                         errors.promotionPercent ? "border-red-500" : ""
                       }`}
@@ -402,6 +408,7 @@ function AdminCreatePromotion() {
                         (!errors.promotionPercent && createCode === true)
                       } // Disable input when not selected
                     />
+                    <span className="ml-3">%</span>
                     <div className="ml-5">
                       {errors.promotionPercent && (
                         <p className="text-red-500 text-xs">
@@ -423,10 +430,10 @@ function AdminCreatePromotion() {
                   className={`w-[433px] border border-[#CCD0D7] p-[10px_16px] rounded-[8px] ${
                     errors.quota ? "border-red-500" : ""
                   }`}
-                  placeholder="ครั้ง"
                   onChange={(e) => setQuota(e.target.value)}
                   disabled={!errors.quota && createCode === true}
                 />
+                <span className="ml-3">ครั้ง</span>
                 <div className="text-xs ml-5">
                   {errors.quota && (
                     <p className="text-red-500">กรุณากรอกข้อมูลให้ครบ</p>

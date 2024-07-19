@@ -39,9 +39,8 @@ function AdminAuthenticatedApp() {
           element={<AdminCreatePromotion />}
         />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/adminservicecreated" element={<AdminServiceCreate />} />
+        <Route path="/admin/service/create" element={<AdminServiceCreate />} />
         <Route path="/admin/servicelist" element={<DashBoardService />} />
-
       </Routes>
     </div>
   );
