@@ -176,7 +176,7 @@ function ServiceForm() {
                   color: "#232630",
                 }}
               >
-                {`${item.name_th} - ${item.name_en}`}
+                {item.name_th}
               </MenuItem>
             ))}
         </TextField>
