@@ -5,7 +5,7 @@ const categoriesRouter = Router();
 
 categoriesRouter.get("/", async (req, res) => {
     try {
-      const { data ,error} = await supabase.from("categories2").select("*")
+      const { data ,error} = await supabase.from("categories").select("*")
       .order('position_id', { ascending: true });
   
       if (error) {
@@ -201,7 +201,7 @@ categoriesRouter.get("/", async (req, res) => {
     try {
       // Step 1: Get the position_id of the category to be deleted
       const { data: categoryData, error: categoryError } = await supabase
-        .from("categories2")
+        .from("categories")
         .select("position_id")
         .eq("category_id", category_id)
         .single();
@@ -217,7 +217,7 @@ categoriesRouter.get("/", async (req, res) => {
   
       // Step 2: Delete the specified category
       const { error: deleteError } = await supabase
-        .from("categories2")
+        .from("categories")
         .delete()
         .eq("category_id", category_id);
   
@@ -225,7 +225,7 @@ categoriesRouter.get("/", async (req, res) => {
   
       // Step 3: Get all categories with position_id greater than the deleted one
       const { data: remainingCategories, error: remainingCategoriesError } = await supabase
-        .from("categories2")
+        .from("categories")
         .select("*")
         .gt("position_id", position_id);
   
@@ -235,7 +235,7 @@ categoriesRouter.get("/", async (req, res) => {
       const updates = remainingCategories.map(async (category) => {
         const newPositionId = category.position_id - 1;
         await supabase
-          .from("categories2")
+          .from("categories")
           .update({ position_id: newPositionId })
           .eq("category_id", category.category_id);
       });
@@ -263,7 +263,7 @@ categoriesRouter.get("/", async (req, res) => {
       await supabase.transaction(async (trx) => {
         for (const { category_id, position_id } of categories) {
           const { error } = await trx
-            .from('categories2')
+            .from('categories')
             .update({ position: position_id })
             .eq('category_id', category_id);
   
@@ -286,7 +286,7 @@ categoriesRouter.get("/", async (req, res) => {
     try {
       for (const [index, category] of reorderedCategories.entries()) {
         const { error } = await supabaseClient
-          .from('categories2')
+          .from('categories')
           .update({ position_id: index + 1 })
           .eq('category_id', category.category_isd);
   
@@ -314,7 +314,7 @@ categoriesRouter.get("/", async (req, res) => {
       for (const category of reorderedCategories) {
         const tempPositionId = category.position_id + offset; // Adding an offset to avoid conflicts
         const { error: tempUpdateError } = await client
-          .from('categories2')
+          .from('categories')
           .update({ position_id: tempPositionId })
           .eq('category_id', category.category_id);
   
@@ -326,7 +326,7 @@ categoriesRouter.get("/", async (req, res) => {
       // Step 2: Update to final positions
       for (const category of reorderedCategories) {
         const { error: finalUpdateError } = await client
-          .from('categories2')
+          .from('categories')
           .update({
             position_id: category.position_id,
             category_name: category.category_name

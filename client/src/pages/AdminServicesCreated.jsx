@@ -196,40 +196,42 @@ function AdminServiceCreate() {
 
   return (
     <form id="upload-form" onSubmit={handleSubmit}>
-      <div className="flex h-screen">
-        {/* Sidebar */}
-        <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
-          <div>
-            <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6">
-              <img src={vectorHouse} alt="House" className="mr-2" />
-              <span className="text-[#336DF2] text-[20px]">Homeservice</span>
-            </div>
-            <div
-              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin")}
-            >
-              <img src={vectorCategory} alt="Category" className="mr-2" />
-              <span className="text-white">หมวดหมู่</span>
-            </div>
-            <div
-              className="flex items-center mb-4 p-2 rounded-md bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/service")}
-            >
-              <img src={vectorService} alt="Service" className="mr-2" />
-              <span className="text-white">บริการ</span>
-            </div>
-            <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
+
+    <div className="flex h-screen">
+      {/* Sidebar */}
+      <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
+        <div>
+          <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"onClick={() => navigate("/")}>
+            <img src={vectorHouse} alt="House" className="mr-2" />
+            <span className="text-[#336DF2] text-[20px]">Homeservice</span>
+          </div>
+          <div
+            className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+            onClick={() => navigate("/admin")}
+          >
+            <img src={vectorCategory} alt="Category" className="mr-2" />
+            <span className="text-white">หมวดหมู่</span>
+          </div>
+          <div
+            className="flex items-center mb-4 p-2 rounded-md bg-[#022B87] cursor-pointer"
+            onClick={() => navigate("/admin/service")}
+          >
+            <img src={vectorService} alt="Service" className="mr-2" />
+            <span className="text-white">บริการ</span>
+          </div>
+         <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
               <img
                 src={vectorPromotionCode}
                 alt="Promotion Code"
                 className="mr-2"
               />
               <span className="text-white">Promotion Code</span>
-            </div>
+            </div>     
           </div>
           <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
             <img src={vectorLogout} alt="Logout" className="mr-2" />
             <span className="text-white">ออกจากระบบ</span>
+
           </div>
         </div>
 
