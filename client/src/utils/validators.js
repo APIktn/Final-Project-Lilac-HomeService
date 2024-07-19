@@ -81,3 +81,24 @@ export const validateLogin = ({ email, password }) => {
 
   return errors;
 };
+
+export const checkUpdatePasswordErrors = (passwordData) => {
+  const errors = {};
+  const { currentPassword, newPassword, confirmPassword } = passwordData;
+
+  if (!currentPassword) {
+    errors.currentPassword = "กรุณากรอกรหัสผ่านเดิม";
+  }
+
+  if (!newPassword) {
+    errors.newPassword = "กรุณากรอกรหัสผ่านใหม่";
+  } else if (newPassword.length < 12) {
+    errors.newPassword = "รหัสผ่านใหม่ต้องมีอย่างน้อย 12 ตัวอักษร";
+  }
+
+  if (newPassword !== confirmPassword) {
+    errors.confirmPassword = "รหัสผ่านใหม่ไม่ตรงกัน";
+  }
+
+  return errors;
+};

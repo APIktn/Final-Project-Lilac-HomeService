@@ -1,19 +1,16 @@
 import Navbar_user from "../components/Navbar_user";
 import CartForm from "../components/cart_components/CartForm";
 import StepButtons from "../components/cart_components/stepper/StepButton";
-import React, { useState } from "react";
-
-export const CartContext = React.createContext();
+import React from "react";
+import CartContextProvider from "../contexts/cartContext";
 
 function CartPage() {
-  const [activeStep, setActiveStep] = useState(0);
-
   return (
-    <CartContext.Provider value={{ activeStep, setActiveStep }}>
+    <CartContextProvider>
       <Navbar_user />
       <CartForm />
       <StepButtons />
-    </CartContext.Provider>
+    </CartContextProvider>
   );
 }
 

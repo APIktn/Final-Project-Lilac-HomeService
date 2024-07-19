@@ -79,3 +79,23 @@ export const updateErrors = (field, value, errors) => {
 
   return newErrors;
 };
+
+export const checkUpdatePasswordErrors = (formData) => {
+  const errors = {};
+
+  if (!formData.currentPassword) {
+    errors.currentPassword = "กรุณากรอกรหัสผ่านปัจจุบัน";
+  }
+
+  if (!formData.newPassword) {
+    errors.newPassword = "กรุณากรอกรหัสผ่านใหม่";
+  } else if (formData.newPassword.length < 12) {
+    errors.newPassword = "รหัสผ่านใหม่ต้องมีอย่างน้อย 12 ตัวอักษร";
+  }
+
+  if (formData.newPassword !== formData.confirmPassword) {
+    errors.confirmPassword = "รหัสผ่านใหม่ไม่ตรงกัน";
+  }
+
+  return errors;
+};
