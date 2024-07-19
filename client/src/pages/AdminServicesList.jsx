@@ -354,7 +354,9 @@ function AdminServiceList() {
   const { service_name } = useParams();
   
   
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const[itemdropdown,setItemdropdown] = useState('');
 
   const getServices = async () => {
     try {

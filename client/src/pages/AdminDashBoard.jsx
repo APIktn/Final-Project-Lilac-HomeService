@@ -124,6 +124,37 @@ function AdminDashboard() {
     setItemToDelete(null);
   };
 
+  const handleDrop = async (e, droppedIndex) => {
+    e.preventDefault();
+    const draggedIndex = parseInt(e.dataTransfer.getData("draggedIndex"));
+    const draggedItem = categories[draggedIndex];
+
+    let newItems = categories.filter((item, index) => index !== draggedIndex);
+
+    newItems.splice(droppedIndex, 0, draggedItem);
+
+    newItems = newItems.map((item, index) => ({
+      ...item,
+      position_id: index + 1, // Assuming you use this for ordering
+    }));
+
+    setCategories(newItems);
+    setFilteredItems(newItems);
+
+    // Update the order on the server
+    try {
+      await axios.patch("http://localhost:4000/categories/reorder", {
+        categories: newItems.map((item) => ({
+          category_id: item.category_id,
+          position_id: item.position_id,
+          category_name: item.category_name,
+        })),
+      });
+    } catch (error) {
+      console.error("Error updating category order on the server:", error);
+    }
+  };
+
   const formatDateTime = (dateString) => {
     return format(new Date(dateString), "dd/MM/yyyy hh:mma");
   };
