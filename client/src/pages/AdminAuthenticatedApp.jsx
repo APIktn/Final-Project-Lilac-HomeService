@@ -13,6 +13,7 @@ import AdminCreatePromotion from "./AdminCreatePromotion";
 import AdminPromotion from "./AdminPromotion";
 import AdminDashboard from "./AdminDashBoard";
 import AdminServiceCreate from "./AdminServicesCreated";
+import DashBoardService from "./AdminServicesList";
 
 function AdminAuthenticatedApp() {
   return (
@@ -37,6 +38,7 @@ function AdminAuthenticatedApp() {
         />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/adminservicecreated" element={<AdminServiceCreate />} />
+        <Route path="/admin/servicelist" element={<DashBoardService />} />
 
       </Routes>
     </div>

@@ -1,4 +1,4 @@
-import Navbar_user from "../components/Navbar_user";
+import Navbar_admin from "../components/Navbar_admin";
 import CartForm from "../components/cart_components/CartForm";
 import StepButtons from "../components/cart_components/stepper/StepButton";
 import React, { useState } from "react";
@@ -10,7 +10,7 @@ function CartPage_admin() {
 
   return (
     <CartContext.Provider value={{ activeStep, setActiveStep }}>
-      <Navbar_user />
+      <Navbar_admin />
       <CartForm />
       <StepButtons />
     </CartContext.Provider>

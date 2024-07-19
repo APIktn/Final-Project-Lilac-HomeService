@@ -473,7 +473,8 @@ function AdminDashboard() {
       {/* Sidebar */}
       <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
         <div>
-          <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6">
+          <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6" 
+          onClick={() => navigate("/")}>
             <img src={vectorHouse} alt="House" className="mr-2" />
             <span>Homeservice</span>
           </div>
@@ -484,14 +485,14 @@ function AdminDashboard() {
             </div>
             <div
               className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admindashboard/service")}
+              onClick={() => navigate("/admin/servicelist")}
             >
               <img src={vectorService} alt="Service" className="mr-2" />
               <span className="text-white">บริการ</span>
             </div>
             <div
               className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/promotioncode")}
+              onClick={() => navigate("/admin/promotion")}
             >
               <img
                 src={vectorPromotionCode}
@@ -529,7 +530,7 @@ function AdminDashboard() {
               />
             </div>
             <button
-              onClick={() => navigate("/admindashboard/category/create")}
+              onClick={() => navigate("/admin/category/create")}
               className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
             >
               เพิ่มหมวดหมู่ +

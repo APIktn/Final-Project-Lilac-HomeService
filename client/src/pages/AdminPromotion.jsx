@@ -134,18 +134,21 @@ function AdminPromotion() {
       {/* Sidebar */}
       <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
         <div>
-          <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6">
+          <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"
+          onClick={() => navigate("/")}>
             <img src={vectorHouse} alt="House" className="mr-2" />
             <span>Homeservice</span>
           </div>
           <div
             className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-            onClick={() => navigate("/admindashboard")}
+            onClick={() => navigate("/admin/dashboard")}
           >
             <img src={vectorCategory} alt="Category" className="mr-2" />
             <span className="text-white">หมวดหมู่</span>
           </div>
-          <div className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
+          <div className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+          onClick={() => navigate("/admin/servicelist")}>
+             
             <img src={vectorService} alt="Service" className="mr-2" />
             <span className="text-white">บริการ</span>
           </div>
