@@ -128,14 +128,7 @@ function CustomerInfoBody() {
         </div>
         <div className="md:basis-3/4 md:ml-[32px]">
           {/* show on mobile */}
-          {/* <div className=" sm:hidden flex justify-center items-center mx-4 mb-4  p-4 rounded-[5px]  bg-blue-600 ">
-            <div className="">
-              <a className="font-medium text-white text-[20px] rounded-lg sm:text-[32px] ">
-                ข้อมูลผู้ใช้งาน
-              </a>
-            </div>
-          </div> */}
-          <div className="  ">
+          <div>
             <div>
               <div>
                 {/* เริ่มต้นcard */}
