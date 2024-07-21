@@ -1,3 +1,4 @@
+//drag and drop work
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
@@ -6,6 +7,7 @@ import { format } from "date-fns";
 function AdminServiceList() {
   const [groupedServices, setGroupedServices] = useState({});
   const [loading, setLoading] = useState(true);
+  const [draggedService, setDraggedService] = useState(null);
 
   const getServices = async () => {
     try {
@@ -33,52 +35,63 @@ function AdminServiceList() {
     return format(new Date(dateString), "dd/MM/yyyy hh:mma");
   };
 
-  const handleDragStart = (e, serviceId, categoryId) => {
-    e.dataTransfer.setData(
-      "text/plain",
-      JSON.stringify({ serviceId, categoryId })
-    );
+  const handleDragStart = (e, service, categoryId) => {
+    setDraggedService({ service, categoryId });
   };
 
-  const handleDrop = async (e, categoryId) => {
+  const handleDrop = async (e, targetIndex, categoryId) => {
     e.preventDefault();
-    const { serviceId, oldCategoryId } = JSON.parse(
-      e.dataTransfer.getData("text/plain")
+
+    if (!draggedService || draggedService.categoryId !== categoryId) return;
+
+    const { service: draggedServiceData } = draggedService;
+
+    let updatedServices = [
+      ...groupedServices.find(
+        (group) => group.category.category_id === categoryId
+      ).services,
+    ];
+
+    const draggedServiceIndex = updatedServices.findIndex(
+      (service) => service.service_id === draggedServiceData.service_id
     );
 
-    if (oldCategoryId === categoryId) return; // No need to process if it's the same category
+    // Remove the dragged service from its original position
+    updatedServices.splice(draggedServiceIndex, 1);
 
-    const updatedGroups = groupedServices.map((group) => {
+    // Insert the dragged service into the new position
+    updatedServices.splice(targetIndex, 0, draggedServiceData);
+
+    // Update positions
+    updatedServices = updatedServices.map((service, index) => ({
+      ...service,
+      position_id: index + 1,
+    }));
+
+    const updatedGroupedServices = groupedServices.map((group) => {
       if (group.category.category_id === categoryId) {
-        const updatedServices = [...group.services];
-        const movedServiceIndex = updatedServices.findIndex(
-          (service) => service.service_id === serviceId
-        );
-        const [movedService] = updatedServices.splice(movedServiceIndex, 1);
-        updatedServices.push(movedService);
-        setGroupedServices((prev) =>
-          prev.map((g) =>
-            g.category.category_id === categoryId
-              ? { ...g, services: updatedServices }
-              : g
-          )
-        );
-
-        // Call API to update positions
-        axios
-          .post("http://localhost:4000/adminserviceslist/reorder", {
-            categoryId: categoryId,
-            servicesOrder: updatedServices.map((s, index) => ({
-              service_id: s.service_id,
-              position_id1: index + 1,
-            })),
-          })
-          .catch((error) =>
-            console.error("Error updating service order:", error)
-          );
+        return {
+          ...group,
+          services: updatedServices,
+        };
       }
       return group;
     });
+
+    setGroupedServices(updatedGroupedServices);
+
+    // Update the order on the server
+    try {
+      await axios.patch("http://localhost:4000/adminserviceslist/reorder", {
+        services: updatedServices.map((service) => ({
+          service_id: service.service_id,
+          position_id: service.position_id,
+          service_name: service.service_name,
+        })),
+      });
+    } catch (error) {
+      console.error("Error updating category order on the server:", error);
+    }
   };
 
   const handleDragOver = (e) => {
@@ -164,12 +177,10 @@ function AdminServiceList() {
                     className="grid grid-cols-12 gap-4 items-center border-b-2 p-2 text-[14px] text-[#646C80]"
                     draggable
                     onDragStart={(e) =>
-                      handleDragStart(
-                        e,
-                        service.service_id,
-                        category.category_id
-                      )
+                      handleDragStart(e, service, category.category_id)
                     }
+                    onDrop={(e) => handleDrop(e, index, category.category_id)}
+                    onDragOver={handleDragOver}
                   >
                     <div className="col-span-1">{index + 1}</div>
                     <div className="col-span-3">{service.service_name}</div>

@@ -9,7 +9,8 @@ adminserviceslistRouter.get("/", async (req, res) => {
     const { data: services, error: servicesError } = await supabase
       .from("services")
       .select("*, categories(*), service_list(*)")
-      .order("category_id", { ascending: true });
+      .order("category_id", { ascending: true })
+      .order("position_id", { ascending: true });
 
     if (servicesError) {
       throw servicesError;
@@ -40,34 +41,28 @@ adminserviceslistRouter.get("/", async (req, res) => {
   }
 });
 
-// New route for updating service order
-adminserviceslistRouter.post("/reorder", async (req, res) => {
-  const { categoryId, servicesOrder } = req.body;
+adminserviceslistRouter.patch("/reorder", async (req, res) => {
+  const { services: reorderedServices } = req.body;
 
   try {
-    // Ensure the order array is sorted by position_id1
-    const updatedServices = servicesOrder.map((service, index) => ({
-      service_id: service.service_id,
-      position_id1: index + 1,
-    }));
+    // Update positions
+    for (const service of reorderedServices) {
+      const { error: updateError } = await supabase
+        .from("services")
+        .update({
+          position_id: service.position_id,
+        })
+        .eq("service_id", service.service_id);
 
-    // Update the position_id1 for each service in the given category
-    const { error } = await supabase
-      .from("services")
-      .upsert(updatedServices, { onConflict: ["service_id"] });
-
-    if (error) {
-      throw error;
+      if (updateError) {
+        throw updateError;
+      }
     }
 
-    return res.status(200).json({
-      message: "Services reordered successfully.",
-    });
+    res.status(200).json({ message: "Services reordered successfully" });
   } catch (error) {
-    console.error("Error updating service order:", error.message);
-    return res.status(500).json({
-      message: "Server could not update the service order.",
-    });
+    console.error("Error reordering services:", error);
+    res.status(500).json({ message: "Error reordering services", error });
   }
 });
 
