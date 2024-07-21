@@ -7,6 +7,7 @@ import userRouter from "./routes/users.mjs";
 import uploadsRouter from "./routes/upload.mjs";
 import cartsRouter from "./routes/cart-routes.mjs";
 import technicianRouter from "./routes/technicians.mjs";
+import orderRouter from "./routes/order.mjs";
 import adminserviceslistRouter from "./routes/admin-serviceslist.mjs";
 import promotionRouter from "./routes/admin-promotion.mjs";
 import categoriesRouter from "./routes/admin-categories.mjs";
@@ -48,6 +49,7 @@ app.use(
   authorizeTechnician,
   technicianRouter
 );
+app.use("/", orderRouter);
 
 
 app.use("/adminservice", adminserviceRouter);
