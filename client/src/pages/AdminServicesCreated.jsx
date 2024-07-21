@@ -17,12 +17,13 @@ function AdminServiceCreate() {
   const [servicename, setServicename] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-  const [subServiceItems, setSubServiceItems] = useState([1]);
+  const [subServiceItems, setSubServiceItems] = useState([
+    { name: "", price: "", unit: "" },
+  ]);
   const [uploadedImage, setUploadedImage] = useState(null);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [categoryName, setCategoryName] = useState("");
-  const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -96,7 +97,6 @@ function AdminServiceCreate() {
   };
 
   const handleFileChange = (e) => {
-    console.log(e.target.files[0]);
     const file = e.target.files[0];
     if (
       file &&
@@ -133,11 +133,7 @@ function AdminServiceCreate() {
       file.size <= 5 * 1024 * 1024 &&
       (file.type === "image/png" || file.type === "image/jpeg")
     ) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUploadedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setUploadedImage(file);
     } else {
       alert(
         "Please upload a valid image file (PNG, JPG) with size up to 5 MB."
@@ -145,14 +141,58 @@ function AdminServiceCreate() {
     }
   };
 
-  useEffect(() => {
-    handleAddSubService();
-    handleAddSubService();
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ตรวจสอบฟิลด์ที่ต้องกรอก
+    if (!servicename.trim()) {
+      alert("กรุณากรอกชื่อบริการ");
+      return;
+    }
+
+    if (!categoryName.trim()) {
+      alert("กรุณาเลือกหมวดหมู่");
+      return;
+    }
+
+    for (let item of subServiceItems) {
+      if (!item.name.trim() || !item.price.trim() || !item.unit.trim()) {
+        alert(
+          "กรุณากรอกข้อมูลในฟิลด์ชื่อรายการ, ค่าบริการต่อหน่วย และหน่วยบริการให้ครบถ้วน"
+        );
+        return;
+      }
+    }
+
+    setUploading(true);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/adminservice/post",
+        {
+          service_name: servicename,
+          category_name: categoryName,
+          subServiceItems, // ส่งค่า subServiceItems ไปด้วย
+        }
+      );
+
+      if (response.status === 200) {
+        setMessage("อัพโหลดข้อมูลสำเร็จ");
+        setServicename(""); // Clear the input field
+        setCategoryName(""); // Clear the category_name field
+        setSubServiceItems([{ name: "", price: "", unit: "" }]); // Clear sub service items
+      }
+    } catch (error) {
+      console.error("Error uploading data", error);
+      setMessage("เกิดข้อผิดพลาดในการอัพโหลดข้อมูล");
+    } finally {
+      setUploading(false);
+    }
   };
+
+  useEffect(() => {
+    handleAddSubService();
+  }, []);
 
   return (
     <form id="upload-form" onSubmit={handleSubmit}>
@@ -197,7 +237,7 @@ function AdminServiceCreate() {
         <div className="flex-1 flex flex-col bg-[#EFEFF2]">
           {/* Admin Topbar */}
           <div className="bg-white p-4 flex justify-between items-center">
-            <div className="text-lg">เพิ่ม Promotion Code</div>
+            <div className="text-lg">เพิ่มบริการใหม่</div>
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate("/admindashboard")}
@@ -207,10 +247,10 @@ function AdminServiceCreate() {
               </button>
               <button
                 type="submit"
-                onClick={handleCreate}
                 className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
+                disabled={uploading}
               >
-                สร้าง
+                {uploading ? "กำลังอัพโหลด..." : "สร้าง"}
               </button>
             </div>
           </div>
@@ -232,12 +272,12 @@ function AdminServiceCreate() {
                       id="servicename"
                       name="servicename"
                       type="text"
-                      placeholder="Enter username here"
+                      placeholder="Enter service name here"
                       onChange={(event) => {
                         setServicename(event.target.value);
                       }}
                       value={servicename}
-                      className="border border-gray-300 rounded-md p-2  w-[433px]"
+                      className="border border-gray-300 rounded-md p-2 w-[433px]"
                     />
                   </div>
                   <div className="flex items-center mb-2">
@@ -257,7 +297,7 @@ function AdminServiceCreate() {
                       ))}
                     </select>
                   </div>
-                  <div className="flex items-center mb-2 ">
+                  <div className="flex items-center mb-2">
                     <label className="block">
                       รูปภาพ<span className="text-red-500">*</span>
                     </label>
@@ -270,9 +310,9 @@ function AdminServiceCreate() {
                         onDrop={handleDropUpload}
                       >
                         {uploadedImage ? (
-                          <div className="image-preview-container w-[350px] h-[140px] ">
+                          <div className="image-preview-container w-[350px] h-[140px]">
                             <img
-                              className="image-preview w-[350px] h-[140px]  object-cover"
+                              className="image-preview w-[350px] h-[140px] object-cover"
                               src={URL.createObjectURL(uploadedImage)}
                               alt="Preview"
                             />
@@ -310,6 +350,7 @@ function AdminServiceCreate() {
                   <button
                     className="underline prompt text-[16px] text-[#336DF2] ml-[120px]"
                     onClick={handleDeleteImage}
+                    type="button"
                   >
                     ลบรูปภาพ
                   </button>
@@ -338,7 +379,7 @@ function AdminServiceCreate() {
                   <div className="col-span-1 w-[422px]">
                     <p className="font-normal">ชื่อรายการ</p>
                     <input
-                      type="item.name"
+                      type="text"
                       className="border border-gray-300 rounded-md p-2 w-full"
                       value={item.name}
                       onChange={(e) =>
@@ -355,7 +396,7 @@ function AdminServiceCreate() {
                   <div className="col-span-3 w-[240px]">
                     <p>ค่าบริการ / 1 หน่วย</p>
                     <input
-                      type="item.price"
+                      type="text"
                       className="border border-gray-300 rounded-md p-2 w-full"
                       value={item.price}
                       onChange={(e) =>
@@ -372,7 +413,7 @@ function AdminServiceCreate() {
                   <div className="col-span-3 w-[240px]">
                     <p>หน่วยบริการ</p>
                     <input
-                      type="item.unit"
+                      type="text"
                       className="border border-gray-300 rounded-md p-2 w-full"
                       value={item.unit}
                       onChange={(e) =>
@@ -402,6 +443,7 @@ function AdminServiceCreate() {
               <button
                 onClick={handleAddSubService}
                 className="text-[#336DF2] font-medium"
+                type="button"
               >
                 เพิ่มรายการ +
               </button>
