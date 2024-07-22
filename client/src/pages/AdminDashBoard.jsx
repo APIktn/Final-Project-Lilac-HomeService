@@ -334,6 +334,7 @@ import vectorSearch from "../assets/icons/Vector-search.svg";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
 import { format } from "date-fns";
+import { useAdminAuth } from "../contexts/adminAuthentication";
 
 function AdminDashboard() {
   const [categories, setCategories] = useState([]);
@@ -342,7 +343,8 @@ function AdminDashboard() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const { state, logout } = useAdminAuth();
+  const { admin } = state;
   const navigate = useNavigate();
 
   const getCategories = async () => {
@@ -446,55 +448,59 @@ function AdminDashboard() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen w-full">
       {/* Sidebar */}
-      <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
+      <div className="bg-[#001C59] w-[240px]  flex flex-col justify-between">
         <div>
           <div
-            className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"
+            className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
             onClick={() => navigate("/")}
           >
-            <img src={vectorHouse} alt="House" className="mr-2" />
-            <span className="text-[#336DF2] text-[20px]">Homeservice</span>
+            <img src={vectorHouse} alt="House" className="w-[26.06px] h-[26.06px] mr-2" />
+            <span className="text-[#336DF2] text-[20px] font-medium mt-1">Homeservice</span>
           </div>
           <div>
-            <div className="flex items-center mb-4 p-2 rounded-md bg-[#022B87] cursor-pointer">
-              <img src={vectorCategory} alt="Category" className="mr-2" />
-              <span className="text-white">หมวดหมู่</span>
+            <div className="flex items-center  p-4 bg-[#022B87] cursor-pointer">
+              <img src={vectorCategory} alt="Category" className="mr-2 ml-2" />
+              <span className="text-[#F1F1F1] text-base ml-3">หมวดหมู่</span>
             </div>
             <div
-              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+              className="flex items-center  p-4  hover:bg-[#022B87] cursor-pointer"
               onClick={() => navigate("/admin/service")}
             >
-              <img src={vectorService} alt="Service" className="mr-2" />
-              <span className="text-white">บริการ</span>
+              <img src={vectorService} alt="Service" className="mr-2 ml-2" />
+              <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
             </div>
             <div
-              className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+              className="flex items-center  p-4  hover:bg-[#022B87] cursor-pointer"
               onClick={() => navigate("/admin/promotion")}
             >
               <img
                 src={vectorPromotionCode}
                 alt="Promotion Code"
-                className="mr-2"
+                className="mr-2 ml-2"
               />
-              <span className="text-white">Promotion Code</span>
+              <span className="text-[#F1F1F1] text-base ml-3">Promotion Code</span>
             </div>
           </div>
         </div>
-        <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
+        <div className="flex items-center p-2 hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
           <img src={vectorLogout} alt="Logout" className="mr-2" />
-          <span className="text-white">ออกจากระบบ</span>
+          <span className="text-[#F1F1F1] text-base" 
+                onClick={() => {
+                  logout();
+                  navigate("/admin")}}
+          >ออกจากระบบ</span>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-[#EFEFF2]">
         {/* Admin Topbar */}
-        <div className="bg-white p-4 flex justify-between items-center">
-          <div className="text-lg">หมวดหมู่</div>
-          <div className="flex items-center space-x-4">
-            <div className="flex w-72 h-11 border rounded-md p-2 items-center">
+        <div className="bg-white p-4 flex items-center">
+          <div className="text-[20px] font-medium ml-4 mr-[640px] w-[76px]">หมวดหมู่</div>
+          <div className="flex items-center ">
+            <div className="flex w-72 h-11 border rounded-md p-2 items-center ">
               <img
                 src={vectorSearch}
                 alt="search-icon"
@@ -510,9 +516,9 @@ function AdminDashboard() {
             </div>
             <button
               onClick={() => navigate("/admin/category/create")}
-              className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
+              className="bg-[#336DF2] text-white -pt-[6px] px-4 rounded-md w-40 h-11 font-medium text-[16px] flex items-center justify-center ml-6"
             >
-              เพิ่มหมวดหมู่ +
+              <span>เพิ่มหมวดหมู่</span><span className="text-[25px] ml-3" >+</span>
             </button>
           </div>
         </div>
@@ -523,52 +529,55 @@ function AdminDashboard() {
             <ClipLoader size={200} color={"#123abc"} loading={loading} />
           </div>
         ) : (
-          <div className="p-4 pt-8 flex-1 overflow-auto rounded-md shadow-md">
+          <div className="p-4 pt-8 flex-1 overflow-auto rounded-md mx-4 w-[1220px]">
             <div className="rounded-md shadow-md rounded-b-none">
               <div
                 style={{ fontWeight: 400 }}
-                className="grid grid-cols-12 gap-4 items-center bg-[#E6E7EB] rounded-md p-2 shadow-md border border-[#EFEFF2] text-[14px] text-[#646C80]"
+                className="grid grid-cols-12 gap-1 items-center bg-[#E6E7EB] rounded-md p-2 shadow-md border border-[#EFEFF2] text-[14px] text-[#646C80] h-[41px] "
               >
                 <div className="col-span-1"></div>
-                <div className="col-span-1">ลำดับ</div>
-                <div className="col-span-3 ml-3">ชื่อหมวดหมู่</div>
-                <div className="col-span-3">สร้างเมื่อ</div>
-                <div className="col-span-3">แก้ไขล่าสุด</div>
-                <div className="col-span-1">Action</div>
+                <div className="col-span-1 -ml-6">ลำดับ</div>
+                <div className="col-span-3 -ml-3">ชื่อหมวดหมู่</div>
+                <div className="col-span-3 -ml-3">สร้างเมื่อ</div>
+                <div className="col-span-3 -ml-1">แก้ไขล่าสุด</div>
+                <div className="col-span-1 -ml-">Action</div>
               </div>
             </div>
-            <div className="bg-white p-4 rounded-md shadow-md rounded-t-none">
+            <div className="bg-white  rounded-md  rounded-t-none">
               {filteredItems.map((item, index) => (
                 <div
                   key={item.id}
-                  className="grid grid-cols-12 gap-4 items-center border-b-2 p-2 text-[14px] text-[#646C80]"
+                  className="grid grid-cols-12 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px] pt-5  font-light"
                   draggable
                   onDragStart={(e) => handleDragStart(e, index)}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, index)}
                 >
-                  <div className="col-span-1">
-                    <img src={vectorDragDrop} alt="DragDrop" />
+                  <div className="col-span-1  ml-[25px]">
+                    <img src={vectorDragDrop} alt="DragDrop" />                    
                   </div>
-                  <div className="col-span-1">{item.position_id}</div>
-                  <div className="col-span-3">{item.category_name}</div>
-                  <div className="col-span-3">
+                  <div className="col-span-1 -ml-[65px]">
+                    <img src={vectorDragDrop} alt="DragDrop" />                    
+                  </div>
+                  <div className="col-span-1 -ml-[105px]">{item.position_id}</div>
+                  <div className="col-span-3 -ml-[105px]">{item.category_name}</div>
+                  <div className="col-span-3 -ml-[105px]">
                     {formatDateTime(item.created_at)}
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-3 -ml-[105px]">
                     {formatDateTime(item.updated_at)}
                   </div>
-                  <div className="col-span-1 flex space-x-4">
+                  <div className="col-span-1 flex flex-row gap-4  ">
                     <img
                       src={vectorBin}
                       alt="Delete"
-                      className="cursor-pointer"
+                      className="cursor-pointer ml-[1045px] -mt-20"
                       onClick={() => handleDeleteClick(item)}
                     />
                     <img
                       src={vectorEdit}
                       alt="Edit"
-                      className="cursor-pointer"
+                      className="cursor-pointer -mt-20 ml-7"
                       onClick={() =>
                         navigate(`/admin/category/edit/${item.category_id}`)
                       }
@@ -584,30 +593,35 @@ function AdminDashboard() {
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-md shadow-md">
-            <div className="flex justify-between items-center mb-4">
+          <div className="bg-white p-8 rounded-2xl shadow-md">
+            <div className="flex justify-between items-center mb-4 flex-col relative w-[300px] h-[30px] ">
               <img src={vectorAlert} alt="Alert" />
               <img
                 src={vectorClose}
                 alt="Close"
-                className="cursor-pointer"
+                className="cursor-pointer absolute -right-2 -top-2"
                 onClick={handleDeleteCancel}
               />
-            </div>
-            <p className="text-center mb-4">
-              คุณแน่ใจหรือไม่ว่าต้องการลบหมวดหมู่ "{itemToDelete?.category_name}
-              " ?
+            </div>            
+            <p className="text-center  text-[20px]">
+              ยืนยันการลบรายการ?
+            </p>
+            <p className="text-center mb-4 text-[16px] text-[#636678]">
+              คุณต้องการลบรายการ'{itemToDelete?.category_name}
+            </p>
+            <p className="text-center mb-4 text-[16px] text-[#636678] -mt-4">              
+              ใช่หรือไม่
             </p>
             <div className="flex justify-center">
               <button
                 onClick={handleDeleteConfirm}
-                className="bg-[#336DF2] text-white py-2 px-4 rounded-md mr-2"
+                className="bg-[#336DF2] text-white py-2 px-4 rounded-md mr-2 w-[112px] h-[44px]"
               >
-                ยืนยัน
+                ลบรายการ
               </button>
               <button
                 onClick={handleDeleteCancel}
-                className="bg-gray-300 text-black py-2 px-4 rounded-md"
+                className="bg-white text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-[44px] border-[#336DF2] border-2"
               >
                 ยกเลิก
               </button>

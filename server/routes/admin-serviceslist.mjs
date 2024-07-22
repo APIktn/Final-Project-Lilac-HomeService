@@ -66,4 +66,64 @@ adminserviceslistRouter.patch("/reorder", async (req, res) => {
   }
 });
 
+adminserviceslistRouter.delete("/:service_id", async (req, res) => {
+  const { service_id } = req.params;
+
+  try {
+    // Step 1: Get the position_id of the service to be deleted
+    const { data: serviceData, error: serviceError } = await supabase
+      .from("services")
+      .select("service_id, position_id")
+      .eq("service_id", service_id)
+      .single();
+
+    if (serviceError) throw serviceError;
+    if (!serviceData) {
+      return res.status(404).json({
+        message: `Service with service_id ${service_id} not found`,
+      });
+    }
+
+    const { position_id } = serviceData;
+
+    // Step 2: Delete the specified service
+    const { error: deleteError } = await supabase
+      .from("services")
+      .delete()
+      .eq("service_id", service_id);
+
+    if (deleteError) throw deleteError;
+
+    // Step 3: Get all services with position_id greater than the deleted one
+    const { data: remainingServices, error: remainingServicesError } = await supabase
+      .from("services")
+      .select("*")
+      .gt("position_id", position_id);
+
+    if (remainingServicesError) throw remainingServicesError;
+
+    // Step 4: Update the position_id of the remaining services
+    const updates = remainingServices.map((service) => {
+      const newPositionId = service.position_id - 1;
+      return supabase
+        .from("services")
+        .update({ position_id: newPositionId })
+        .eq("service_id", service.service_id);
+    });
+
+    await Promise.all(updates);
+
+    res.status(200).json({
+      message: `Service with service_id ${service_id} deleted successfully and remaining services reordered`,
+    });
+  } catch (error) {
+    console.error("Error deleting service:", error);
+    res.status(500).json({
+      message: "Error deleting service",
+      error: error.message,
+    });
+  }
+});
+
+
 export default adminserviceslistRouter;
