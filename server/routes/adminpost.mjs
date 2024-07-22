@@ -1,13 +1,14 @@
 import { Router } from "express";
 import supabase from "../utils/db.mjs";
+import upload from "../middlewares/upload.mjs";
+import cloudinary from "../utils/cloudinary.mjs";
 
 const adminserviceRouter = Router();
 
-adminserviceRouter.post("/post", async (req, res) => {
+adminserviceRouter.post("/post", upload.single("image"), async (req, res) => {
   try {
     const { service_name, category_name, subServiceItems } = req.body;
 
-    // ค้นหา category_id จาก category_name
     const { data: category, error: categoryError } = await supabase
       .from("categories")
       .select("category_id")
@@ -26,9 +27,8 @@ adminserviceRouter.post("/post", async (req, res) => {
 
     const category_id = category.category_id;
 
-    // หา position_id ล่าสุดสำหรับ category_id ที่กำหนด
     const { data: lastService, error: lastServiceError } = await supabase
-      .from("service")
+      .from("services")
       .select("position_id")
       .eq("category_id", category_id)
       .order("position_id", { ascending: false })
@@ -41,10 +41,30 @@ adminserviceRouter.post("/post", async (req, res) => {
 
     const position_id = lastService ? lastService.position_id + 1 : 1;
 
-    // Insert the service name into the services table and get the inserted service_id
+    const file = req.file;
+    let imageUrl = null;
+
+    if (file) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "service_images" },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+        stream.end(file.buffer);
+      });
+
+      imageUrl = uploadResult.secure_url;
+    }
+
     const { data: serviceData, error: serviceError } = await supabase
-      .from("service")
-      .insert([{ service_name, category_id, position_id }])
+      .from("services")
+      .insert([{ service_name, category_id, position_id, image: imageUrl }])
       .select("service_id")
       .single();
 
@@ -54,7 +74,6 @@ adminserviceRouter.post("/post", async (req, res) => {
 
     const service_id = serviceData.service_id;
 
-    // Prepare subServiceItems for insertion
     const subServiceInserts = subServiceItems.map((item) => ({
       service_id,
       service_lists: item.name,
@@ -63,9 +82,8 @@ adminserviceRouter.post("/post", async (req, res) => {
       quantity: 0,
     }));
 
-    // Insert subServiceItems into service_lists table
     const { error: subServiceError } = await supabase
-      .from("service_lists")
+      .from("service_list")
       .insert(subServiceInserts);
 
     if (subServiceError) {

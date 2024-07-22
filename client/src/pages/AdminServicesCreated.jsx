@@ -1,3 +1,5 @@
+// client/src/pages/AdminServicesCreated.jsx
+
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import vectorCategory from "../assets/icons/Vector-category.svg";
@@ -144,7 +146,6 @@ function AdminServiceCreate() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ตรวจสอบฟิลด์ที่ต้องกรอก
     if (!servicename.trim()) {
       alert("กรุณากรอกชื่อบริการ");
       return;
@@ -167,20 +168,33 @@ function AdminServiceCreate() {
     setUploading(true);
 
     try {
+      const formData = new FormData();
+      formData.append("service_name", servicename);
+      formData.append("category_name", categoryName);
+      formData.append("image", uploadedImage);
+
+      subServiceItems.forEach((item, index) => {
+        formData.append(`subServiceItems[${index}][name]`, item.name);
+        formData.append(`subServiceItems[${index}][price]`, item.price);
+        formData.append(`subServiceItems[${index}][unit]`, item.unit);
+      });
+
       const response = await axios.post(
         "http://localhost:4000/adminservice/post",
+        formData,
         {
-          service_name: servicename,
-          category_name: categoryName,
-          subServiceItems, // ส่งค่า subServiceItems ไปด้วย
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
 
       if (response.status === 200) {
         setMessage("อัพโหลดข้อมูลสำเร็จ");
-        setServicename(""); // Clear the input field
-        setCategoryName(""); // Clear the category_name field
-        setSubServiceItems([{ name: "", price: "", unit: "" }]); // Clear sub service items
+        setServicename("");
+        setCategoryName("");
+        setSubServiceItems([{ name: "", price: "", unit: "" }]);
+        setUploadedImage(null);
       }
     } catch (error) {
       console.error("Error uploading data", error);
