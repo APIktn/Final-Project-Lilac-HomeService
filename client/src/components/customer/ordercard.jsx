@@ -36,7 +36,7 @@ const OrderCard = ({ orderDetail }) => {
       <div className="flex flex-col">
         <div className="pt-[12px] pb-[6px] flex flex-col sm:flex-row justify-between">
           <p className="text-[18px] sm:text-[20px] font-medium text-black">
-            คำสังการซ่อมรหัส : AD04071205
+            คำสังการซ่อมรหัส : {orderDetail.order_code}
           </p>
           <div className="flex flex-row items-center">
             <p className="text-[14px]  pr-4">สถานะ:</p>
@@ -64,7 +64,7 @@ const OrderCard = ({ orderDetail }) => {
             <div className="flex flex-row pt-1">
               <img src={person2} alt="person" className="mr-1 h-5" />
               <p className="text-[14px] text-gray-700">
-                พนักงาน: สมาน เยี่ยมยอด
+                พนักงาน: {orderDetail.technician_name}
               </p>
             </div>
           </div>
