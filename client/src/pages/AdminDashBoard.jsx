@@ -361,7 +361,7 @@ function AdminDashboard() {
   };
 
   useEffect(() => {
-    getCategories();
+    getCategories();    
   }, []);
 
   const handleDragStart = (e, draggedIndex) => {
@@ -432,7 +432,8 @@ function AdminDashboard() {
         )
       );
       setShowDeleteModal(false);
-      setItemToDelete(null);
+      setItemToDelete(null);    
+      window.location.href = "/admin/category";
     } catch (error) {
       console.error("Error deleting category:", error);
     }
@@ -457,7 +458,7 @@ function AdminDashboard() {
             onClick={() => navigate("/")}
           >
             <img src={vectorHouse} alt="House" className="w-[26.06px] h-[26.06px] mr-2" />
-            <span className="text-[#336DF2] text-[20px] font-medium mt-1">Homeservice</span>
+            <span className="text-[#336DF2] text-[20px] font-medium mt-1">HomeServices</span>
           </div>
           <div>
             <div className="flex items-center  p-4 bg-[#022B87] cursor-pointer">
@@ -486,7 +487,7 @@ function AdminDashboard() {
         </div>
         <div className="flex items-center p-2 hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
           <img src={vectorLogout} alt="Logout" className="mr-2" />
-          <span className="text-[#F1F1F1] text-base" 
+          <span className="text-[#F1F1F1] text-base ml-2" 
                 onClick={() => {
                   logout();
                   navigate("/admin")}}
@@ -498,7 +499,7 @@ function AdminDashboard() {
       <div className="flex-1 flex flex-col bg-[#EFEFF2]">
         {/* Admin Topbar */}
         <div className="bg-white p-4 flex items-center">
-          <div className="text-[20px] font-medium ml-4 mr-[640px] w-[76px]">หมวดหมู่</div>
+          <div className="text-[20px] font-medium ml-4 mr-[745px] w-[76px]">หมวดหมู่</div>
           <div className="flex items-center ">
             <div className="flex w-72 h-11 border rounded-md p-2 items-center ">
               <img
@@ -529,11 +530,11 @@ function AdminDashboard() {
             <ClipLoader size={200} color={"#123abc"} loading={loading} />
           </div>
         ) : (
-          <div className="p-4 pt-8 flex-1 overflow-auto rounded-md mx-4 w-[1220px]">
-            <div className="rounded-md shadow-md rounded-b-none">
+          <div className="p-4 pt-8 flex-1 overflow-auto rounded-md mx-4 ">
+            <div className="rounded-md rounded-b-none">
               <div
                 style={{ fontWeight: 400 }}
-                className="grid grid-cols-12 gap-1 items-center bg-[#E6E7EB] rounded-md p-2 shadow-md border border-[#EFEFF2] text-[14px] text-[#646C80] h-[41px] "
+                className="grid grid-cols-12 gap-1 items-center bg-[#E6E7EB] rounded-md p-2 border border-[#EFEFF2] text-[14px] text-[#646C80] h-[41px] "
               >
                 <div className="col-span-1"></div>
                 <div className="col-span-1 -ml-6">ลำดับ</div>
@@ -556,28 +557,28 @@ function AdminDashboard() {
                   <div className="col-span-1  ml-[25px]">
                     <img src={vectorDragDrop} alt="DragDrop" />                    
                   </div>
-                  <div className="col-span-1 -ml-[65px]">
+                  <div className="col-span-1 -ml-[75px]">
                     <img src={vectorDragDrop} alt="DragDrop" />                    
                   </div>
-                  <div className="col-span-1 -ml-[105px]">{item.position_id}</div>
-                  <div className="col-span-3 -ml-[105px]">{item.category_name}</div>
-                  <div className="col-span-3 -ml-[105px]">
+                  <div className="col-span-1 -ml-[112px]">{item.position_id}</div>
+                  <div className="col-span-3 -ml-[112px]">{item.category_name}</div>
+                  <div className="col-span-3 -ml-[112px]">
                     {formatDateTime(item.created_at)}
                   </div>
-                  <div className="col-span-3 -ml-[105px]">
+                  <div className="col-span-3 -ml-[112px]">
                     {formatDateTime(item.updated_at)}
                   </div>
                   <div className="col-span-1 flex flex-row gap-4  ">
                     <img
                       src={vectorBin}
                       alt="Delete"
-                      className="cursor-pointer ml-[1045px] -mt-20"
+                      className="cursor-pointer ml-[1170px] -mt-20"
                       onClick={() => handleDeleteClick(item)}
                     />
                     <img
                       src={vectorEdit}
                       alt="Edit"
-                      className="cursor-pointer -mt-20 ml-7"
+                      className="cursor-pointer -mt-20 ml-4"
                       onClick={() =>
                         navigate(`/admin/category/edit/${item.category_id}`)
                       }
@@ -607,7 +608,7 @@ function AdminDashboard() {
               ยืนยันการลบรายการ?
             </p>
             <p className="text-center mb-4 text-[16px] text-[#636678]">
-              คุณต้องการลบรายการ'{itemToDelete?.category_name}
+              คุณต้องการลบรายการ ' {itemToDelete?.category_name} '
             </p>
             <p className="text-center mb-4 text-[16px] text-[#636678] -mt-4">              
               ใช่หรือไม่
