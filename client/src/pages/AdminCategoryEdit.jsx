@@ -201,10 +201,13 @@ function AdminCategoryEdit() {
               {createCategory ? (
                 <div className="ml-5">
                   <h1 className="text-xs text-[#646C80]">หมวดหมู่</h1>
-                  <p>{categoryName}</p>
+                  <p>{category.category_name}</p>
                 </div>
               ) : (
-                <div className="ml-5">เพิ่มหมวดหมู่</div>
+                <div className="ml-5">
+                  <h1 className="text-xs text-[#646C80]">หมวดหมู่</h1>
+                  <p>{category.category_name}</p>
+                </div>
               )}
             </div>
 
