@@ -282,7 +282,8 @@ orderRouter.get("/technicians", authenticateToken, async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("users")
-      .select("firstname, lastname");
+      .select("firstname, lastname, work_status")
+      .in("role", ["technician"]);
 
     if (error) {
       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลพนักงานได้" });
