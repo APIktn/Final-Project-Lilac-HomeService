@@ -210,6 +210,7 @@ function AdminServiceCreate() {
 
   return (
     <form id="upload-form" onSubmit={handleSubmit}>
+
       <div className="flex h-screen">
         {/* Sidebar */}
         <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
@@ -240,10 +241,21 @@ function AdminServiceCreate() {
               />
               <span className="text-white">Promotion Code</span>
             </div>
+  
+          </div>
+         <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
+              <img
+                src={vectorPromotionCode}
+                alt="Promotion Code"
+                className="mr-2"
+              />
+              <span className="text-white">Promotion Code</span>
+            </div>     
           </div>
           <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
             <img src={vectorLogout} alt="Logout" className="mr-2" />
             <span className="text-white">ออกจากระบบ</span>
+
           </div>
         </div>
 
@@ -251,7 +263,8 @@ function AdminServiceCreate() {
         <div className="flex-1 flex flex-col bg-[#EFEFF2]">
           {/* Admin Topbar */}
           <div className="bg-white p-4 flex justify-between items-center">
-            <div className="text-lg">เพิ่มบริการใหม่</div>
+            <div className="text-lg">เพิ่มบริการใหม่</div> 
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate("/admindashboard")}
@@ -261,9 +274,9 @@ function AdminServiceCreate() {
               </button>
               <button
                 type="submit"
+
                 className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
-                disabled={uploading}
-              >
+                disabled={uploading}>
                 {uploading ? "กำลังอัพโหลด..." : "สร้าง"}
               </button>
             </div>
@@ -291,7 +304,7 @@ function AdminServiceCreate() {
                         setServicename(event.target.value);
                       }}
                       value={servicename}
-                      className="border border-gray-300 rounded-md p-2 w-[433px]"
+                      className="border border-gray-300 rounded-md p-2 w-[433px]"          
                     />
                   </div>
                   <div className="flex items-center mb-2">
@@ -311,7 +324,7 @@ function AdminServiceCreate() {
                       ))}
                     </select>
                   </div>
-                  <div className="flex items-center mb-2">
+                  <div className="flex items-center mb-2">            
                     <label className="block">
                       รูปภาพ<span className="text-red-500">*</span>
                     </label>
@@ -483,7 +496,7 @@ function AdminServiceCreate() {
                 >
                   ลบ
                 </button>
-              </div>
+              </div>             
             </div>
           </div>
         )}

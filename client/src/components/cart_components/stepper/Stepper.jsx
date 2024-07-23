@@ -6,7 +6,7 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import { stepConnectorClasses } from "@mui/material/StepConnector";
 import PropTypes from "prop-types";
-import { CartContext } from "../../../pages/CartPage";
+import { CartContext } from "../../../contexts/cartContext";
 
 export const steps = ["รายการ", "กรอกข้อมูลบริการ", "ชำระเงิน"];
 
