@@ -13,6 +13,7 @@ const ServiceListHistory = () => {
 
   const getServices = async () => {
     const result = await axios.get(`http://localhost:4000/completeorder`, {
+      // const result = await axios.get(`http://localhost:4000/:order_id`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     // console.log("result", result);

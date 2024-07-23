@@ -1,69 +1,70 @@
-<div className=" w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-[8px] flex flex-col px-[24px] py-[16px] mb-[16px] overflow-hidden">
-                  <div className="flex flex-col">
-                    <div className="pt-[12px] pb-[6px] flex flex-col sm:flex-row justify-between">
-                      <p className="text-[18px] sm:text-[20px] font-medium text-black">
-                        คำสังการซ่อมรหัส : AD04071205
-                      </p>
-                      <div className="flex flex-row items-center">
-                        <p className="text-[14px] text-[#00596C] pr-4">
-                          สถานะ:
-                        </p>
-                        <p className="text-[14px] text-gray-900 border bg-[#DFF9F6] rounded-[15px]  p-1 ml-1">
-                          ดำเนินการสำเร็จ
-                        </p>
-                      </div>
-                    </div>
-                    <div className="  flex flex-col sm:flex-row justify-between">
-                      <div className="flex flex-row pt-[16px] ">
-                        <img src={event} alt="event" className="mr-1 h-5" />
-                        <p className="text-[14px] text-gray-700">
-                          วันเวลาดำเนินการ: 25/04/2563 เวลา 13.00 น.
-                        </p>
-                      </div>
-                      {/* mapราคารวมจุดที่ 1 สำหรับแสดงผลบน PC*/}
-                      <div className="hidden sm:flex flex-row items-center">
-                        <p className="text-[14px] text-gray-700">ราคารวม:</p>
-                        <p className="text-[18px] text-gray-950 pl-4 ">
-                          1,550.00 ฿
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex flex-row">
-                      <img src={person2} alt="person" className="mr-1 h-5" />
-                      <p className="text-[14px] text-gray-700">
-                        พนักงาน: สมาน เยี่ยมยอด
-                      </p>
-                    </div>
-                    {/* mapราคารวมจุดที่ 2 สำหรับแสดงผลบน mobile*/}
-                    <div className="flex flex-row items-center pt-[8px] md:hidden">
-                      <p className="text-[14px] text-gray-700">ราคารวม:</p>
-                      <p className="text-[16px] text-gray-950 pl-4 font-medium ">
-                        1,550.00 ฿
-                      </p>
-                    </div>
-                    <p className="hidden sm:block text-[16px] pt-[20px] text-gray-700">
-                      รายการ:{" "}
-                    </p>
-                    {/* mapรายการจุดที่ 1 สำหรับแสดงผลบน pc*/}
-                    <div className=" hidden sm:flex flex-row justify-between">
-                      <p className="text-[14px] pt-[20px] text-black">
-                        • ล้างแอร์ 9,000 - 18,000 BTU, ติดผนัง 2 เครื่อง
-                      </p>
-                      <button className="bg-blue-600 px-6 rounded-[10px] text-white">
-                        ดูรายละเอียด
-                      </button>
-                    </div>
-                    {/* mapรายการจุดที่ 2 สำหรับแสดงผลบน mobile*/}
-                    <div className="flex flex-row items-top md:hidden pt-[8px]">
-                      <p className="text-[14px] text-gray-700">รายการ:</p>
-                      <p className="text-[16px] text-gray-950 pl-4 font-medium ">
-                        • ล้างแอร์ 9,000 - 18,000 BTU,ติดผนัง 2 เครื่อง
-                      </p>
-                    </div>
-                    <div>
-                      <button className="bg-blue-600 py-2 px-6 rounded-[10px]  text-white md:hidden mt-[16px]">
-                        ดูรายละเอียด
-                      </button>
-                    </div>
-                  </div>
-                </div>
+cartsRouter.get("/:category_id", async (req, res) => {
+    const  categoryId = req.params.category_id; // Fixing this line
+    let result;
+    try {
+      result = await supabase
+        .from("categories")
+        .select("category_name, created_at, updated_at")
+        .eq("category_id", categoryId )
+       .single();
+      } catch {
+        return res.status(500).json({
+          message: "Error fetching category"
+        });
+      }
+
+      if (!result.data || result.data.length === 0) {
+        return res.status(404).json({
+          "Not Found": "Not Found"
+        });
+      }
+
+      return res.status(200).json({
+        OK: 'Successfully .',
+        data: result.data
+      });
+    });
+   
+
+   ///
+   orderRouter.get("/completeorder", authenticateToken, async (req, res) => {
+  try {
+    const { user_id } = req.user;
+
+    const { data: orderdetailData, error } = await supabase
+      .from("orderdetails")
+      .select(
+        `
+          order_detail_id,
+          orders (
+            order_id,
+            user_id
+          ),
+          service_lists,
+          service_id,
+          status,
+          order_date,
+          time,
+          quantity_per_order,
+          total_amount
+          ,technician_name,
+          technician_id,
+          order_code
+        `
+      )
+      .eq("orders.user_id", user_id)
+      .in("status", ["ดำเนินการสำเร็จ"]);
+
+    // console.log("user_id", user_id);
+    // console.log("orderdetailData", orderdetailData);
+
+    if (error || !orderdetailData) {
+      return res.status(404).json({ error: "ไม่พบข้อมูลผู้ใช้งาน" });
+    }
+
+    res.json({ data: orderdetailData });
+  } catch (error) {
+    console.error("Error in GET /customer:", error);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน" });
+  }
+});
