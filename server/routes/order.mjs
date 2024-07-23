@@ -278,22 +278,55 @@ orderRouter.put("/updateTechnician", authenticateToken, async (req, res) => {
 });
 
 // เอาช่างจาก users มาแสดง
+// orderRouter.get("/technicians", authenticateToken, async (req, res) => {
+//   try {
+//     const { data, error } = await supabase
+//       .from("users")
+//       .select("firstname, lastname, work_status")
+//       .in("role", ["technician"]);
+
+//     if (error) {
+//       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลพนักงานได้" });
+//     }
+
+//     const technicians = data.map((user) => ({
+//       id: user.id,
+//       firstname: user.firstname,
+//       lastname: user.lastname,
+//       fullName: `${user.firstname} ${user.lastname}`,
+//     }));
+
+//     res.json(technicians);
+//   } catch (error) {
+//     console.error("Error fetching technicians:", error);
+//     res.status(500).json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน" });
+//   }
+// });
+
 orderRouter.get("/technicians", authenticateToken, async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("users")
-      .select("firstname, lastname");
+      .select("firstname, lastname, work_status")
+      .in("role", ["technician"]);
 
     if (error) {
       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลพนักงานได้" });
     }
 
-    const technicians = data.map((user) => ({
-      id: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      fullName: `${user.firstname} ${user.lastname}`,
-    }));
+    const technicians = data.map((user) => {
+      let fullName = `${user.firstname} ${user.lastname}`;
+      if (user.work_status === "กำลังทำงาน") {
+        fullName += " (working)";
+      }
+      return {
+        id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        work_status: user.work_status,
+        fullName: fullName,
+      };
+    });
 
     res.json(technicians);
   } catch (error) {
