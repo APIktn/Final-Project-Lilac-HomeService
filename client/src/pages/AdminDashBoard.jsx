@@ -456,8 +456,14 @@ function AdminDashboard() {
             className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
             onClick={() => navigate("/")}
           >
-            <img src={vectorHouse} alt="House" className="w-[26.06px] h-[26.06px] mr-2" />
-            <span className="text-[#336DF2] text-[20px] font-medium mt-1">Homeservice</span>
+            <img
+              src={vectorHouse}
+              alt="House"
+              className="w-[26.06px] h-[26.06px] mr-2"
+            />
+            <span className="text-[#336DF2] text-[20px] font-medium mt-1">
+              Homeservice
+            </span>
           </div>
           <div>
             <div className="flex items-center  p-4 bg-[#022B87] cursor-pointer">
@@ -480,17 +486,23 @@ function AdminDashboard() {
                 alt="Promotion Code"
                 className="mr-2 ml-2"
               />
-              <span className="text-[#F1F1F1] text-base ml-3">Promotion Code</span>
+              <span className="text-[#F1F1F1] text-base ml-3">
+                Promotion Code
+              </span>
             </div>
           </div>
         </div>
         <div className="flex items-center p-2 hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
           <img src={vectorLogout} alt="Logout" className="mr-2" />
-          <span className="text-[#F1F1F1] text-base" 
-                onClick={() => {
-                  logout();
-                  navigate("/admin")}}
-          >ออกจากระบบ</span>
+          <span
+            className="text-[#F1F1F1] text-base"
+            onClick={() => {
+              logout();
+              navigate("/admin");
+            }}
+          >
+            ออกจากระบบ
+          </span>
         </div>
       </div>
 
@@ -498,7 +510,9 @@ function AdminDashboard() {
       <div className="flex-1 flex flex-col bg-[#EFEFF2]">
         {/* Admin Topbar */}
         <div className="bg-white p-4 flex items-center">
-          <div className="text-[20px] font-medium ml-4 mr-[640px] w-[76px]">หมวดหมู่</div>
+          <div className="text-[20px] font-medium ml-4 mr-[640px] w-[76px]">
+            หมวดหมู่
+          </div>
           <div className="flex items-center ">
             <div className="flex w-72 h-11 border rounded-md p-2 items-center ">
               <img
@@ -518,7 +532,8 @@ function AdminDashboard() {
               onClick={() => navigate("/admin/category/create")}
               className="bg-[#336DF2] text-white -pt-[6px] px-4 rounded-md w-40 h-11 font-medium text-[16px] flex items-center justify-center ml-6"
             >
-              <span>เพิ่มหมวดหมู่</span><span className="text-[25px] ml-3" >+</span>
+              <span>เพิ่มหมวดหมู่</span>
+              <span className="text-[25px] ml-3">+</span>
             </button>
           </div>
         </div>
@@ -554,13 +569,17 @@ function AdminDashboard() {
                   onDrop={(e) => handleDrop(e, index)}
                 >
                   <div className="col-span-1  ml-[25px]">
-                    <img src={vectorDragDrop} alt="DragDrop" />                    
+                    <img src={vectorDragDrop} alt="DragDrop" />
                   </div>
                   <div className="col-span-1 -ml-[65px]">
-                    <img src={vectorDragDrop} alt="DragDrop" />                    
+                    <img src={vectorDragDrop} alt="DragDrop" />
                   </div>
-                  <div className="col-span-1 -ml-[105px]">{item.position_id}</div>
-                  <div className="col-span-3 -ml-[105px]">{item.category_name}</div>
+                  <div className="col-span-1 -ml-[105px]">
+                    {item.position_id}
+                  </div>
+                  <div className="col-span-3 -ml-[105px]">
+                    {item.category_name}
+                  </div>
                   <div className="col-span-3 -ml-[105px]">
                     {formatDateTime(item.created_at)}
                   </div>
@@ -602,14 +621,12 @@ function AdminDashboard() {
                 className="cursor-pointer absolute -right-2 -top-2"
                 onClick={handleDeleteCancel}
               />
-            </div>            
-            <p className="text-center  text-[20px]">
-              ยืนยันการลบรายการ?
-            </p>
+            </div>
+            <p className="text-center  text-[20px]">ยืนยันการลบรายการ?</p>
             <p className="text-center mb-4 text-[16px] text-[#636678]">
               คุณต้องการลบรายการ'{itemToDelete?.category_name}
             </p>
-            <p className="text-center mb-4 text-[16px] text-[#636678] -mt-4">              
+            <p className="text-center mb-4 text-[16px] text-[#636678] -mt-4">
               ใช่หรือไม่
             </p>
             <div className="flex justify-center">
