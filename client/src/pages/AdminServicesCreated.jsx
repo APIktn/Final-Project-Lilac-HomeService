@@ -1,3 +1,5 @@
+// client/src/pages/AdminServicesCreated.jsx
+
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import vectorCategory from "../assets/icons/Vector-category.svg";
@@ -17,12 +19,13 @@ function AdminServiceCreate() {
   const [servicename, setServicename] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-  const [subServiceItems, setSubServiceItems] = useState([1]);
+  const [subServiceItems, setSubServiceItems] = useState([
+    { name: "", price: "", unit: "" },
+  ]);
   const [uploadedImage, setUploadedImage] = useState(null);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [categoryName, setCategoryName] = useState("");
-  const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -96,7 +99,6 @@ function AdminServiceCreate() {
   };
 
   const handleFileChange = (e) => {
-    console.log(e.target.files[0]);
     const file = e.target.files[0];
     if (
       file &&
@@ -133,11 +135,7 @@ function AdminServiceCreate() {
       file.size <= 5 * 1024 * 1024 &&
       (file.type === "image/png" || file.type === "image/jpeg")
     ) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUploadedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setUploadedImage(file);
     } else {
       alert(
         "Please upload a valid image file (PNG, JPG) with size up to 5 MB."
@@ -145,79 +143,105 @@ function AdminServiceCreate() {
     }
   };
 
-  useEffect(() => {
-    handleAddSubService();
-    handleAddSubService();
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!servicename.trim()) {
+      alert("กรุณากรอกชื่อบริการ");
+      return;
+    }
+
+    if (!categoryName.trim()) {
+      alert("กรุณาเลือกหมวดหมู่");
+      return;
+    }
+
+    for (let item of subServiceItems) {
+      if (!item.name.trim() || !item.price.trim() || !item.unit.trim()) {
+        alert(
+          "กรุณากรอกข้อมูลในฟิลด์ชื่อรายการ, ค่าบริการต่อหน่วย และหน่วยบริการให้ครบถ้วน"
+        );
+        return;
+      }
+    }
+
     setUploading(true);
-    const data = new FormData();
-    data.append("file", file);
 
     try {
-      // Upload file to Cloudinary
-      const cloudinaryResponse = await axios.post(
-        "http://localhost:4000/uploads/upload",
-        data,
+      const formData = new FormData();
+      formData.append("service_name", servicename);
+      formData.append("category_name", categoryName);
+      formData.append("image", uploadedImage);
+
+      subServiceItems.forEach((item, index) => {
+        formData.append(`subServiceItems[${index}][name]`, item.name);
+        formData.append(`subServiceItems[${index}][price]`, item.price);
+        formData.append(`subServiceItems[${index}][unit]`, item.unit);
+      });
+
+      const response = await axios.post(
+        "http://localhost:4000/adminservice/post",
+        formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
-          onUploadProgress: (e) => {
-            console.log(e.loaded / e.total);
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      // Handle Cloudinary response
-      console.log("Cloudinary response:", cloudinaryResponse.data);
-
-      // Prepare data for Supabase
-      const photoData = {
-        upload_image: cloudinaryResponse.data.secure_url, // Assuming this is the Cloudinary URL
-      };
-
-      // Send data to Supabase
-      const supabaseResponse = await axios.post(
-        "http://localhost:4000/uploads/create",
-        photoData,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      console.log("Supabase response:", supabaseResponse.data);
-
-      setFile(null);
+      if (response.status === 200) {
+        setMessage("อัพโหลดข้อมูลสำเร็จ");
+        setServicename("");
+        setCategoryName("");
+        setSubServiceItems([{ name: "", price: "", unit: "" }]);
+        setUploadedImage(null);
+      }
     } catch (error) {
-      console.error("Error uploading to the backend server", error);
+      console.error("Error uploading data", error);
+      setMessage("เกิดข้อผิดพลาดในการอัพโหลดข้อมูล");
+    } finally {
+      setUploading(false);
     }
   };
+
+  useEffect(() => {
+    handleAddSubService();
+  }, []);
 
   return (
     <form id="upload-form" onSubmit={handleSubmit}>
 
-    <div className="flex h-screen">
-      {/* Sidebar */}
-      <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
-        <div>
-          <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"onClick={() => navigate("/")}>
-            <img src={vectorHouse} alt="House" className="mr-2" />
-            <span className="text-[#336DF2] text-[20px]">Homeservice</span>
-          </div>
-          <div
-            className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-            onClick={() => navigate("/admin")}
-          >
-            <img src={vectorCategory} alt="Category" className="mr-2" />
-            <span className="text-white">หมวดหมู่</span>
-          </div>
-          <div
-            className="flex items-center mb-4 p-2 rounded-md bg-[#022B87] cursor-pointer"
-            onClick={() => navigate("/admin/service")}
-          >
-            <img src={vectorService} alt="Service" className="mr-2" />
-            <span className="text-white">บริการ</span>
+      <div className="flex h-screen">
+        {/* Sidebar */}
+        <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
+          <div>
+            <div className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6">
+              <img src={vectorHouse} alt="House" className="mr-2" />
+              <span>Homeservice</span>
+            </div>
+            <div
+              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+              onClick={() => navigate("/admin")}
+            >
+              <img src={vectorCategory} alt="Category" className="mr-2" />
+              <span className="text-white">หมวดหมู่</span>
+            </div>
+            <div
+              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
+              onClick={() => navigate("/admin/service")}
+            >
+              <img src={vectorService} alt="Service" className="mr-2" />
+              <span className="text-white">บริการ</span>
+            </div>
+            <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
+              <img
+                src={vectorPromotionCode}
+                alt="Promotion Code"
+                className="mr-2"
+              />
+              <span className="text-white">Promotion Code</span>
+            </div>
+  
           </div>
          <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
               <img
@@ -239,7 +263,8 @@ function AdminServiceCreate() {
         <div className="flex-1 flex flex-col bg-[#EFEFF2]">
           {/* Admin Topbar */}
           <div className="bg-white p-4 flex justify-between items-center">
-            <div className="text-lg">เพิ่ม Promotion Code</div>
+            <div className="text-lg">เพิ่มบริการใหม่</div> 
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate("/admindashboard")}
@@ -249,10 +274,10 @@ function AdminServiceCreate() {
               </button>
               <button
                 type="submit"
-                onClick={handleCreate}
+
                 className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
-              >
-                สร้าง
+                disabled={uploading}>
+                {uploading ? "กำลังอัพโหลด..." : "สร้าง"}
               </button>
             </div>
           </div>
@@ -274,12 +299,12 @@ function AdminServiceCreate() {
                       id="servicename"
                       name="servicename"
                       type="text"
-                      placeholder="Enter username here"
+                      placeholder="Enter service name here"
                       onChange={(event) => {
                         setServicename(event.target.value);
                       }}
                       value={servicename}
-                      className="border border-gray-300 rounded-md p-2  w-[433px]"
+                      className="border border-gray-300 rounded-md p-2 w-[433px]"          
                     />
                   </div>
                   <div className="flex items-center mb-2">
@@ -299,7 +324,7 @@ function AdminServiceCreate() {
                       ))}
                     </select>
                   </div>
-                  <div className="flex items-center mb-2 ">
+                  <div className="flex items-center mb-2">            
                     <label className="block">
                       รูปภาพ<span className="text-red-500">*</span>
                     </label>
@@ -312,9 +337,9 @@ function AdminServiceCreate() {
                         onDrop={handleDropUpload}
                       >
                         {uploadedImage ? (
-                          <div className="image-preview-container w-[350px] h-[140px] ">
+                          <div className="image-preview-container w-[350px] h-[140px]">
                             <img
-                              className="image-preview w-[350px] h-[140px]  object-cover"
+                              className="image-preview w-[350px] h-[140px] object-cover"
                               src={URL.createObjectURL(uploadedImage)}
                               alt="Preview"
                             />
@@ -352,6 +377,7 @@ function AdminServiceCreate() {
                   <button
                     className="underline prompt text-[16px] text-[#336DF2] ml-[120px]"
                     onClick={handleDeleteImage}
+                    type="button"
                   >
                     ลบรูปภาพ
                   </button>
@@ -380,7 +406,7 @@ function AdminServiceCreate() {
                   <div className="col-span-1 w-[422px]">
                     <p className="font-normal">ชื่อรายการ</p>
                     <input
-                      type="item.name"
+                      type="text"
                       className="border border-gray-300 rounded-md p-2 w-full"
                       value={item.name}
                       onChange={(e) =>
@@ -397,7 +423,7 @@ function AdminServiceCreate() {
                   <div className="col-span-3 w-[240px]">
                     <p>ค่าบริการ / 1 หน่วย</p>
                     <input
-                      type="item.price"
+                      type="text"
                       className="border border-gray-300 rounded-md p-2 w-full"
                       value={item.price}
                       onChange={(e) =>
@@ -414,7 +440,7 @@ function AdminServiceCreate() {
                   <div className="col-span-3 w-[240px]">
                     <p>หน่วยบริการ</p>
                     <input
-                      type="item.unit"
+                      type="text"
                       className="border border-gray-300 rounded-md p-2 w-full"
                       value={item.unit}
                       onChange={(e) =>
@@ -444,6 +470,7 @@ function AdminServiceCreate() {
               <button
                 onClick={handleAddSubService}
                 className="text-[#336DF2] font-medium"
+                type="button"
               >
                 เพิ่มรายการ +
               </button>
@@ -469,7 +496,7 @@ function AdminServiceCreate() {
                 >
                   ลบ
                 </button>
-              </div>
+              </div>             
             </div>
           </div>
         )}
