@@ -21,7 +21,7 @@ const categoryStyles = {
   },
 };
 
-const OrderCard = ({ orderDetail }) => {
+const ocadmin = ({ orderDetail }) => {
   const navigate = useNavigate();
 
   const handleClick = (path) => {
@@ -95,4 +95,4 @@ const OrderCard = ({ orderDetail }) => {
   );
 };
 
-export default OrderCard;
+export default ocadmin;

@@ -33,6 +33,9 @@ orderRouter.get("/completeorder", authenticateToken, async (req, res) => {
           time,
           quantity_per_order,
           total_amount
+          ,technician_name,
+          technician_id,
+          order_code
         `
       )
       .eq("orders.user_id", user_id)
@@ -72,6 +75,9 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
           time,
           quantity_per_order,
           total_amount
+          ,technician_name,
+          technician_id,
+          order_code
         `
       )
       .eq("orders.user_id", user_id)
@@ -90,5 +96,49 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน" });
   }
 });
+
+//ออเดอร์รอดำเนินการ
+orderRouter.get("/pending", authenticateToken, async (req, res) => {
+  try {
+    const { user_id } = req.user;
+
+    const { data: orderdetailData, error } = await supabase
+      .from("orderdetails")
+      .select(
+        `
+          order_detail_id,
+          orders (
+            order_id,
+            user_id
+          ),
+          service_lists,
+          service_id,
+          status,
+          order_date,
+          time,
+          quantity_per_order,
+          total_amount
+          ,technician_name,
+          technician_id,
+          order_code
+        `
+      )
+      .in("status", ["รอดำเนินการ"]);
+
+    console.log("user_id", user_id);
+    console.log("orderdetailData", orderdetailData);
+
+    if (error || !orderdetailData) {
+      return res.status(404).json({ error: "ไม่พบข้อมูลผู้ใช้งาน" });
+    }
+
+    res.json({ data: orderdetailData });
+  } catch (error) {
+    console.error("Error in GET /customer:", error);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน" });
+  }
+});
+
+//อัพเดท status บริการ
 
 export default orderRouter;

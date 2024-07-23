@@ -6,9 +6,11 @@ import HomePage_admin from "./HomePage_admin";
 import ServiceList_admin from "./ServiceList_admin";
 import TestAdmin from "./TestAdmin";
 import CartPage_admin from "./CartPage_admin";
-import CustomerServiceList from "./CustomerServiceList";
-import CustomerServiceHistory from "./CustomerServiceHistory";
+import Pending from "./Pending";
+import InProgress from "./InProgress";
+import Completed from "./Completed";
 import CustomerInfo from "./CustomerInfo";
+import AdminInfo from "./AdminInfo";
 import UploadForm from "./Testcloud";
 import AdminCreatePromotion from "./AdminCreatePromotion";
 import AdminPromotion from "./AdminPromotion";
@@ -26,12 +28,11 @@ function AdminAuthenticatedApp() {
         <Route path="/servicelist" element={<ServiceList_admin />} />
         <Route path="/test" element={<TestAdmin />} />
         <Route path="/cart/:service_name" element={<CartPage_admin />} />
-        <Route path="/CustomerServiceList" element={<CustomerServiceList />} />
-        <Route
-          path="/CustomerServiceHistory"
-          element={<CustomerServiceHistory />}
-        />
+        <Route path="/pending" element={<Pending />} />
+        <Route path="/inProgress" element={<InProgress />} />
+        <Route path="/completed" element={<Completed />} />
         <Route path="/CustomerInfo" element={<CustomerInfo />} />
+        <Route path="/AdminInfo" element={<AdminInfo />} />
         <Route path="/testcloud" element={<UploadForm />} />
         <Route path="/admin/promotion" element={<AdminPromotion />} />
         <Route
