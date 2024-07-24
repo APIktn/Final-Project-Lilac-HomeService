@@ -170,6 +170,7 @@ function AdminCreatePromotion() {
       await axios.post("http://localhost:4000/promotion", data);
 
       console.log(data);
+      navigate("/admin/promotion");
     } catch (error) {
       if (error.response && error.response.status === 400) {
         const errorMessage = error.response.data.message;
@@ -313,7 +314,7 @@ function AdminCreatePromotion() {
 
           {/* Workspace */}
           <div className="p-4 pt-8 flex-1 overflow-auto rounded-md shadow-md text-[#646C80]">
-            <div className="bg-white p-4 rounded-md shadow-md h-[430px]">
+            <div className="bg-white p-6 pt-8 rounded-md  h-[550px]">
               <div className="flex  mb-7 items-center">
                 <div className="w-[205px]">Promotion Code</div>
                 <input
@@ -511,9 +512,27 @@ function AdminCreatePromotion() {
                   <p className="text-red-500">กรุณากรอกข้อมูลให้ครบ</p>
                 )}
               </div>
+              {createCode && (
+                <div className="flex flex-col border-t border-[#CCD0D7] mb-4 pb-4 pt-10 h-[100px] w-[380]  bg-white">
+                  <div className="flex">
+                    <div className="w-[205px]">สร้างเมื่อ</div>
+                    <p>
+                      {dayjs(selectedDate).format("DD/MM/YYYY")} เวลา{" "}
+                      {dayjs(selectedTime).format("HH:mm A")}
+                    </p>
+                  </div>
+                  <div className="flex mt-6">
+                    <div className="w-[205px]">แก้ไขล่าสุด</div>
+                    <p>
+                      {dayjs(selectedDate).format("DD/MM/YYYY")} เวลา{" "}
+                      {dayjs(selectedTime).format("HH:mm A")}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {createCode && (
+            {/* {createCode && (
               <div className="flex flex-col border-t border-[#CCD0D7] mb-4 pb-4 h-[100px] w-[380] p-5 bg-white">
                 <div className="flex">
                   <div className="w-[205px]">สร้างเมื่อ</div>
@@ -530,8 +549,8 @@ function AdminCreatePromotion() {
                   </p>
                 </div>
               </div>
-            )}
-            {createCode && (
+            )} */}
+            {/* {createCode && (
               <div>
                 <p>test</p>
                 <img
@@ -541,7 +560,7 @@ function AdminCreatePromotion() {
                   onClick={() => handleDeleteClick(promotionName)}
                 />
               </div>
-            )}
+            )} */}
           </div>
         </div>
 
