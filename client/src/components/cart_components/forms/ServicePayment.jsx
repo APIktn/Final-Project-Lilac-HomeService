@@ -3,6 +3,8 @@ import QrCode2OutlinedIcon from "@mui/icons-material/QrCode2Outlined";
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
 
 const theme = createTheme({
   components: {
@@ -20,6 +22,77 @@ const theme = createTheme({
 });
 
 function ServicePayment() {
+  const [stripePromise, setStripePromise] = useState(null);
+  const [clientSecret, setClientSecret] = useState("");
+
+  const [cardNumber, setCardNumber] = useState("");
+  const [expCard, setExpCard] = useState("");
+  const [cvcCard, setCVCCard] = useState("");
+  const [nameCard, setNameCard] = useState("");
+
+  const handleCardNumber = (event) => {
+    let numberInput = event.target.value.replace(/\D/g, "");
+    if (numberInput.length <= 16) {
+      setCardNumber(numberInput.replace(/(\d{4})/g, "$1 ").trim());
+    }
+  };
+
+  const handleExpCard = (event) => {
+    let input = event.target.value.replace(/\D/g, "");
+    if (input.length <= 4) {
+      const month = input.substring(0, 2);
+      const year = input.substring(2, 4);
+      if (parseInt(month) > 12) {
+        setTextAlert("Expiry month can only be 12 or less.");
+      } else {
+        setTextAlert("");
+        setExpCard(`${month}/${year}`);
+      }
+    }
+  };
+
+  const handleCVCCard = (event) => {
+    let input = event.target.value.replace(/\D/g, "");
+    if (input.length <= 3) {
+      setCVCCard(input);
+    }
+  };
+
+  const handleNameCard = (event) => {
+    setNameCard(event.target.value);
+  };
+
+  useEffect(() => {
+    const createPaymentIntent = async () => {
+      try {
+        const response = await axios.post(
+          `http://localhost:4000/create-payment-intent`,
+          { amount: 43000, currency: "thb" }
+        );
+        const { clientSecret } = response.data;
+        setClientSecret(clientSecret);
+      } catch (error) {
+        console.error("Error creating payment intent:", error);
+      }
+    };
+
+    createPaymentIntent();
+  }, []);
+
+  useEffect(() => {
+    const getConfig = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/config");
+        const { publishableKey } = response.data;
+        setStripePromise(loadStripe(publishableKey));
+      } catch (error) {
+        console.error("Error fetching config:", error);
+      }
+    };
+
+    getConfig();
+  }, []);
+
   return (
     <div className="background w-full min-h-full ">
       <div className="container w-full h-auto bg-white border-solid border-[1px] border-[#CCD0D7] rounded-[8px] flex flex-col p-4 md:p-6 md:gap-5">

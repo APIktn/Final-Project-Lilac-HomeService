@@ -6,8 +6,8 @@ import adminRouter from "./routes/admins.mjs";
 import uploadsRouter from "./routes/upload.mjs";
 import cartsRouter from "./routes/cart-routes.mjs";
 import technicianRouter from "./routes/technicians.mjs";
-/*import Stripe from "stripe";
-import "dotenv/config";*/
+import Stripe from "stripe";
+import "dotenv/config";
 
 import {
   authenticateToken,
@@ -17,9 +17,9 @@ import {
 
 const app = express();
 const port = 4000;
-/*const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
-const stripe = Stripe(stripeSecretKey);*/
+const stripe = Stripe(stripeSecretKey);
 
 app.use(
   cors({
@@ -49,7 +49,7 @@ app.get("/test", (req, res) => {
   return res.json("Server API is working 🚀");
 });
 
-/*app.post("/create-payment-intent", async (req, res) => {
+app.post("/create-payment-intent", async (req, res) => {
   const { amount } = req.body;
 
   try {
@@ -70,7 +70,7 @@ app.get("/config", (req, res) => {
   res.send({
     publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
   });
-});*/
+});
 
 app.listen(port, () => {
   console.log(`Server is running at ${port}`);

@@ -48,6 +48,7 @@ function CartForm() {
   useEffect(() => {
     getServices();
   }, []);
+
   return (
     <div className="background bg-[#F3F4F6] w-full h-auto relative z-10 py-14 gap-7 mb-[44px] md:py-20 md:mb-0 border-solid border-black border-[2px]">
       <ServiceImage />
