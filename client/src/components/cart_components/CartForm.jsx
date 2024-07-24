@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 function CartForm() {
-  const { activeStep } = useContext(CartContext);
+  const { activeStep, setCartPath } = useContext(CartContext);
   const { service_name } = useParams();
   const [services, setServices] = useState([]);
   const [summaryOrder, setSummaryOrder] = useState([]);
@@ -22,6 +22,7 @@ function CartForm() {
         `http://localhost:4000/cart/${service_name}`
       );
       setServices(result.data.data);
+      setCartPath(service_name);
     } catch (error) {
       console.error("Error");
     }
