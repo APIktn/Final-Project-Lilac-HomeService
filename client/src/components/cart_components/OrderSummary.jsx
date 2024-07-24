@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -7,8 +7,9 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useContext, useEffect } from "react";
 import { CartContext } from "../../contexts/cartContext";
+import axios from "axios";
 
-function OrderSummary({ summaryOrder }) {
+function OrderSummary({ summaryOrder, service_name }) {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const { activeStep, netPrice, setNetPrice, logisticsInfo } =
@@ -36,24 +37,38 @@ function OrderSummary({ summaryOrder }) {
 
   const summaryData = countProducts(summaryOrder);
 
+  const fetchNetPrice = async (summaryData, service_name) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/cart/${service_name}`,
+        { summaryData }
+      );
+      setNetPrice(response.data.netPrice);
+    } catch (error) {
+      console.error("Error fetching net price from server", error);
+    }
+  };
+
   // const summaryPrice = summaryData.reduce(
   //   (acc, curr) => (acc += curr.price * curr.count),
   //   0
   // );
 
-  const summaryPrice = function summaryPrice() {
-    const net = summaryData.reduce(
-      (acc, curr) => (acc += curr.price * curr.count),
-      0
-    );
+  // const summaryPrice = function summaryPrice() {
+  //   const net = summaryData.reduce(
+  //     (acc, curr) => (acc += curr.price * curr.count),
+  //     0
+  //   );
 
-    setNetPrice(net);
-    return net;
-  };
+  //   setNetPrice(net);
+  //   return net;
+  // };
 
   useEffect(() => {
-    summaryPrice();
-  }, [summaryData]);
+    if (summaryOrder.length > 0) {
+      fetchNetPrice(summaryData, service_name);
+    }
+  }, [summaryOrder]);
 
   if (!summaryOrder || !summaryOrder[0]) {
     return (
@@ -137,8 +152,11 @@ function OrderSummary({ summaryOrder }) {
             </p>
           </AccordionSummary>
           <AccordionDetails>
-            {summaryData.map((item) => (
-              <div className="service-summary flex flex-row justify-between">
+            {summaryData.map((item, index) => (
+              <div
+                key={index}
+                className="service-summary flex flex-row justify-between"
+              >
                 <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black">
                   {item.name}
                 </p>

@@ -15,7 +15,6 @@ export default function StepButtons() {
     moreInfo,
     selectedNames,
     setLogisticsInfo,
-    logisticsInfo,
   } = useContext(CartContext);
 
   const monthMap = {
@@ -40,11 +39,13 @@ export default function StepButtons() {
 
   const handleNext = (e) => {
     e.preventDefault();
-    if (activeStep < steps.length) {
+    if (activeStep == 2) {
+      navigate("/cart/payment_status");
+    } else if (activeStep < 2) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
 
-    if (selectedDate || selectedTime || address || selectedNames) {
+    if (selectedDate && selectedTime && address && selectedNames) {
       let addressSummary = {
         date: `${selectedDate.$D} ${getMonthInTh(selectedDate.$M)} ${
           selectedDate.$y
@@ -59,8 +60,6 @@ export default function StepButtons() {
 
       setLogisticsInfo(addressSummary);
     }
-
-    console.log(logisticsInfo);
   };
 
   const handleBack = (e) => {
@@ -91,16 +90,6 @@ export default function StepButtons() {
     }
     return false;
   };
-
-  console.log(
-    activeStep,
-    setActiveStep,
-    netPrice,
-    selectedDate,
-    selectedTime,
-    address,
-    selectedNames
-  );
 
   return (
     <div className="bottom-navigator w-full h-[72px] md:h-[92px] bg-white border-solid border-[1px] border-t-gray-300 sticky bottom-0 z-10 overflow-hidden">
