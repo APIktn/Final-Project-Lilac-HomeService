@@ -226,9 +226,23 @@ function AdminPromotionEdit() {
       navigate("/admin/promotion");
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        alert("กรุณาตั้งเวลาหมดอายุหลังเวลาจริงอย่างน้อย 5 นาที");
+        const errorMessage = error.response.data.message;
+
+        if (errorMessage.includes("Expired date cannot be set in the past")) {
+          alert(
+            "กรุณาตั้งเวลาหมดอายุหลังเวลาจริงอย่างน้อย 5 นาที \n(โค้ดยังไม่ถูกแก้ไขกรุณากดแก้ไขเพื่อแก้ไขใหม่)"
+          );
+        } else if (
+          errorMessage.includes(
+            "Percent discount must be between 1 and 100, or null"
+          )
+        ) {
+          alert(
+            "กรุณาตั้ง Percent Code ให้อยู่ระหว่าง 1-100 \n(โค้ดยังไม่ถูกแก้ไขกรุณากดแก้ไขเพื่อแก้ไขใหม่)"
+          );
+        }
+        console.error("Error creating promotion code:", error);
       }
-      console.error("Error creating promotion code:", error);
     }
   };
 
@@ -247,6 +261,7 @@ function AdminPromotionEdit() {
     };
 
     await promotionCode(formData);
+
     window.location.reload();
   };
 
