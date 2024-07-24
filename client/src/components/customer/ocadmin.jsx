@@ -103,9 +103,23 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
     <div className="w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-[8px] flex flex-col px-[24px] py-[16px] mb-[16px] overflow-hidden">
       <div className="flex flex-col">
         <div className="pt-[12px] pb-[6px] flex flex-col sm:flex-row justify-between">
-          <p className="text-[18px] sm:text-[20px] font-medium text-black">
-            คำสั่งซ่อมรหัส: {orderDetail.order_code}
-          </p>
+          <div>
+            <p className="text-[18px] sm:text-[20px] font-medium text-black">
+              คำสั่งซ่อมรหัส: {orderDetail.order_code}
+            </p>
+            <div className="flex flex-row pb-1 ">
+              <p className="text-[14px] sm:text-[16px]">
+                {orderDetail.userfullname}
+              </p>
+              <p className="text-[14px] pl-3  sm:text-[16px]">
+                User ID: {orderDetail.orders.user_id}
+              </p>
+              <p className="text-[14px] pl-3  sm:text-[16px]">
+                Order ID: {orderDetail.orders.order_id}
+              </p>
+            </div>
+          </div>
+
           <div className="flex flex-row items-center">
             <p className="text-[14px] pr-4">สถานะ:</p>
             <Select
@@ -114,12 +128,29 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
               style={{
                 backgroundColor: categoryStyle.backgroundColor,
                 color: categoryStyle.color,
+                width: "fit-content",
+                minWidth: "auto",
+                height: "30px",
+              }}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 200,
+                    width: "auto",
+                  },
+                },
               }}
               className="text-[14px] text-gray-900 border rounded-[15px] p-1 px-3 ml-1"
             >
-              <MenuItem value="รอดำเนินการ">รอดำเนินการ</MenuItem>
-              <MenuItem value="กำลังดำเนินการ">กำลังดำเนินการ</MenuItem>
-              <MenuItem value="ดำเนินการสำเร็จ">ดำเนินการสำเร็จ</MenuItem>
+              <MenuItem value="รอดำเนินการ" style={{ height: "30px" }}>
+                รอดำเนินการ
+              </MenuItem>
+              <MenuItem value="กำลังดำเนินการ" style={{ height: "30px" }}>
+                กำลังดำเนินการ
+              </MenuItem>
+              <MenuItem value="ดำเนินการสำเร็จ" style={{ height: "30px" }}>
+                ดำเนินการสำเร็จ
+              </MenuItem>
             </Select>
           </div>
         </div>
@@ -134,27 +165,42 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
             </div>
 
             <div className="flex flex-row pt-1">
-              <img src={person2} alt="person" className="mr-1 h-5 mt-5" />
+              <img src={person2} alt="person" className="mr-1 h-5 mt-1" />
               <p className="text-[14px] text-gray-700">
                 พนักงาน:
                 <Select
                   value={selectedTechnician}
                   onChange={handleTechnicianChange}
-                  className="text-[14px] text-gray-900 border rounded-[15px]  px-3 ml-1"
+                  className="text-[14px] text-gray-900 border rounded-[15px] px-3 ml-1"
+                  style={{
+                    width: "fit-content",
+                    minWidth: "auto",
+                    height: "30px",
+                  }} // Adjusted height
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                        width: "auto",
+                      },
+                    },
+                  }}
                 >
                   {technicians.map((technician) => (
                     <MenuItem
                       key={technician.id}
-                      // value={`${technician.firstname} ${technician.lastname}`}
-                      value={`${technician.id}`}
+                      value={technician.id}
                       style={{
+                        backgroundColor:
+                          technician.work_status === "กำลังทำงาน"
+                            ? "#FFF3D4"
+                            : "white",
                         color:
                           technician.work_status === "กำลังทำงาน"
                             ? "orange"
                             : "green",
                       }}
                     >
-                      {/* {technician.firstname} {technician.lastname} */}
                       {technician.fullName}
                     </MenuItem>
                   ))}
