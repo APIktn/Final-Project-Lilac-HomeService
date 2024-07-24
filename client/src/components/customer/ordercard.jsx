@@ -64,7 +64,7 @@ const OrderCard = ({ orderDetail }) => {
             <div className="flex flex-row pt-1">
               <img src={person2} alt="person" className="mr-1 h-5" />
               <p className="text-[14px] text-gray-700">
-                พนักงาน: {orderDetail.technician_name}
+                พนักงาน: {orderDetail.fullName}
               </p>
             </div>
           </div>
