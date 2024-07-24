@@ -34,10 +34,6 @@ cartsRouter.get("/:service_name", async (req, res) => {
 
 //---------Calculate Net Price------////
 cartsRouter.post("/:service_name", (req, res) => {
-  const { service_name } = req.params;
-  console.log(`Calculating net price for service: ${service_name}`);
-  console.log("Request body:", req.body);
-
   const { summaryData } = req.body;
   let netPrice = 0;
 

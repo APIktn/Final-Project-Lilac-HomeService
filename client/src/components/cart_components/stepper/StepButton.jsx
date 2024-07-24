@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { steps } from "./Stepper";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../../contexts/cartContext";
+import axios from "axios";
 
 export default function StepButtons() {
   const navigate = useNavigate();
@@ -14,7 +15,10 @@ export default function StepButtons() {
     address,
     moreInfo,
     selectedNames,
+    logisticsInfo,
     setLogisticsInfo,
+    cartPath,
+    order,
   } = useContext(CartContext);
 
   const monthMap = {
@@ -37,10 +41,20 @@ export default function StepButtons() {
     return monthTh;
   };
 
-  const handleNext = (e) => {
+  const handleNext = async (e) => {
     e.preventDefault();
-    if (activeStep == 2) {
-      navigate("/cart/payment_status");
+    if (activeStep === 2) {
+      const billInfo = { order, logisticsInfo, netPrice };
+      console.log("bill are:", billInfo);
+      try {
+        const response = await axios.post(
+          `http://localhost:4000/cart/${cartPath}`,
+          billInfo
+        );
+        console.log("Server response:", response.data);
+      } catch (error) {
+        console.error("Error sending billInfo to server:", error);
+      }
     } else if (activeStep < 2) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }

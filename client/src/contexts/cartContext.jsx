@@ -3,6 +3,7 @@ import { useState, createContext } from "react";
 export const CartContext = createContext();
 
 const CartContextProvider = (props) => {
+  const [cartPath, setCartPath] = useState("");
   const [activeStep, setActiveStep] = useState(0);
   const [netPrice, setNetPrice] = useState(0);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -22,9 +23,9 @@ const CartContextProvider = (props) => {
     tambon: "",
   });
   const [moreInfo, setMoreInfo] = useState("");
-
+  const [order, setOrder] = useState(null);
   const [logisticsInfo, setLogisticsInfo] = useState({});
-
+  const [billInfo, setBillInfo] = useState(null);
   const [counters, setCounters] = useState({});
 
   const updateCounter = (id, value) => {
@@ -57,10 +58,16 @@ const CartContextProvider = (props) => {
     setMoreInfo,
     selectedNames,
     setSelectedNames,
+    order,
+    setOrder,
     logisticsInfo,
     setLogisticsInfo,
     counters,
     updateCounter,
+    billInfo,
+    setBillInfo,
+    cartPath,
+    setCartPath,
   };
 
   return (
