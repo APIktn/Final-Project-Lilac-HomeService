@@ -43,10 +43,14 @@ function ServicePayment() {
             <div className="card-number-container flex flex-col gap-1">
               <label className="text-[16px] font-[500]">
                 หมายเลขบัตรเครดิต
+                <span className="require-mark text-red-600 text-[16px]">
+                  {"*"}
+                </span>
               </label>
               <TextField
                 fullWidth
                 label="กรุณากรอกหมายเลขบัตรเครดิต"
+                InputLabelProps={{ shrink: false }}
                 sx={{
                   "& .MuiInputBase-root": {
                     fontSize: "16px",
@@ -73,6 +77,9 @@ function ServicePayment() {
                     fontFamily: "Prompt",
                     color: "#646C80",
                     marginTop: "-5px",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    display: "none",
                   },
                   "& .MuiSvgIcon-root": {
                     fontSize: "20px",
@@ -85,10 +92,16 @@ function ServicePayment() {
             </div>
 
             <div className="name-container flex flex-col gap-1">
-              <label className="text-[16px] font-[500]">ชื่อบนบัตร</label>
+              <label className="text-[16px] font-[500]">
+                ชื่อบนบัตร
+                <span className="require-mark text-red-600 text-[16px]">
+                  {"*"}
+                </span>
+              </label>
               <TextField
                 fullWidth
                 label="กรุณากรอกชื่อบนบัตร"
+                InputLabelProps={{ shrink: false }}
                 sx={{
                   "& .MuiInputBase-root": {
                     fontSize: "16px",
@@ -115,6 +128,9 @@ function ServicePayment() {
                     fontFamily: "Prompt",
                     color: "#646C80",
                     marginTop: "-5px",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    display: "none",
                   },
                   "& .MuiSvgIcon-root": {
                     fontSize: "20px",
@@ -126,88 +142,108 @@ function ServicePayment() {
               />
             </div>
 
-            <div className="exp-container flex flex-col gap-1">
-              <label className="text-[16px] font-[500]">วันหมดอายุ</label>
-              <TextField
-                fullWidth
-                label="MM/YY"
-                sx={{
-                  "& .MuiInputBase-root": {
-                    fontSize: "16px",
-                    fontFamily: "Prompt",
-                    fontWeight: 400,
-                    height: 44,
-                    border: "1px solid #CCD0D7",
-                    borderRadius: "10px",
-                    alignItems: "center",
-                  },
-                  "& .MuiInputBase-root.Mui-focused": {
-                    fontSize: "16px",
-                    fontFamily: "Prompt",
-                    fontWeight: 500,
-                    height: 44,
-                    border: "1px solid #CCD0D7",
-                    borderRadius: "10px",
-                    alignItems: "center",
-                    labelhidden: true,
-                  },
-                  "& .MuiInputLabel-root": {
-                    fontSize: "16px",
-                    fontWeight: 400,
-                    fontFamily: "Prompt",
-                    color: "#646C80",
-                    marginTop: "-5px",
-                  },
-                  "& .MuiSvgIcon-root": {
-                    fontSize: "20px",
-                    fontWeight: 100,
-                    color: "#AAAAAA",
-                    marginRight: 0.5,
-                  },
-                }}
-              />
-            </div>
+            <div className="exp-cvc/cvv-container flex flex-col md:flex-row gap-6">
+              <div className="exp-container flex flex-col gap-1 md:basis-1/2">
+                <label className="text-[16px] font-[500]">
+                  วันหมดอายุ
+                  <span className="require-mark text-red-600 text-[16px]">
+                    {"*"}
+                  </span>
+                </label>
+                <TextField
+                  fullWidth
+                  label="MM/YY"
+                  InputLabelProps={{ shrink: false }}
+                  sx={{
+                    "& .MuiInputBase-root": {
+                      fontSize: "16px",
+                      fontFamily: "Prompt",
+                      fontWeight: 400,
+                      height: 44,
+                      border: "1px solid #CCD0D7",
+                      borderRadius: "10px",
+                      alignItems: "center",
+                    },
+                    "& .MuiInputBase-root.Mui-focused": {
+                      fontSize: "16px",
+                      fontFamily: "Prompt",
+                      fontWeight: 500,
+                      height: 44,
+                      border: "1px solid #CCD0D7",
+                      borderRadius: "10px",
+                      alignItems: "center",
+                      labelhidden: true,
+                    },
+                    "& .MuiInputLabel-root": {
+                      fontSize: "16px",
+                      fontWeight: 400,
+                      fontFamily: "Prompt",
+                      color: "#646C80",
+                      marginTop: "-5px",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      display: "none",
+                    },
+                    "& .MuiSvgIcon-root": {
+                      fontSize: "20px",
+                      fontWeight: 100,
+                      color: "#AAAAAA",
+                      marginRight: 0.5,
+                    },
+                  }}
+                />
+              </div>
 
-            <div className="cvc/cvv-container flex flex-col gap-1">
-              <label className="text-[16px] font-[500]">รหัส CVC / CVV</label>
-              <TextField
-                fullWidth
-                label="xxx"
-                sx={{
-                  "& .MuiInputBase-root": {
-                    fontSize: "16px",
-                    fontFamily: "Prompt",
-                    fontWeight: 400,
-                    height: 44,
-                    border: "1px solid #CCD0D7",
-                    borderRadius: "10px",
-                    alignItems: "center",
-                  },
-                  "& .MuiInputBase-root.Mui-focused": {
-                    fontSize: "16px",
-                    fontFamily: "Prompt",
-                    fontWeight: 500,
-                    height: 44,
-                    border: "1px solid #CCD0D7",
-                    borderRadius: "10px",
-                    alignItems: "center",
-                    labelhidden: true,
-                  },
-                  "& .MuiInputLabel-root": {
-                    fontSize: "16px",
-                    fontWeight: 400,
-                    fontFamily: "Prompt",
-                    color: "#646C80",
-                    marginTop: "-5px",
-                  },
-                  "& .MuiSvgIcon-root": {
-                    fontSize: "20px",
-                    fontWeight: 100,
-                    color: "#AAAAAA",
-                    marginRight: 0.5,
-                  },
-                }}
-              />
+              <div className="cvc/cvv-container flex flex-col gap-1 md:basis-1/2">
+                <label className="text-[16px] font-[500]">
+                  รหัส CVC / CVV
+                  <span className="require-mark text-red-600 text-[16px]">
+                    {"*"}
+                  </span>
+                </label>
+                <TextField
+                  fullWidth
+                  label="xxx"
+                  InputLabelProps={{ shrink: false }}
+                  sx={{
+                    "& .MuiInputBase-root": {
+                      fontSize: "16px",
+                      fontFamily: "Prompt",
+                      fontWeight: 400,
+                      height: 44,
+                      border: "1px solid #CCD0D7",
+                      borderRadius: "10px",
+                      alignItems: "center",
+                    },
+                    "& .MuiInputBase-root.Mui-focused": {
+                      fontSize: "16px",
+                      fontFamily: "Prompt",
+                      fontWeight: 500,
+                      height: 44,
+                      border: "1px solid #CCD0D7",
+                      borderRadius: "10px",
+                      alignItems: "center",
+                      labelhidden: true,
+                    },
+                    "& .MuiInputLabel-root": {
+                      fontSize: "16px",
+                      fontWeight: 400,
+                      fontFamily: "Prompt",
+                      color: "#646C80",
+                      marginTop: "-5px",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      display: "none",
+                    },
+                    "& .MuiSvgIcon-root": {
+                      fontSize: "20px",
+                      fontWeight: 100,
+                      color: "#AAAAAA",
+                      marginRight: 0.5,
+                    },
+                  }}
+                />
+              </div>
             </div>
 
             <hr className="border-solid border-[1px] border-[#CCD0D7] w-full" />
@@ -220,6 +256,7 @@ function ServicePayment() {
                   <TextField
                     fullWidth
                     label="กรุณากรอกโค้ดส่วนลด (ถ้ามี)"
+                    InputLabelProps={{ shrink: false }}
                     sx={{
                       "& .MuiInputBase-root": {
                         fontSize: "16px",
@@ -248,6 +285,9 @@ function ServicePayment() {
                         alignItems: "center",
                         whiteSpace: "normal",
                         wordWrap: "break-word",
+                      },
+                      "& .MuiInputLabel-root.Mui-focused": {
+                        display: "none",
                       },
                       "& .MuiSvgIcon-root": {
                         fontSize: "20px",

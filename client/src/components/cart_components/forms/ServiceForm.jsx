@@ -114,6 +114,7 @@ function ServiceForm() {
           variant="outlined"
           fullWidth
           InputLabelProps={{
+            shrink: false,
             style: {
               fontSize: "16px",
               color: "#646C80",
@@ -144,6 +145,9 @@ function ServiceForm() {
               fontFamily: "Prompt",
               color: "#646C80",
               marginTop: "-5px",
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              display: "none",
             },
             "& .MuiSvgIcon-root": {
               fontSize: "20px",
@@ -176,7 +180,7 @@ function ServiceForm() {
                   color: "#232630",
                 }}
               >
-                {`${item.name_th} - ${item.name_en}`}
+                {item.name_th}
               </MenuItem>
             ))}
         </TextField>
@@ -204,6 +208,7 @@ function ServiceForm() {
                 <DesktopDatePicker
                   label={selectedDate ? "" : "กรุณาเลือกวันที่"}
                   value={selectedDate}
+                  format="DD/MM/YYYY"
                   onChange={(newValue) => {
                     setSelectedDate(newValue);
                   }}
@@ -213,6 +218,7 @@ function ServiceForm() {
                   slotProps={{
                     textField: {
                       id: "selected-date",
+                      InputLabelProps: { shrink: false },
                       sx: {
                         "& .MuiInputBase-root": {
                           fontSize: "16px",
@@ -238,6 +244,7 @@ function ServiceForm() {
                           fontFamily: "Prompt",
                           color: "#646C80",
                           marginTop: "-5px",
+                          shrink: false,
                         },
                         "& .MuiInputLabel-root.Mui-focused": {
                           display: "none",
@@ -333,20 +340,12 @@ function ServiceForm() {
                     slotProps={{
                       textField: {
                         id: "selected-time",
+                        InputLabelProps: { shrink: false },
                         sx: {
                           "& .MuiInputBase-root": {
                             fontSize: "16px",
                             fontFamily: "Prompt",
                             fontWeight: 400,
-                            height: 44,
-                            border: "1px solid #CCD0D7",
-                            borderRadius: "10px",
-                            alignItems: "center",
-                          },
-                          "& .MuiInputBase-root:focus": {
-                            fontSize: "16px",
-                            fontFamily: "Prompt",
-                            fontWeight: 500,
                             height: 44,
                             border: "1px solid #CCD0D7",
                             borderRadius: "10px",
@@ -358,6 +357,9 @@ function ServiceForm() {
                             fontFamily: "Prompt",
                             color: "#646C80",
                             marginTop: "-5px",
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            display: "none",
                           },
                           "& .MuiSvgIcon-root": {
                             fontSize: "20px",
@@ -407,6 +409,7 @@ function ServiceForm() {
                 onChange={(e) => {
                   setAddress(e.target.value);
                 }}
+                InputLabelProps={{ shrink: false }}
                 sx={{
                   "& .MuiInputBase-root": {
                     fontSize: "16px",
@@ -432,6 +435,9 @@ function ServiceForm() {
                     fontFamily: "Prompt",
                     color: "#646C80",
                     marginTop: "-5px",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    display: "none",
                   },
                 }}
               />
@@ -483,6 +489,7 @@ function ServiceForm() {
                 onChange={(e) => {
                   setMoreInfo(e.target.value);
                 }}
+                InputLabelProps={{ shrink: false }}
                 sx={{
                   "& .MuiInputBase-root": {
                     fontSize: "16px",
@@ -491,17 +498,7 @@ function ServiceForm() {
                     height: 120,
                     border: "1px solid #CCD0D7",
                     borderRadius: "10px",
-                    alignItems: "center",
-                  },
-                  "& .MuiInputBase-root.Mui-focused": {
-                    fontSize: "16px",
-                    fontFamily: "Prompt",
-                    fontWeight: 500,
-                    height: 120,
-                    border: "1px solid #CCD0D7",
-                    borderRadius: "10px",
-                    alignItems: "center",
-                    labelhidden: true,
+                    alignItems: "start",
                   },
                   "& .MuiInputLabel-root": {
                     fontSize: "16px",
@@ -509,6 +506,9 @@ function ServiceForm() {
                     fontFamily: "Prompt",
                     color: "#646C80",
                     marginTop: "-5px",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    display: "none",
                   },
                   "& .MuiSvgIcon-root": {
                     fontSize: "20px",

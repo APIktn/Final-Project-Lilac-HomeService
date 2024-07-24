@@ -17,6 +17,7 @@ import AdminPromotion from "./AdminPromotion";
 import AdminDashboard from "./AdminDashBoard";
 import AdminServiceCreate from "./AdminServicesCreated";
 import DashBoardService from "./AdminServicesList";
+import Payment_status_page from "./Payment_status_page";
 
 function AdminAuthenticatedApp() {
   return (
@@ -28,6 +29,7 @@ function AdminAuthenticatedApp() {
         <Route path="/servicelist" element={<ServiceList_admin />} />
         <Route path="/test" element={<TestAdmin />} />
         <Route path="/cart/:service_name" element={<CartPage_admin />} />
+        <Route path="/cart/payment_status" element={<Payment_status_page />} />
         <Route path="/pending" element={<Pending />} />
         <Route path="/inProgress" element={<InProgress />} />
         <Route path="/completed" element={<Completed />} />

@@ -12,21 +12,54 @@ export default function StepButtons() {
     selectedDate,
     selectedTime,
     address,
+    moreInfo,
     selectedNames,
     setLogisticsInfo,
   } = useContext(CartContext);
 
+  const monthMap = {
+    0: "ม.ค.",
+    1: "ก.พ.",
+    2: "มี.ค.",
+    3: "เม.ย.",
+    4: "พ.ค.",
+    5: "มิ.ย.",
+    6: "ก.ค.",
+    7: "ส.ค.",
+    8: "ก.ย.",
+    9: "ต.ค.",
+    10: "พ.ย.",
+    11: "ธ.ค.",
+  };
+
+  const getMonthInTh = (compareValue) => {
+    const monthTh = monthMap[compareValue];
+    return monthTh;
+  };
+
   const handleNext = (e) => {
     e.preventDefault();
-    if (activeStep < steps.length) {
+    if (activeStep == 2) {
+      navigate("/cart/payment_status");
+    } else if (activeStep < 2) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
 
-    setLogisticsInfo({
-      date: `${selectedDate.$D} ${selectedDate.$M} ${selectedDate.$y}`,
-      time: `${selectedTime.$H}.${selectedTime.$m} `,
-      place: `${address} ${selectedNames.tambon} ${selectedNames.amphure} ${selectedNames.province}`,
-    });
+    if (selectedDate && selectedTime && address && selectedNames) {
+      let addressSummary = {
+        date: `${selectedDate.$D} ${getMonthInTh(selectedDate.$M)} ${
+          selectedDate.$y
+        }`,
+        time: `${selectedTime.$H}.${String(selectedTime.$m).padStart(2, "0")}`,
+        place: `${address} ${selectedNames.tambon} ${selectedNames.amphure} ${selectedNames.province}`,
+      };
+
+      if (moreInfo) {
+        addressSummary = { ...addressSummary, moreInfos: moreInfo };
+      }
+
+      setLogisticsInfo(addressSummary);
+    }
   };
 
   const handleBack = (e) => {
@@ -57,16 +90,6 @@ export default function StepButtons() {
     }
     return false;
   };
-
-  console.log(
-    activeStep,
-    setActiveStep,
-    netPrice,
-    selectedDate,
-    selectedTime,
-    address,
-    selectedNames
-  );
 
   return (
     <div className="bottom-navigator w-full h-[72px] md:h-[92px] bg-white border-solid border-[1px] border-t-gray-300 sticky bottom-0 z-10 overflow-hidden">
