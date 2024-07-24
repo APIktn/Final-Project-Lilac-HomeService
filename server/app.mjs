@@ -6,8 +6,8 @@ import adminRouter from "./routes/admins.mjs";
 import uploadsRouter from "./routes/upload.mjs";
 import cartsRouter from "./routes/cart-routes.mjs";
 import technicianRouter from "./routes/technicians.mjs";
-import Stripe from "stripe";
 import "dotenv/config";
+import paymentRoutes from "./routes/paymentRoutes.mjs";
 
 import {
   authenticateToken,
@@ -17,9 +17,6 @@ import {
 
 const app = express();
 const port = 4000;
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-
-const stripe = Stripe(stripeSecretKey);
 
 app.use(
   cors({
@@ -42,34 +39,12 @@ app.use(
   authorizeTechnician,
   technicianRouter
 );
+app.use("/api/payments", paymentRoutes);
 
 app.use("/", servicesRouter);
 
 app.get("/test", (req, res) => {
   return res.json("Server API is working 🚀");
-});
-
-app.post("/create-payment-intent", async (req, res) => {
-  const { amount } = req.body;
-
-  try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency: "thb",
-    });
-
-    res.send({
-      clientSecret: paymentIntent.client_secret,
-    });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
-
-app.get("/config", (req, res) => {
-  res.send({
-    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-  });
 });
 
 app.listen(port, () => {
