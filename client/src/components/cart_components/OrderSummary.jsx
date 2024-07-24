@@ -12,7 +12,7 @@ import axios from "axios";
 function OrderSummary({ summaryOrder, service_name }) {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
-  const { activeStep, netPrice, setNetPrice, logisticsInfo } =
+  const { activeStep, netPrice, setNetPrice, logisticsInfo, setOrder, order } =
     useContext(CartContext);
 
   const countProducts = (servicesArray) => {
@@ -36,6 +36,10 @@ function OrderSummary({ summaryOrder, service_name }) {
   };
 
   const summaryData = countProducts(summaryOrder);
+  const serviceInfo = summaryData.map((item) => ({
+    service_name: item.name,
+    service_amount: item.count,
+  }));
 
   const fetchNetPrice = async (summaryData, service_name) => {
     try {
@@ -43,30 +47,21 @@ function OrderSummary({ summaryOrder, service_name }) {
         `http://localhost:4000/cart/${service_name}`,
         { summaryData }
       );
-      setNetPrice(response.data.netPrice);
+      await setNetPrice(response.data.netPrice);
     } catch (error) {
       console.error("Error fetching net price from server", error);
     }
   };
-
-  // const summaryPrice = summaryData.reduce(
-  //   (acc, curr) => (acc += curr.price * curr.count),
-  //   0
-  // );
-
-  // const summaryPrice = function summaryPrice() {
-  //   const net = summaryData.reduce(
-  //     (acc, curr) => (acc += curr.price * curr.count),
-  //     0
-  //   );
-
-  //   setNetPrice(net);
-  //   return net;
-  // };
+  useEffect(() => {
+    if (order) {
+      console.log("Data in order:", order);
+    }
+  }, [order]);
 
   useEffect(() => {
     if (summaryOrder.length > 0) {
       fetchNetPrice(summaryData, service_name);
+      setOrder({ serviceInfo });
     }
   }, [summaryOrder]);
 
