@@ -562,7 +562,7 @@ function AdminDashboard() {
                   </div>
                   <div className="col-span-1 -ml-[112px]">{item.position_id}</div>
                   <div className="col-span-3 -ml-[112px]">{item.category_name}</div>
-                  <div className="col-span-3 -ml-[112px]">
+                  <div className="col-span-3 -ml-[120px]">
                     {formatDateTime(item.created_at)}
                   </div>
                   <div className="col-span-3 -ml-[112px]">
@@ -572,7 +572,7 @@ function AdminDashboard() {
                     <img
                       src={vectorBin}
                       alt="Delete"
-                      className="cursor-pointer ml-[1170px] -mt-20"
+                      className="cursor-pointer ml-[1175px] -mt-20"
                       onClick={() => handleDeleteClick(item)}
                     />
                     <img

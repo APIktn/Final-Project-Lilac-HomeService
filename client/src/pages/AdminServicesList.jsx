@@ -481,7 +481,7 @@ function AdminServiceList() {
       setFilteredServices(updatedGroupedServices);
       setShowDeleteModal(false);
       setItemToDelete(null);
-      window.location.href = "/admin/promotion";  
+      window.location.href = "/admin/service";  
     } catch (error) {
       console.error("Error deleting service:", error);
     }
@@ -558,7 +558,7 @@ function AdminServiceList() {
       <div className="flex-1 flex flex-col bg-[#EFEFF2]">
         {/* Admin Topbar */}
         <div className="bg-white p-4 flex  items-center">
-          <div className="text-[20px] font-medium ml-4 mr-[720px] w-[76px]">บริการ</div>
+          <div className="text-[20px] font-medium ml-5 mr-[725px] w-[76px]">บริการ</div>
           <div className="flex items-center ">
           <div className="flex w-72 h-11 border rounded-md p-2 items-center ">
               <img
@@ -575,7 +575,7 @@ function AdminServiceList() {
               />
             </div>
             <button
-              onClick={() => navigate("/admin/category/create")}
+              onClick={() => navigate("/admin/service/create")}
               className="bg-[#336DF2] text-white -pt-[6px] px-4 rounded-md w-40 h-11 font-medium text-[16px] flex items-center justify-center ml-6"
             >
               <span>เพิ่มบริการ</span><span className="text-[25px] ml-3" >+</span>
@@ -591,85 +591,97 @@ function AdminServiceList() {
         ) : (
           <div className="p-4 overflow-y-auto">
            {searchTerm ? (
-      <div className="flex flex-col">
-  {filteredServices.flatMap(({ category, services }) =>
-    services.map((service, index) => {
-      // Determine the style for the current category
-      const categoryStyle = categoryStyles[category.category_name] || {
-        backgroundColor: "#fde68a",
-        color: "#f97316",
-      };
-
-      return (
-        <div
-          key={service.service_id}
-          draggable
-          onDragStart={(e) => handleDragStart(e, service, category.category_id)}
-          onDrop={(e) => handleDrop(e, index, category.category_id)}
-          onDragOver={handleDragOver}
-          className="flex border-b-2 text-[14px] text-[#646C80] h-[88px]"
-        >
-          <div className="flex-1 p-2">
-            {groupedServices.flatMap(({ services }) => services).findIndex(s => s.service_id === service.service_id) + 1}
+            
+            <div className="bg-white rounded-lg shadow-md  mx-4 my-4">
+            <div className="flex flex-col">
+              {/* Header Row */}
+              <div className="grid grid-cols-6 gap-3 items-center bg-[#E6E7EB] rounded-md p-2 border border-[#EFEFF2] text-[14px] font-normal text-[#646C80] h-[41px] ">
+                {/* <div className="col-span-1 "></div> */}
+                <div className="col-span-1 ml-[75px]">ลำดับ</div>
+                <div className="col-span-1 -ml-9">ชื่อบริการ</div>
+                <div className="col-span-1 -ml-8">หมวดหมู่</div>
+                <div className="col-span-1 -ml-8">สร้างเมื่อ</div>
+                <div className="col-span-1 -ml-1">แก้ไขล่าสุด</div>
+                <div className="col-span-1 ml-[104px]">Action</div>
+              </div>
+          
+              {/* Service Rows */}
+              <div className="flex flex-col">
+            {filteredServices.flatMap(({ category, services }) =>
+              services.map((service, index) => {
+                // Determine the style for the current category
+                const categoryStyle = categoryStyles[category.category_name] || {
+                  backgroundColor: "#fde68a",
+                  color: "#f97316",
+                };
+          
+                return (
+                  <div
+                    key={service.service_id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, service, category.category_id)}
+                    onDrop={(e) => handleDrop(e, index, category.category_id)}
+                    onDragOver={handleDragOver}
+                    className="grid grid-cols-9 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
+                  >
+                    <div className="flex-1 ml-[99px]">
+                      {groupedServices.flatMap(({ services }) => services).findIndex(s => s.service_id === service.service_id) + 1}
+                    </div>
+                    <div className="col-span-1  -ml-[108px]">
+                              <img src={vectorDragDrop} alt="DragDrop" />                    
+                            </div>
+                            <div className="col-span-1 -ml-[260px]">
+                              <img src={vectorDragDrop} alt="DragDrop" />                    
+                            </div>
+                    <div className="flex-2 p-2 -ml-[250px]">{service.service_name}</div>
+                    <div
+                      className="col-span-2 w-fit -ml-[170px] "
+                      style={{
+                        backgroundColor: categoryStyle.backgroundColor,
+                        color: categoryStyle.color,
+                        padding: "4px 10px",
+                        borderRadius: "8px",
+                        margin:"px",
+                        fontweight:"400",
+                        fontSize:"12px",
+                      }}
+                    >
+                      <p className="text-xs ">{category.category_name}</p>
+                    </div>
+                    <div className="flex-1 p-2 -ml-[250px]">{formatDateTime(service.created_at)}</div>
+                    <div className="flex-1 p-2 -ml-[155px]">{formatDateTime(service.updated_at)}</div>
+                    <div className="col-span-1 flex flex-row gap-4  mt-20 -ml-24">
+                              <img
+                                src={vectorBin}
+                                alt="Delete"
+                                className="cursor-pointer ml-[117px] -mt-20"
+                                onClick={() => handleDeleteClick(service)}
+                              />
+                              <img
+                                src={vectorEdit}
+                                alt="Edit"
+                                className="cursor-pointer -mt-20 ml-5"
+                                onClick={() =>
+                                  navigate(`/admin/category/edit/${item.category_id}`)
+                                }
+                              />
+                            </div>
+                           </div>
+                );
+              })
+            )}
           </div>
-          <div className="col-span-1  ml-[25px]">
-                    <img src={vectorDragDrop} alt="DragDrop" />                    
-                  </div>
-                  <div className="col-span-1 -ml-[75px]">
-                    <img src={vectorDragDrop} alt="DragDrop" />                    
-                  </div>
-          <div className="flex-2 p-2">{service.service_name}</div>
-          <div
-            className="flex-1 p-2 flex items-center"
-            style={{
-              backgroundColor: categoryStyle.backgroundColor,
-              color: categoryStyle.color,
-              padding: "4px 10px",
-              borderRadius: "8px",
-            }}
-          >
-            <p className="text-xs">{category.category_name}</p>
+            </div>
           </div>
-          <div className="flex-1 p-2">{formatDateTime(service.created_at)}</div>
-          <div className="flex-1 p-2">{formatDateTime(service.updated_at)}</div>
-          <div className="col-span-1 flex flex-row gap-4  ">
-                    <img
-                      src={vectorBin}
-                      alt="Delete"
-                      className="cursor-pointer ml-[1170px] -mt-20"
-                      onClick={() => handleDeleteClick(service)}
-                    />
-                    <img
-                      src={vectorEdit}
-                      alt="Edit"
-                      className="cursor-pointer -mt-20 ml-5"
-                      onClick={() =>
-                        navigate(`/admin/category/edit/${item.category_id}`)
-                      }
-                    />
-                  </div>
-          {/* <div className="flex-1 p-2 flex items-center justify-center">
-            <button
-              className="bg-[#FF5F5F] text-white py-1 px-2 rounded-md"
-              onClick={() => handleDeleteClick(service)}
-            >
-              ลบ
-            </button>
-          </div> */}
-        </div>
-      );
-    })
-  )}
-</div>
 ) : (
   <div className="bg-white rounded-lg shadow-md  mx-4 my-4">
   <div className="flex flex-col">
     {/* Header Row */}
     <div className="grid grid-cols-6 gap-3 items-center bg-[#E6E7EB] rounded-md p-2 border border-[#EFEFF2] text-[14px] font-normal text-[#646C80] h-[41px] ">
       {/* <div className="col-span-1 "></div> */}
-      <div className="col-span-1 ml-20">ลำดับ</div>
+      <div className="col-span-1 ml-[75px]">ลำดับ</div>
       <div className="col-span-1 -ml-9">ชื่อบริการ</div>
-      <div className="col-span-1 -ml-14">หมวดหมู่</div>
+      <div className="col-span-1 -ml-8">หมวดหมู่</div>
       <div className="col-span-1 -ml-8">สร้างเมื่อ</div>
       <div className="col-span-1 -ml-1">แก้ไขล่าสุด</div>
       <div className="col-span-1 ml-[104px]">Action</div>
@@ -692,34 +704,35 @@ function AdminServiceList() {
           onDragStart={(e) => handleDragStart(e, service, category.category_id)}
           onDrop={(e) => handleDrop(e, index, category.category_id)}
           onDragOver={handleDragOver}
-          className="grid grid-cols-10 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
+          className="grid grid-cols-9 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
         >
-          <div className="flex-1 ml-[100px]">
+          <div className="flex-1 ml-[99px]">
             {groupedServices.flatMap(({ services }) => services).findIndex(s => s.service_id === service.service_id) + 1}
           </div>
-          <div className="col-span-1  -ml-[97px]">
+          <div className="col-span-1  -ml-[111px]">
                     <img src={vectorDragDrop} alt="DragDrop" />                    
                   </div>
-                  <div className="col-span-1 -ml-[235px]">
+                  <div className="col-span-1 -ml-[260px]">
                     <img src={vectorDragDrop} alt="DragDrop" />                    
                   </div>
-          <div className="flex-2 p-2 -ml-[205px]">{service.service_name}</div>
+          <div className="flex-2 p-2 -ml-[250px]">{service.service_name}</div>
           <div
-            className="col-span-2 w-fit -ml-[140px] "
+            className="col-span-2 w-fit -ml-[170px] "
             style={{
               backgroundColor: categoryStyle.backgroundColor,
               color: categoryStyle.color,
               padding: "4px 10px",
               borderRadius: "8px",
               margin:"px",
-
+              fontweight:"400",
+              fontSize:"12px",
             }}
           >
             <p className="text-xs ">{category.category_name}</p>
           </div>
-          <div className="flex-1 p-2 -ml-[160px]">{formatDateTime(service.created_at)}</div>
-          <div className="flex-1 p-2 -ml-[50px]">{formatDateTime(service.updated_at)}</div>
-          <div className="col-span-1 flex flex-row gap-4  mt-20 ml-5">
+          <div className="flex-1 p-2 -ml-[250px]">{formatDateTime(service.created_at)}</div>
+          <div className="flex-1 p-2 -ml-[155px]">{formatDateTime(service.updated_at)}</div>
+          <div className="col-span-1 flex flex-row gap-4  mt-20 -ml-24">
                     <img
                       src={vectorBin}
                       alt="Delete"

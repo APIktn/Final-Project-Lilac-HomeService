@@ -182,7 +182,7 @@ function AdminPromotion() {
       <div className="flex-1 flex flex-col bg-[#EFEFF2] ">
         {/* Admin Topbar */}
         <div className="bg-white p-4 flex items-center">
-          <div className="text-[20px] font-medium ml-4 mr-[480px] w-[200px]">Promotion Code</div>
+          <div className="text-[20px] font-medium ml-4 mr-[465px] w-[200px]">Promotion Code</div>
           <div className="flex items-center w-[612px]">
             <div className="flex w-[350px] h-11 border rounded-md p-2 items-center">
               <img
@@ -265,7 +265,7 @@ function AdminPromotion() {
                     <img
                       src={vectorBin}
                       alt="Bin"
-                      className="cursor-pointer -ml-6"
+                      className="cursor-pointer -ml-5"
                       onClick={() => handleDeleteClick(item)}
                     />
                     <img
