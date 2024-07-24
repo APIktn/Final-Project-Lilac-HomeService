@@ -21,7 +21,6 @@ function CartForm() {
       const result = await axios.get(
         `http://localhost:4000/cart/${service_name}`
       );
-      console.log(result.data.data);
       setServices(result.data.data);
     } catch (error) {
       console.error("Error");
@@ -69,7 +68,7 @@ function CartForm() {
             <ServicePayment />
           )}
         </div>
-        <OrderSummary summaryOrder={summaryOrder} />
+        <OrderSummary summaryOrder={summaryOrder} service_name={service_name} />
       </div>
     </div>
   );

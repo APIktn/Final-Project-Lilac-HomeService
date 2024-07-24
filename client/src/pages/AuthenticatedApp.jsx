@@ -7,6 +7,7 @@ import CustomerServiceList from "./CustomerServiceList";
 import CartPage from "./CartPage";
 import CustomerServiceHistory from "./CustomerServiceHistory";
 import CustomerInfo from "./CustomerInfo";
+import Payment_status_page from "./Payment_status_page";
 
 function AuthenticatedApp() {
   return (
@@ -17,6 +18,7 @@ function AuthenticatedApp() {
         <Route path="/servicelist" element={<ServiceList_user />} />
         <Route path="/profile" element={<UserProfilePage />} />
         <Route path="/cart/:service_name" element={<CartPage />} />
+        <Route path="/cart/payment_status" element={<Payment_status_page />} />
         <Route path="/CustomerServiceList" element={<CustomerServiceList />} />
         <Route
           path="/CustomerServiceHistory"
