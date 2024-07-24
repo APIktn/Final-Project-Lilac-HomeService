@@ -17,6 +17,7 @@ import AdminServiceCreate from "./AdminServicesCreated";
 import DashBoardService from "./AdminServicesList";
 import AdminCategoryCreate from "./AdminCategoyryCreate";
 import AdminCategoryEdit from "./AdminCategoryEdit";
+import AdminPromotionEdit from "./AdminPromotionEdit";
 
 function AdminAuthenticatedApp() {
   return (
@@ -50,6 +51,10 @@ function AdminAuthenticatedApp() {
         <Route
           path="/admin/category/edit/:category_id"
           element={<AdminCategoryEdit />}
+        />
+        <Route
+          path="/admin/promotion/edit/:promo_id"
+          element={<AdminPromotionEdit />}
         />
       </Routes>
     </div>
