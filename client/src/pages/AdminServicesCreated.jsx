@@ -360,7 +360,7 @@ function AdminServiceCreate() {
                         onDrop={handleDropUpload}
                       >
                         {uploadedImage ? (
-                          <div className="image-preview-container w-[350px] h-[140px]">
+                          <div className="image-preview-container w-[350px] h-[140px] ">
                             <img
                               className="image-preview w-[350px] h-[140px] object-cover"
                               src={URL.createObjectURL(uploadedImage)}
