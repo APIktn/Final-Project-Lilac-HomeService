@@ -15,7 +15,6 @@ export default function StepButtons() {
     moreInfo,
     selectedNames,
     setLogisticsInfo,
-    logisticsInfo,
   } = useContext(CartContext);
 
   const monthMap = {
