@@ -99,4 +99,32 @@ adminserviceRouter.post("/post", upload.single("image"), async (req, res) => {
   }
 });
 
+adminserviceRouter.get("/:service_name", async (req, res) => {
+  const serviceName = req.params.service_name; // Fixing this line
+  let result;
+  try {
+    result = await supabase
+      .from("services")
+      .select('*,service_list(*),categories(*)')
+      .eq("service_name", serviceName)
+      
+  } catch {
+    return res.status(500).json({
+      message: "Error fetching category",
+    });
+  }
+
+  if (!result.data || result.data.length === 0) {
+    return res.status(404).json({
+      "Not Found": "Not Found",
+    });
+  }
+
+  return res.status(200).json({
+    OK: "Successfully .",
+    data: result.data,
+  });
+});
+
+
 export default adminserviceRouter;

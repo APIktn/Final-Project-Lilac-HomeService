@@ -326,7 +326,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAdminAuth } from "../contexts/adminAuthentication";
 import vectorHouse from "../assets/icons/Vector-house.svg";
 import vectorCategory from "../assets/icons/Vector-category.svg";
@@ -340,6 +340,7 @@ import vectorEdit from "../assets/icons/Vector-edit.svg";
 import vectorAlert from "../assets/icons/Vector-alert.svg";
 import vectorClose from "../assets/icons/Vector-close.svg";
 
+
 function AdminServiceList() {
   const [groupedServices, setGroupedServices] = useState({});
   const [loading, setLoading] = useState(true);
@@ -350,7 +351,8 @@ function AdminServiceList() {
   const { admin } = state;
   const [filteredServices, setFilteredServices] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const { service_name } = useParams();
+  
   
   const navigate = useNavigate();
 
@@ -544,7 +546,7 @@ function AdminServiceList() {
             </div>
           </div>
         </div>
-        <div className="flex items-center p-2 hover:bg-[#022B87] cursor-pointer  ml-5 mb-16">
+        <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer  ml-5 mb-16">
         <img src={vectorLogout} alt="Logout" className="mr-2" />
           <span className="text-[#F1F1F1] text-base ml-2"
                   onClick={() => {
@@ -662,7 +664,7 @@ function AdminServiceList() {
                                 alt="Edit"
                                 className="cursor-pointer -mt-20 ml-5"
                                 onClick={() =>
-                                  navigate(`/admin/category/edit/${item.category_id}`)
+                                  navigate(`/admin/service/view/${service.service_name}`)
                                 }
                               />
                             </div>
@@ -744,7 +746,7 @@ function AdminServiceList() {
                       alt="Edit"
                       className="cursor-pointer -mt-20 ml-5"
                       onClick={() =>
-                        navigate(`/admin/category/edit/${item.category_id}`)
+                        navigate(`/admin/service/view/${service.service_name}`)
                       }
                     />
                   </div>
@@ -755,16 +757,10 @@ function AdminServiceList() {
 </div>
   </div>
 </div>
-
-
-  
-  
-  )}
+    )}
           </div>
         )}
-        
-
-        {/* Delete Confirmation Modal */}
+         {/* Delete Confirmation Modal */}
          {/* Modal Content */}
          {showDeleteModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">

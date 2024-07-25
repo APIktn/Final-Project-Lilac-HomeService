@@ -167,7 +167,7 @@ function AdminDashboard() {
             </div>
           </div>
         </div>
-        <div className="flex items-center p-2 hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
+        <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
           <img src={vectorLogout} alt="Logout" className="mr-2" />      
           <span className="text-[#F1F1F1] text-base ml-2" 
                 onClick={() => {

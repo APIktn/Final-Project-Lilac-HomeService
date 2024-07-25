@@ -17,12 +17,15 @@ import vectorClose from "../assets/icons/Vector-close.svg";
 import vectorDate from "../assets/icons/Vector-date.svg";
 import vectorTime from "../assets/icons/Vector-time.svg";
 import vectorBin from "../assets/icons/Vector-bin.svg";
+import { useAdminAuth } from "../contexts/adminAuthentication";
 
 import {
   transformToUppercase,
   validatePromotionCode,
 } from "../utils/promotionCodeUtils";
 function AdminCreatePromotion() {
+  const { state, logout } = useAdminAuth();
+  const { admin } = state;
   const [createCode, setCreateCode] = useState(false);
   const [promotionName, setPromotionName] = useState("");
   const [promotionType, setPromotionType] = useState("fixed");
