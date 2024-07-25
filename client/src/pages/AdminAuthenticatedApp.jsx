@@ -36,7 +36,7 @@ function AdminAuthenticatedApp() {
         <Route path="/servicelist" element={<ServiceList_admin />} />
         <Route path="/test" element={<TestAdmin />} />
         <Route path="/cart/:service_name" element={<CartPage_admin />} />
-        <Route path="/cart/payment_status" element={<Payment_status_page />} />
+        <Route path="/payment-status" element={<Payment_status_page />} />
         <Route path="/pending" element={<Pending />} />
         <Route path="/inProgress" element={<InProgress />} />
         <Route path="/completed" element={<Completed />} />

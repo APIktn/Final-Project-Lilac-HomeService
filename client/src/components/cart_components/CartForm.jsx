@@ -29,7 +29,6 @@ function CartForm() {
     }
   };
 
-  console.log(services);
   const getSummaryOrder = (orderData) => {
     setSummaryOrder((oldOrderData) => [...oldOrderData, orderData]);
   };

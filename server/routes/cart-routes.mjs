@@ -51,7 +51,6 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
   try {
     const { user_id } = req.user;
 
-    // Insert order and get order_id
     const { data: orderData, error: orderError } = await supabase
       .from("orders")
       .insert([{ user_id }])
@@ -89,8 +88,8 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
     } = billInfo;
 
     const orderDetails = order.serviceInfo.map((item) => ({
-      order_id, // Associate each order detail with the created order
-      service_id: serviceId, // Ensure this is correctly populated
+      order_id,
+      service_id: serviceId,
       service_lists: item.service_name,
       quantity_per_order: item.service_amount,
       order_date: date,
@@ -103,7 +102,6 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
       total_amount: netPrice,
     }));
 
-    // Insert order details
     const { data: orderDetailData, error: orderDetailError } = await supabase
       .from("orderdetails")
       .insert(orderDetails);
@@ -120,7 +118,7 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
 
     res.status(200).json({
       message: "Bill info received and stored successfully",
-      orderDetailData,
+      order_id,
     });
   } catch (error) {
     console.error("Error inserting order details:", error);
@@ -128,6 +126,33 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
       .status(500)
       .json({ message: "Server error, could not store bill info" });
   }
+
+  //------Fetch Bill Info -----////
+  cartsRouter.get("/bill/:order_id", authenticateToken, async (req, res) => {
+    const { order_id } = req.params;
+
+    try {
+      const { data: orderDetails, error } = await supabase
+        .from("orderdetails")
+        .select("*")
+        .eq("order_id", order_id);
+
+      if (error) {
+        throw error;
+      }
+
+      if (!orderDetails) {
+        return res.status(404).json({ message: "Order details not found" });
+      }
+
+      res.status(200).json(orderDetails);
+    } catch (error) {
+      console.error("Error fetching order details:", error);
+      res
+        .status(500)
+        .json({ message: "Server error, could not fetch order details" });
+    }
+  });
 });
 
 export default cartsRouter;

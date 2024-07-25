@@ -92,6 +92,9 @@ export default function StepButtons() {
           billInfo
         );
         console.log("Server response:", response.data);
+        navigate("/payment-status", {
+          state: { orderId: response.data.order_id },
+        });
       } catch (error) {
         console.error("Error sending billInfo to server:", error);
       }
