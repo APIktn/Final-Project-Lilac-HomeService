@@ -26,15 +26,7 @@ orderRouter.get("/completeorder", authenticateToken, async (req, res) => {
           orders!inner (
             order_id
           ),
-          service_lists,
-          service_id,
-          status,
-          order_date,
-          time,
-          quantity_per_order,
-          total_amount,
-          technician_id,
-          order_code
+          *
         `
       )
       .eq("orders.user_id", user_id)
@@ -91,15 +83,7 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
             orders!inner (
               order_id
             ),
-            service_lists,
-            service_id,
-            status,
-            order_date,
-            time,
-            quantity_per_order,
-            total_amount,
-            technician_id,
-            order_code
+           *
           `
       )
       .eq("orders.user_id", user_id)
