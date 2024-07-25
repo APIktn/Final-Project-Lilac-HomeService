@@ -26,15 +26,7 @@ orderRouter.get("/completeorder", authenticateToken, async (req, res) => {
           orders!inner (
             order_id
           ),
-          service_lists,
-          service_id,
-          status,
-          order_date,
-          time,
-          quantity_per_order,
-          total_amount,
-          technician_id,
-          order_code
+          *
         `
       )
       .eq("orders.user_id", user_id)
@@ -91,15 +83,7 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
             orders!inner (
               order_id
             ),
-            service_lists,
-            service_id,
-            status,
-            order_date,
-            time,
-            quantity_per_order,
-            total_amount,
-            technician_id,
-            order_code
+           *
           `
       )
       .eq("orders.user_id", user_id)
@@ -157,17 +141,10 @@ orderRouter.get("/pending", authenticateToken, async (req, res) => {
             order_id,
             user_id
           ),
-          service_lists,
-          service_id,
-          status,
-          order_date,
-          time,
-          quantity_per_order,
-          total_amount,
-          technician_id,
-          order_code
+          *
         `
       )
+
       .in("status", ["รอดำเนินการ"]);
 
     if (error || !orderdetailData) {
@@ -180,22 +157,34 @@ orderRouter.get("/pending", authenticateToken, async (req, res) => {
 
     const { data: userData, error: userError } = await supabase
       .from("users")
-      .select("firstname, lastname, user_id")
+      .select("firstname, lastname, user_id, tel_num")
       .in("user_id", userIds);
 
     if (userError) {
       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลผู้ใช้งานได้" });
     }
 
+    // Map user details to include both full name and phone number
     const usersMap = userData.reduce((acc, user) => {
-      acc[user.user_id] = `${user.firstname} ${user.lastname}`;
+      acc[user.user_id] = {
+        fullname: `${user.firstname} ${user.lastname}`,
+        tel: user.tel_num,
+      };
       return acc;
     }, {});
 
-    const enrichedOrderDetails = orderdetailData.map((order) => ({
-      ...order,
-      userfullname: usersMap[order.orders.user_id] || "ไม่พบชื่อผู้ใช้งาน",
-    }));
+    // Enrich order details with both full name and phone number
+    const enrichedOrderDetails = orderdetailData.map((order) => {
+      const user = usersMap[order.orders.user_id] || {
+        fullname: "ไม่พบชื่อผู้ใช้งาน",
+        tel: "ไม่พบหมายเลขโทรศัพท์",
+      };
+      return {
+        ...order,
+        userfullname: user.fullname,
+        usertel: user.tel,
+      };
+    });
 
     res.json({ data: enrichedOrderDetails });
   } catch (error) {
@@ -218,17 +207,10 @@ orderRouter.get("/inProgress", authenticateToken, async (req, res) => {
             order_id,
             user_id
           ),
-          service_lists,
-          service_id,
-          status,
-          order_date,
-          time,
-          quantity_per_order,
-          total_amount,
-          technician_id,
-          order_code
+          *
         `
       )
+
       .in("status", ["กำลังดำเนินการ"]);
 
     if (error || !orderdetailData) {
@@ -241,22 +223,34 @@ orderRouter.get("/inProgress", authenticateToken, async (req, res) => {
 
     const { data: userData, error: userError } = await supabase
       .from("users")
-      .select("firstname, lastname, user_id")
+      .select("firstname, lastname, user_id, tel_num")
       .in("user_id", userIds);
 
     if (userError) {
       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลผู้ใช้งานได้" });
     }
 
+    // Map user details to include both full name and phone number
     const usersMap = userData.reduce((acc, user) => {
-      acc[user.user_id] = `${user.firstname} ${user.lastname}`;
+      acc[user.user_id] = {
+        fullname: `${user.firstname} ${user.lastname}`,
+        tel: user.tel_num,
+      };
       return acc;
     }, {});
 
-    const enrichedOrderDetails = orderdetailData.map((order) => ({
-      ...order,
-      userfullname: usersMap[order.orders.user_id] || "ไม่พบชื่อผู้ใช้งาน",
-    }));
+    // Enrich order details with both full name and phone number
+    const enrichedOrderDetails = orderdetailData.map((order) => {
+      const user = usersMap[order.orders.user_id] || {
+        fullname: "ไม่พบชื่อผู้ใช้งาน",
+        tel: "ไม่พบหมายเลขโทรศัพท์",
+      };
+      return {
+        ...order,
+        userfullname: user.fullname,
+        usertel: user.tel,
+      };
+    });
 
     res.json({ data: enrichedOrderDetails });
   } catch (error) {
@@ -278,17 +272,10 @@ orderRouter.get("/completed", authenticateToken, async (req, res) => {
             order_id,
             user_id
           ),
-          service_lists,
-          service_id,
-          status,
-          order_date,
-          time,
-          quantity_per_order,
-          total_amount,
-          technician_id,
-          order_code
+          *
         `
       )
+
       .in("status", ["ดำเนินการสำเร็จ"]);
 
     if (error || !orderdetailData) {
@@ -301,22 +288,34 @@ orderRouter.get("/completed", authenticateToken, async (req, res) => {
 
     const { data: userData, error: userError } = await supabase
       .from("users")
-      .select("firstname, lastname, user_id")
+      .select("firstname, lastname, user_id, tel_num")
       .in("user_id", userIds);
 
     if (userError) {
       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลผู้ใช้งานได้" });
     }
 
+    // Map user details to include both full name and phone number
     const usersMap = userData.reduce((acc, user) => {
-      acc[user.user_id] = `${user.firstname} ${user.lastname}`;
+      acc[user.user_id] = {
+        fullname: `${user.firstname} ${user.lastname}`,
+        tel: user.tel_num,
+      };
       return acc;
     }, {});
 
-    const enrichedOrderDetails = orderdetailData.map((order) => ({
-      ...order,
-      userfullname: usersMap[order.orders.user_id] || "ไม่พบชื่อผู้ใช้งาน",
-    }));
+    // Enrich order details with both full name and phone number
+    const enrichedOrderDetails = orderdetailData.map((order) => {
+      const user = usersMap[order.orders.user_id] || {
+        fullname: "ไม่พบชื่อผู้ใช้งาน",
+        tel: "ไม่พบหมายเลขโทรศัพท์",
+      };
+      return {
+        ...order,
+        userfullname: user.fullname,
+        usertel: user.tel,
+      };
+    });
 
     res.json({ data: enrichedOrderDetails });
   } catch (error) {
@@ -419,8 +418,7 @@ orderRouter.get("/technicians", authenticateToken, async (req, res) => {
   }
 });
 //
-//sss
-
+//ตัวอย่าง
 orderRouter.get(
   "/orderdetails-with-technician-names",
   authenticateToken,
@@ -493,5 +491,296 @@ orderRouter.get(
     }
   }
 );
+
+// ข้อมูลรอดำเนินงานเฉพาะของช่างแต่ละคน
+orderRouter.get("/TechPending", authenticateToken, async (req, res) => {
+  try {
+    const { user_id } = req.user;
+
+    const { data: orderdetailData, error } = await supabase
+      .from("orderdetails")
+      .select(
+        `
+          order_detail_id,
+          orders (
+            order_id,
+            user_id
+          ),
+          *
+        `
+      )
+      .eq("technician_id", user_id)
+      .in("status", ["รอดำเนินการ"]);
+
+    if (error || !orderdetailData) {
+      return res.status(404).json({ error: "ไม่พบข้อมูลผู้ใช้งาน" });
+    }
+
+    const userIds = [
+      ...new Set(orderdetailData.map((order) => order.orders.user_id)),
+    ];
+
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("firstname, lastname, user_id, tel_num")
+      .in("user_id", userIds);
+
+    if (userError) {
+      return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลผู้ใช้งานได้" });
+    }
+
+    // Map user details to include both full name and phone number
+    const usersMap = userData.reduce((acc, user) => {
+      acc[user.user_id] = {
+        fullname: `${user.firstname} ${user.lastname}`,
+        tel: user.tel_num,
+      };
+      return acc;
+    }, {});
+
+    // Enrich order details with both full name and phone number
+    const enrichedOrderDetails = orderdetailData.map((order) => {
+      const user = usersMap[order.orders.user_id] || {
+        fullname: "ไม่พบชื่อผู้ใช้งาน",
+        tel: "ไม่พบหมายเลขโทรศัพท์",
+      };
+      return {
+        ...order,
+        userfullname: user.fullname,
+        usertel: user.tel,
+      };
+    });
+
+    res.json({ data: enrichedOrderDetails });
+  } catch (error) {
+    console.error("Error in GET /customer:", error);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน" });
+  }
+});
+// ข้อมูลกำลังดำเนินงานเฉพาะของช่างแต่ละคน
+orderRouter.get("/TechinProgress", authenticateToken, async (req, res) => {
+  try {
+    const { user_id } = req.user;
+
+    const { data: orderdetailData, error } = await supabase
+      .from("orderdetails")
+      .select(
+        `
+          order_detail_id,
+          orders (
+            order_id,
+            user_id
+          ),
+          *
+        `
+      )
+      .eq("technician_id", user_id)
+      .in("status", ["กำลังดำเนินการ"]);
+
+    if (error || !orderdetailData) {
+      return res.status(404).json({ error: "ไม่พบข้อมูลผู้ใช้งาน" });
+    }
+
+    const userIds = [
+      ...new Set(orderdetailData.map((order) => order.orders.user_id)),
+    ];
+
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("firstname, lastname, user_id, tel_num")
+      .in("user_id", userIds);
+
+    if (userError) {
+      return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลผู้ใช้งานได้" });
+    }
+
+    // Map user details to include both full name and phone number
+    const usersMap = userData.reduce((acc, user) => {
+      acc[user.user_id] = {
+        fullname: `${user.firstname} ${user.lastname}`,
+        tel: user.tel_num,
+      };
+      return acc;
+    }, {});
+
+    // Enrich order details with both full name and phone number
+    const enrichedOrderDetails = orderdetailData.map((order) => {
+      const user = usersMap[order.orders.user_id] || {
+        fullname: "ไม่พบชื่อผู้ใช้งาน",
+        tel: "ไม่พบหมายเลขโทรศัพท์",
+      };
+      return {
+        ...order,
+        userfullname: user.fullname,
+        usertel: user.tel,
+      };
+    });
+
+    res.json({ data: enrichedOrderDetails });
+  } catch (error) {
+    console.error("Error in GET /customer:", error);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน" });
+  }
+});
+
+// ข้อมูลดำเนินการสำเร็จเฉพาะของช่างแต่ละคน
+orderRouter.get("/TechCompleted", authenticateToken, async (req, res) => {
+  try {
+    const { user_id } = req.user;
+
+    const { data: orderdetailData, error } = await supabase
+      .from("orderdetails")
+      .select(
+        `
+          order_detail_id,
+          orders (
+            order_id,
+            user_id
+          ),
+          *
+        `
+      )
+      .eq("technician_id", user_id)
+      .in("status", ["ดำเนินการสำเร็จ"]);
+
+    if (error || !orderdetailData) {
+      return res.status(404).json({ error: "ไม่พบข้อมูลผู้ใช้งาน" });
+    }
+
+    const userIds = [
+      ...new Set(orderdetailData.map((order) => order.orders.user_id)),
+    ];
+
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("firstname, lastname, user_id, tel_num")
+      .in("user_id", userIds);
+
+    if (userError) {
+      return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลผู้ใช้งานได้" });
+    }
+
+    // Map user details to include both full name and phone number
+    const usersMap = userData.reduce((acc, user) => {
+      acc[user.user_id] = {
+        fullname: `${user.firstname} ${user.lastname}`,
+        tel: user.tel_num,
+      };
+      return acc;
+    }, {});
+
+    // Enrich order details with both full name and phone number
+    const enrichedOrderDetails = orderdetailData.map((order) => {
+      const user = usersMap[order.orders.user_id] || {
+        fullname: "ไม่พบชื่อผู้ใช้งาน",
+        tel: "ไม่พบหมายเลขโทรศัพท์",
+      };
+      return {
+        ...order,
+        userfullname: user.fullname,
+        usertel: user.tel,
+      };
+    });
+
+    res.json({ data: enrichedOrderDetails });
+  } catch (error) {
+    console.error("Error in GET /customer:", error);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน" });
+  }
+});
+
+//รับงาน
+
+orderRouter.put("/updateJob", authenticateToken, async (req, res) => {
+  try {
+    const { user_id, new_status } = req.body;
+
+    // ตรวจสอบว่าค่าสถานะใหม่ถูกต้องหรือไม่
+    const validStatuses = ["กำลังรองาน", "กำลังทำงาน"];
+    if (!validStatuses.includes(new_status)) {
+      return res.status(400).json({ error: "สถานะใหม่ไม่ถูกต้อง" });
+    }
+
+    // อัพเดตสถานะในตาราง users
+    const { data, error } = await supabase
+      .from("users")
+      .update({ work_status: new_status })
+      .eq("user_id", user_id);
+
+    // ตรวจสอบข้อผิดพลาดในการอัพเดต
+    if (error) {
+      console.error("Error updating status:", error.message);
+      return res.status(500).json({ error: "ไม่สามารถอัพเดตสถานะได้" });
+    }
+
+    // ส่งข้อมูลตอบกลับเมื่ออัพเดตสำเร็จ
+    res.json({ message: "อัพเดตสถานะสำเร็จ", data });
+  } catch (error) {
+    console.error("Error in PUT /updateJob:", error.message);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในการอัพเดตสถานะผู้ใช้" });
+  }
+});
+
+///อัพเดทการ์ด tech
+orderRouter.put("/updateTechCard", authenticateToken, async (req, res) => {
+  try {
+    const { user_id, order_detail_id, new_status } = req.body;
+
+    // ตรวจสอบว่าค่าสถานะใหม่ถูกต้องหรือไม่
+    const validOrderStatuses = [
+      "รอดำเนินการ",
+      "กำลังดำเนินการ",
+      "ดำเนินการสำเร็จ",
+    ];
+    const validWorkStatuses = ["กำลังรองาน", "กำลังทำงาน"];
+
+    if (
+      !validOrderStatuses.includes(new_status) &&
+      !validWorkStatuses.includes(new_status)
+    ) {
+      return res.status(400).json({ error: "สถานะใหม่ไม่ถูกต้อง" });
+    }
+
+    // อัพเดตสถานะในตาราง orderdetails
+    if (validOrderStatuses.includes(new_status)) {
+      const { data: orderData, error: orderError } = await supabase
+        .from("orderdetails")
+        .update({ status: new_status })
+        .eq("order_detail_id", order_detail_id);
+
+      if (orderError) {
+        console.error("Error updating order status:", orderError);
+        return res
+          .status(500)
+          .json({ error: "ไม่สามารถอัพเดตสถานะคำสั่งซื้อได้" });
+      }
+
+      // ตรวจสอบว่า orderData มีค่าเป็น null หรือ undefined หรือไม่
+      // if (!orderData || orderData.length === 0) {
+      //   return res.status(404).json({ error: "ไม่พบคำสั่งซื้อที่ระบุ" });
+      // }
+
+      res.json({ message: "อัพเดตสถานะคำสั่งซื้อสำเร็จ", data: orderData });
+    }
+
+    // อัพเดตสถานะในตาราง users
+    else if (validWorkStatuses.includes(new_status)) {
+      const { data: userData, error: userError } = await supabase
+        .from("users")
+        .update({ work_status: new_status })
+        .eq("user_id", user_id);
+
+      if (userError) {
+        console.error("Error updating work status:", userError.message);
+        return res.status(500).json({ error: "ไม่สามารถอัพเดตสถานะผู้ใช้ได้" });
+      }
+
+      res.json({ message: "อัพเดตสถานะผู้ใช้สำเร็จ", data: userData });
+    }
+  } catch (error) {
+    console.error("Error in PUT /updateOrderStatus:", error);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในการอัพเดตสถานะ" });
+  }
+});
 
 export default orderRouter;
