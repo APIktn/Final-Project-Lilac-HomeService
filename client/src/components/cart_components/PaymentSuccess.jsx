@@ -2,7 +2,6 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import Bill from "./forms/Bill";
 
 function PaymentSuccess({ billInfo }) {
-  console.log("fetch billInfo:", billInfo);
   return (
     <div className="background w-full h-screen pt-[40px] px-4 md:pt-[52px] bg-[#F3F4F6]">
       <div className="detail-container h-auto max-w-[542px] bg-white border-solid border-[1px] border-[#CCD0D7] rounded-lg px-[16px] py-[40px] md:py-[48px] md:px-[60px] mx-auto flex flex-col items-center gap-4 md:gap-0">
