@@ -20,6 +20,7 @@ import DashBoardService from "./AdminServicesList";
 import Payment_status_page from "./Payment_status_page";
 import AdminCategoryCreate from "./AdminCategoyryCreate";
 import AdminCategoryEdit from "./AdminCategoryEdit";
+import AdminServiceEdit from "./AdminServiceEdit";
 import AdminPromotionEdit from "./AdminPromotionEdit";
 import AdminServiceView from "./AdminServiceView";
 import AdminServiceEdit from "./AsminServicesEdit";
