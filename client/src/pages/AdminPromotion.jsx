@@ -138,12 +138,13 @@ function AdminPromotion() {
       {/* Sidebar */}
       <div className="bg-[#001C59] w-[240px] flex flex-col justify-between">
         <div>
-        <div
+          <div
             className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
             onClick={() => navigate("/")}
           >
             <img src={vectorHouse} alt="House" className="w-[26.06px] h-[26.06px] mr-2" />
             <span className="text-[#336DF2] text-[20px] font-medium mt-1">HomeServices</span>
+
           </div>
           <div
             className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer"
@@ -165,11 +166,13 @@ function AdminPromotion() {
               alt="Promotion Code"
               className="mr-2 ml-2"
             />
-            <span className="text-[#F1F1F1] text-base ml-3">Promotion Code</span>
+            <span className="text-[#F1F1F1] text-base ml-3">
+              Promotion Code
+            </span>
           </div>
         </div>
         <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
-          <img src={vectorLogout} alt="Logout" className="mr-2" />
+          <img src={vectorLogout} alt="Logout" className="mr-2" />    
           <span className="text-[#F1F1F1] text-base ml-2"  
                 onClick={() => {
                 logout();
@@ -202,7 +205,8 @@ function AdminPromotion() {
               onClick={() => navigate("/admin/promotion/create")}
               className="bg-[#336DF2] text-white -pt-[6px] px-4 rounded-md w-[238px] h-11 font-medium text-[16px] flex items-center justify-center ml-6 "
             >
-              <span>เพิ่ม Promotion Code</span><span className="text-[25px] ml-3" >+</span>
+              <span>เพิ่ม Promotion Code</span>
+              <span className="text-[25px] ml-3">+</span>
             </button>
           </div>
         </div>
@@ -271,8 +275,10 @@ function AdminPromotion() {
                     <img
                       src={vectorEdit}
                       alt="Edit"
-                      className="cursor-pointer ml-9"
-                      onClick={() => navigate(`/admin/promotion/view`)}
+                      className="cursor-pointer"
+                      onClick={() =>
+                        navigate(`/admin/promotion/edit/${item.promo_id}`)
+                      }                
                     />
                   </div>
                 </div>
@@ -283,8 +289,8 @@ function AdminPromotion() {
       </div>
 
       {/* Delete Confirmation Modal */}
-          {/* Modal Content */}
-            {showDeleteModal && (
+      {/* Modal Content */}
+      {showDeleteModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded-2xl shadow-md">
             <div className="flex justify-between items-center mb-4 flex-col relative w-[300px] h-[30px] ">
@@ -295,14 +301,12 @@ function AdminPromotion() {
                 className="cursor-pointer absolute -right-2 -top-2"
                 onClick={handleDeleteCancel}
               />
-            </div>            
-            <p className="text-center  text-[20px]">
-              ยืนยันการลบรายการ?
-            </p>
+            </div>
+            <p className="text-center  text-[20px]">ยืนยันการลบรายการ?</p>
             <p className="text-center mb-4 text-[16px] text-[#636678]">
               คุณต้องการลบรายการ ' {itemToDelete ? itemToDelete.code : ""} '
             </p>
-            <p className="text-center mb-4 text-[16px] text-[#636678] -mt-4">              
+            <p className="text-center mb-4 text-[16px] text-[#636678] -mt-4">
               ใช่หรือไม่
             </p>
             <div className="flex justify-center">
@@ -321,8 +325,8 @@ function AdminPromotion() {
             </div>
           </div>
         </div>
-      )}                     
-          </div>      
+      )}
+    </div>
   );
 }
 
