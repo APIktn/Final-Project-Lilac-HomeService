@@ -42,8 +42,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
     fetchTechnicians();
   }, []);
 
-  const handleStatusChange = async (event) => {
-    const newStatus = event.target.value;
+  const handleStatusChange = async (newStatus) => {
     setStatus(newStatus);
 
     try {
@@ -97,7 +96,13 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
     }
   };
 
+  const handleAcceptJob = () => {
+    handleStatusChange("ดำเนินการสำเร็จ");
+  };
+
   const categoryStyle = categoryStyles[status.trim()] || {};
+
+  const technician = technicians.find((tech) => tech.id === selectedTechnician);
 
   return (
     <div className="w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-[8px] flex flex-col px-[24px] py-[16px] mb-[16px] overflow-hidden">
@@ -124,7 +129,6 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
             <p className="text-[14px] pr-4">สถานะ:</p>
             <Select
               value={status}
-              onChange={handleStatusChange}
               style={{
                 backgroundColor: categoryStyle.backgroundColor,
                 color: categoryStyle.color,
@@ -132,6 +136,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
                 minWidth: "auto",
                 height: "30px",
               }}
+              disabled
               MenuProps={{
                 PaperProps: {
                   style: {
@@ -142,15 +147,9 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
               }}
               className="text-[14px] text-gray-900 border rounded-[15px] p-1 px-3 ml-1"
             >
-              <MenuItem value="รอดำเนินการ" style={{ height: "30px" }}>
-                รอดำเนินการ
-              </MenuItem>
-              <MenuItem value="กำลังดำเนินการ" style={{ height: "30px" }}>
-                กำลังดำเนินการ
-              </MenuItem>
-              <MenuItem value="ดำเนินการสำเร็จ" style={{ height: "30px" }}>
-                ดำเนินการสำเร็จ
-              </MenuItem>
+              <MenuItem value="รอดำเนินการ">รอดำเนินการ</MenuItem>
+              <MenuItem value="กำลังดำเนินการ">กำลังดำเนินการ</MenuItem>
+              <MenuItem value="ดำเนินการสำเร็จ">ดำเนินการสำเร็จ</MenuItem>
             </Select>
           </div>
         </div>
@@ -165,46 +164,12 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
             </div>
 
             <div className="flex flex-row pt-1">
-              <img src={person2} alt="person" className="mr-1 h-5 mt-1" />
+              <img src={person2} alt="person" className="mr-1 h-5 " />
               <p className="text-[14px] text-gray-700">
                 พนักงาน:
-                <Select
-                  value={selectedTechnician}
-                  onChange={handleTechnicianChange}
-                  className="text-[14px] text-gray-900 border rounded-[15px] px-3 ml-1"
-                  style={{
-                    width: "fit-content",
-                    minWidth: "auto",
-                    height: "30px",
-                  }} // Adjusted height
-                  MenuProps={{
-                    PaperProps: {
-                      style: {
-                        maxHeight: 200,
-                        width: "auto",
-                      },
-                    },
-                  }}
-                >
-                  {technicians.map((technician) => (
-                    <MenuItem
-                      key={technician.id}
-                      value={technician.id}
-                      style={{
-                        backgroundColor:
-                          technician.work_status === "กำลังทำงาน"
-                            ? "#FFF3D4"
-                            : "white",
-                        color:
-                          technician.work_status === "กำลังทำงาน"
-                            ? "orange"
-                            : "green",
-                      }}
-                    >
-                      {technician.fullName}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <span className="text-[14px] text-gray-900  px-3 ml-1">
+                  {technician?.fullName || "ไม่พบพนักงาน"}
+                </span>
               </p>
             </div>
           </div>
@@ -261,6 +226,12 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
           </div>
         </div>
       </div>
+      <button
+        className="w-fit p-2 mt-2 bg-blue-600 px-6 rounded-[10px] text-white md:ml-auto md:mt-[-40px]"
+        onClick={handleAcceptJob}
+      >
+        จบงาน
+      </button>
     </div>
   );
 };
