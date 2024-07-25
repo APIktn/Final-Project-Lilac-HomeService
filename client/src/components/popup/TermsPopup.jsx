@@ -2,7 +2,7 @@ import React from "react";
 
 const TermsPopup = ({ onClose }) => {
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4 sm:p-4 md:p-6 lg:p-6">
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4 sm:p-4 md:p-6 lg:p-6 z-50">
       <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full sm:w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 max-w-lg max-h-full overflow-y-auto">
         <h2 className="text-xl sm:text-2xl font-medium mb-4 text-blue-900">
           ข้อกำหนดและเงื่อนไข
