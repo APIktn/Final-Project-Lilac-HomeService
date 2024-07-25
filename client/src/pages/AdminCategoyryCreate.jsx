@@ -9,11 +9,14 @@ import vectorBin from "../assets/icons/Vector-bin.svg";
 import vectorEdit from "../assets/icons/Vector-edit.svg";
 import vectorAlert from "../assets/icons/Vector-alert.svg";
 import vectorClose from "../assets/icons/Vector-close.svg";
+import { useAdminAuth } from "../contexts/adminAuthentication";
 
 import axios from "axios";
 import dayjs from "dayjs";
 
 function AdminCategoryCreate() {
+  const { state, logout } = useAdminAuth();
+  const { admin } = state;
   const [message, setMessage] = useState("");
   const [createCategory, setCreateCategory] = useState(false);
   const [categoryName, setCategoryName] = useState("");
@@ -76,7 +79,7 @@ function AdminCategoryCreate() {
       setMessage(response.data.message);
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        alert("มีหมวดหมู่นี้แล้วกรุณากรอกชื่ออื่น");
+        alert("กรุณากรอกข้อมูลให้ครบ หรือ มีชื่อหมวดหมู่นี้แล้ว");
       }
       console.error("Error creating promotion code:", error);
     }
@@ -110,7 +113,7 @@ function AdminCategoryCreate() {
                 className="w-[26.06px] h-[26.06px] mr-2"
               />
               <span className="text-[#336DF2] text-[20px] font-medium mt-1">
-                Homeservice
+                HomeServices
               </span>
             </div>
             <div>
@@ -144,18 +147,14 @@ function AdminCategoryCreate() {
               </div>
             </div>
           </div>
-          <div className="flex items-center p-4 hover:bg-[#022B87] cursor-pointer  mb-16">
-            <img src={vectorLogout} alt="Logout" className="mr-2 ml-4" />
-            <span
-              className="text-[#F1F1F1] text-base"
-              onClick={() => {
+          <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
+          <img src={vectorLogout} alt="Logout" className="mr-2" />
+          <span className="text-[#F1F1F1] text-base ml-2"  
+                onClick={() => {
                 logout();
                 navigate("/admin");
-              }}
-            >
-              ออกจากระบบ
-            </span>
-          </div>
+              }}>ออกจากระบบ</span>
+        </div>
         </div>
 
         {/* Main Content */}
@@ -203,39 +202,44 @@ function AdminCategoryCreate() {
           {/* Workspace */}
           <div className="p-10 pt-12 flex-1 overflow-auto rounded-md ">
             <div className="rounded-md  rounded-b-none"></div>
-            <div className="bg-white p-4 rounded-md  h-[300px]">
+            <div className="bg-white p-4 rounded-md  h-[124px]">
               <div className="flex items-center mt-5">
                 <div className="w-[205px] text-[#646C80]">
                   ชื่อหมวดหมู่<span className="text-red-600">*</span>
-                </div>
-
+                </div>               
                 <input
                   type="text"
                   value={categoryName}
                   onChange={(e) => setCategoryName(e.target.value)}
-                  className="w-[433px] border border-[#CCD0D7] p-[10px_16px] rounded-[8px]"
+                  className="w-[433px] border border-[#CCD0D7] p-[10px_16px] rounded-[8px] ml-16"
                   disabled={createCategory === true}
                 />
               </div>
+              
               {validationMessage && (
-                <div className="text-red-600 mt-2">{validationMessage}</div>
+                <div className="text-red-600 mt-2 ml-52">{validationMessage}</div>
               )}
               {createCategory && (
-                <div className="flex flex-col gap-7 border-t border-[#CCD0D7] mb-4 mt-10 pb-4 h-[100px] w-[380] pt-10 bg-white">
-                  <div className="flex">
-                    <div className="w-[205px] text-[#646C80]">สร้างเมื่อ</div>
-                    <p>
-                      {dayjs().format("DD/MM/YYYY")} เวลา{" "}
-                      {dayjs().format("HH:mm A")}
-                    </p>
+                <div className="flex flex-col gap-7 -mx-4 mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">
+                  <div className="">                    
+                    <hr className="border-t-2 border-[#CCD0D7] w-[1235px] ml-5 -mt-10 mb-14" />
+                    <div>
+                    <span className="block ml-5 font-medium text-[16px] text-[#646C80] ">
+                       สร้างเมื่อ
+                     <span className="ml-[210px] font-normal text-[16px] text-[#000000]">
+                      {dayjs().format("DD/MM/YYYY")} {" "}
+                      {dayjs().format("HH:mm A")}           
+                    </span>                        
+                    </span>
+                    <span className="block ml-5 font-medium text-[16px] text-[#646C80] pt-7 mb-5 ">
+                      แก้ไขล่าสุด
+                     <span className="ml-[195px] font-normal text-[16px] text-[#000000]">
+                      {dayjs().format("DD/MM/YYYY")} {" "}
+                      {dayjs().format("HH:mm A")}           
+                    </span>                        
+                    </span>                    
                   </div>
-                  <div className="flex">
-                    <div className="w-[205px] text-[#646C80]">แก้ไขล่าสุด</div>
-                    <p>
-                      {dayjs().format("DD/MM/YYYY")} เวลา{" "}
-                      {dayjs().format("HH:mm A")}
-                    </p>
-                  </div>
+                </div>
                 </div>
               )}
             </div>

@@ -10,6 +10,7 @@ import technicianRouter from "./routes/technicians.mjs";
 import adminserviceslistRouter from "./routes/admin-serviceslist.mjs";
 import promotionRouter from "./routes/admin-promotion.mjs";
 import categoriesRouter from "./routes/admin-categories.mjs";
+import adminserviceRouter from "./routes/adminhandleservices.mjs";
 
 
 import {
@@ -47,6 +48,9 @@ app.use(
   authorizeTechnician,
   technicianRouter
 );
+
+
+app.use("/adminservice", adminserviceRouter);
 
 app.use("/user", userRouter);
 

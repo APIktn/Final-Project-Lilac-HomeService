@@ -18,12 +18,14 @@ import DashBoardService from "./AdminServicesList";
 import AdminCategoryCreate from "./AdminCategoyryCreate";
 import AdminCategoryEdit from "./AdminCategoryEdit";
 import AdminPromotionEdit from "./AdminPromotionEdit";
+import AdminServiceEdit from "./AdminServiceEdit";
+
 
 function AdminAuthenticatedApp() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/test" element={<AdminDashboardPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/" element={<HomePage_admin />} />
         <Route path="/servicelist" element={<ServiceList_admin />} />
@@ -44,6 +46,8 @@ function AdminAuthenticatedApp() {
         <Route path="/admin/category" element={<AdminDashboard />} />
         <Route path="/admin/service/create" element={<AdminServiceCreate />} />
         <Route path="/admin/service" element={<DashBoardService />} />
+        <Route path="/admin/service/view/:service_name" element={<AdminServiceEdit />} />
+
         <Route
           path="/admin/category/create"
           element={<AdminCategoryCreate />}
@@ -52,10 +56,12 @@ function AdminAuthenticatedApp() {
           path="/admin/category/edit/:category_id"
           element={<AdminCategoryEdit />}
         />
+
         <Route
           path="/admin/promotion/edit/:promo_id"
           element={<AdminPromotionEdit />}
         />
+
       </Routes>
     </div>
   );

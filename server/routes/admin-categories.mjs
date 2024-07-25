@@ -132,9 +132,14 @@ categoriesRouter.patch("/reorder", async (req, res) => {
 });
 
 /////create
-categoriesRouter.post("/create", async (req, res) => {
+categoriesRouter.post("/create", async (req, res) => { 
   const { category_name, created_at, updated_at } = req.body;
-
+  
+  if (!category_name) {
+    return res.status(400).json({
+      message: 'กรุณากรอกข้อมูล "ชื่อหมวดหมู่"',
+    });
+  }
   try {
     // Check if category_name already exists
     const { data: existingCategoryData, error: existingCategoryError } =
@@ -224,6 +229,11 @@ categoriesRouter.get("/:category_id", async (req, res) => {
 categoriesRouter.patch("/edit/:category_id", async (req, res) => {
   const { category_id } = req.params;
   const { category_name, updated_at } = req.body;
+  if (!category_name) {
+    return res.status(400).json({
+      message: 'กรุณากรอกข้อมูล "ชื่อหมวดหมู่"',
+    });
+  }
 
   try {
     // Check if the updated category name already exists in the table

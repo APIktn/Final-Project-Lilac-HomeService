@@ -17,12 +17,15 @@ import vectorClose from "../assets/icons/Vector-close.svg";
 import vectorDate from "../assets/icons/Vector-date.svg";
 import vectorTime from "../assets/icons/Vector-time.svg";
 import vectorBin from "../assets/icons/Vector-bin.svg";
+import { useAdminAuth } from "../contexts/adminAuthentication";
 
 import {
   transformToUppercase,
   validatePromotionCode,
 } from "../utils/promotionCodeUtils";
 function AdminCreatePromotion() {
+  const { state, logout } = useAdminAuth();
+  const { admin } = state;
   const [createCode, setCreateCode] = useState(false);
   const [promotionName, setPromotionName] = useState("");
   const [promotionType, setPromotionType] = useState("fixed");
@@ -153,6 +156,7 @@ function AdminCreatePromotion() {
 
   const handleCancel = () => {
     setCreateCode(false);
+    navigate("/admin/promotion")
   };
 
   const handleFixedRadioChange = () => {
@@ -211,52 +215,53 @@ function AdminCreatePromotion() {
     <form onSubmit={handleSubmit}>
       <div className="flex h-screen">
         {/* Sidebar */}
-        <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
-          <div>
-            <div
-              className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"
-              onClick={() => navigate("/")}
-            >
-              <img src={vectorHouse} alt="House" className="mr-2" />
-              <span className="text-[#336DF2] text-[20px]">Homeservice</span>
-            </div>
-            <div
-              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/dashboard")}
-            >
-              <img src={vectorCategory} alt="Category" className="mr-2" />
-              <span className="text-white">หมวดหมู่</span>
-            </div>
-            <div
-              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/servicelist")}
-            >
-              <img src={vectorService} alt="Service" className="mr-2" />
-              <span className="text-white">บริการ</span>
-            </div>
-            <div
-              className="flex items-center p-2 rounded-md bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/promotion")}
-            >
-              <img
-                src={vectorPromotionCode}
-                alt="Promotion Code"
-                className="mr-2"
-              />
-              <span className="text-white">Promotion Code</span>
-            </div>
+        <div className="bg-[#001C59] w-[240px] flex flex-col justify-between">
+        <div>
+        <div
+            className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
+            onClick={() => navigate("/")}
+          >
+            <img src={vectorHouse} alt="House" className="w-[26.06px] h-[26.06px] mr-2" />
+            <span className="text-[#336DF2] text-[20px] font-medium mt-1">HomeServices</span>
           </div>
-          <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
-            <img src={vectorLogout} alt="Logout" className="mr-2" />
-            <span className="text-white">ออกจากระบบ</span>
+          <div
+            className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer"
+            onClick={() => navigate("/admin/category")}
+          >
+            <img src={vectorCategory} alt="Category" className="mr-2 ml-2" />
+            <span className="text-[#F1F1F1] text-base ml-3">หมวดหมู่</span>
+          </div>
+          <div
+            className="flex items-center p-4  hover:bg-[#022B87] cursor-pointer"
+            onClick={() => navigate("/admin/service")}
+          >
+            <img src={vectorService} alt="Service" className="mr-2 ml-2" />
+            <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
+          </div>
+          <div className="flex items-center p-4 bg-[#022B87] cursor-pointer">
+            <img
+              src={vectorPromotionCode}
+              alt="Promotion Code"
+              className="mr-2 ml-2"
+            />
+            <span className="text-[#F1F1F1] text-base ml-3">Promotion Code</span>
           </div>
         </div>
+        <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
+          <img src={vectorLogout} alt="Logout" className="mr-2" />
+          <span className="text-[#F1F1F1] text-base ml-2"  
+                onClick={() => {
+                logout();
+                navigate("/admin");
+              }}>ออกจากระบบ</span>
+        </div>
+      </div>
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col bg-[#EFEFF2]">
           {/* Admin Topbar */}
-          <div className="bg-white p-4 flex justify-between items-center">
-            <div className="text-lg">
+          <div className="bg-white p-4 flex justify-between items-center ">
+            <div className="text-lg mx-4">
               <div className="text-lg">
                 {createCode ? (
                   <div>
@@ -268,17 +273,17 @@ function AdminCreatePromotion() {
                 )}
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 mr-4">
               <div
                 onClick={handleCancel}
-                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-40 h-11 text-center cursor-pointer"
+                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-11 text-center cursor-pointer"
               >
                 ยกเลิก
               </div>
 
               {createCode ? (
                 <button
-                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
+                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11"
                   type="submit"
                   onClick={handleSubmit}
                 >
@@ -288,7 +293,7 @@ function AdminCreatePromotion() {
 
               {!createCode ? (
                 <button
-                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
+                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11"
                   onClick={handleCreatePromotion}
                 >
                   สร้าง

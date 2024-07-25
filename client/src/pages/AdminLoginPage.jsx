@@ -42,11 +42,11 @@ function AdminLoginPage() {
     <>
       <div className="min-h-screen flex items-center justify-center bg-[#F3F4F6] flex-col">
       <div
-            className="p-2 flex items-center justify-center mb-[25px]"
+            className="p-2 flex items-center justify-center mb-[25px] -ml-3"
             
           >
             <img src={vectorHouse} alt="House" className="w-[69.33px] h-[69.33px]" />
-            <span className="text-[#336DF2] text-[45px] font-medium ">Homeservice</span>
+            <span className="text-[#336DF2] text-[45px] font-medium ">HomeServices</span>
           </div>
         <div className="w-[614px] h-[420px] max-w-md p-8 bg-white rounded-lg border border-gray-300 ">
           <h2 className="text-[24px] font-medium mb-4 text-center text-blue-950 mt-2">
