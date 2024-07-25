@@ -85,7 +85,7 @@ export default function StepButtons() {
         netPrice,
         moredetail: logisticsInfo.moreInfos,
       };
-      console.log("bill are:", billInfo);
+
       try {
         const response = await axios.post(
           `http://localhost:4000/cart/${cartPath}/bill`,
