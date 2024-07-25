@@ -28,6 +28,7 @@ function CartForm() {
     }
   };
 
+  console.log(services);
   const getSummaryOrder = (orderData) => {
     setSummaryOrder((oldOrderData) => [...oldOrderData, orderData]);
   };
@@ -50,7 +51,7 @@ function CartForm() {
   }, []);
   return (
     <div className="background bg-[#F3F4F6] w-full h-auto relative z-10 py-14 gap-7 mb-[44px] md:py-20 md:mb-0 ">
-      <ServiceImage dataFromState={services} />
+      <ServiceImage />
       <div className="container h-auto mx-auto relative z-10 flex flex-col px-4 gap-4 md:px-20 md:gap-8">
         <MuiBreadcrumbs dataFromState={services} />
         <Stepper />
