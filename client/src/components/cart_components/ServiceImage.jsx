@@ -1,5 +1,9 @@
-function ServiceImage({ dataFromState }) {
-  const imageSrc = dataFromState[0] ? dataFromState[0].image : null;
+import { useContext } from "react";
+import { CartContext } from "../../contexts/cartContext";
+
+function ServiceImage() {
+  const { services } = useContext(CartContext);
+  const imageSrc = services[0] ? services[0].image : null;
 
   return (
     imageSrc && (

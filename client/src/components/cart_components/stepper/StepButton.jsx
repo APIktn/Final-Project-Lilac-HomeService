@@ -19,6 +19,7 @@ export default function StepButtons() {
     setLogisticsInfo,
     cartPath,
     order,
+    services,
   } = useContext(CartContext);
 
   const monthMap = {
@@ -43,12 +44,51 @@ export default function StepButtons() {
 
   const handleNext = async (e) => {
     e.preventDefault();
+    if (selectedDate && selectedTime && address && selectedNames) {
+      let addressSummary = {
+        date: `${selectedDate.$D} ${getMonthInTh(selectedDate.$M)} ${
+          selectedDate.$y
+        }`,
+        time: `${String(selectedTime.$H).padStart(2, "0")}.${String(
+          selectedTime.$m
+        ).padStart(2, "0")}`,
+        place: `${address} ${selectedNames.tambon} ${selectedNames.amphure} ${selectedNames.province}`,
+        moreInfos: moreInfo,
+      };
+
+      setLogisticsInfo(addressSummary);
+    }
+
     if (activeStep === 2) {
-      const billInfo = { order, logisticsInfo, netPrice };
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      const serviceId = services[0].service_id;
+      const detail = address;
+      const date = `${selectedDate.$y}-${String(selectedDate.$M).padStart(
+        2,
+        "0"
+      )}-${String(selectedDate.$D).padStart(2, "0")}`;
+      const time = `${String(selectedTime.$H).padStart(2, "0")}:${String(
+        selectedTime.$m
+      ).padStart(2, "0")}:00`;
+      const subdistrict = selectedNames.tambon;
+      const district = selectedNames.amphure;
+      const province = selectedNames.province;
+      const billInfo = {
+        serviceId,
+        order,
+        date: date,
+        times: time,
+        detail,
+        subdistrict,
+        district,
+        province,
+        netPrice,
+        moredetail: logisticsInfo.moreInfos,
+      };
       console.log("bill are:", billInfo);
       try {
         const response = await axios.post(
-          `http://localhost:4000/cart/${cartPath}`,
+          `http://localhost:4000/cart/${cartPath}/bill`,
           billInfo
         );
         console.log("Server response:", response.data);
@@ -57,22 +97,6 @@ export default function StepButtons() {
       }
     } else if (activeStep < 2) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    }
-
-    if (selectedDate && selectedTime && address && selectedNames) {
-      let addressSummary = {
-        date: `${selectedDate.$D} ${getMonthInTh(selectedDate.$M)} ${
-          selectedDate.$y
-        }`,
-        time: `${selectedTime.$H}.${String(selectedTime.$m).padStart(2, "0")}`,
-        place: `${address} ${selectedNames.tambon} ${selectedNames.amphure} ${selectedNames.province}`,
-      };
-
-      if (moreInfo) {
-        addressSummary = { ...addressSummary, moreInfos: moreInfo };
-      }
-
-      setLogisticsInfo(addressSummary);
     }
   };
 
