@@ -47,11 +47,11 @@ uploadsRouter.post('/upload', upload.single('file'), async (req, res) => {
 
   uploadsRouter.post('/create', async (req, res) => {
     try {
-      const { public_id, version, signature, url, title } = req.body;
+      const { upload_image } = req.body;
   
       const { data, error } = await supabase
-        .from('images')
-        .insert([{ public_id, version, signature, url, title }]);
+        .from('users')
+        .insert([{ upload_image }]);
   
       if (error) {
         throw error;

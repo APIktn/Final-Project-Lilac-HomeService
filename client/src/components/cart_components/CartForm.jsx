@@ -4,7 +4,7 @@ import Stepper from "./stepper/Stepper";
 import OrderSummary from "./OrderSummary";
 import ServiceDetail from "./forms/ServiceDetail";
 import { useContext, useState, useEffect } from "react";
-import { CartContext } from "../../pages/CartPage";
+import { CartContext } from "../../contexts/cartContext";
 import ServiceForm from "./forms/ServiceForm";
 import ServicePayment from "./forms/ServicePayment";
 import { useParams } from "react-router-dom";
@@ -12,7 +12,7 @@ import axios from "axios";
 import WrappedPaymentForm from "./forms/ServicePayment";
 
 function CartForm() {
-  const { activeStep } = useContext(CartContext);
+  const { activeStep, setCartPath } = useContext(CartContext);
   const { service_name } = useParams();
   const [services, setServices] = useState([]);
   const [summaryOrder, setSummaryOrder] = useState([]);
@@ -22,8 +22,8 @@ function CartForm() {
       const result = await axios.get(
         `http://localhost:4000/cart/${service_name}`
       );
-      console.log(result.data.data);
       setServices(result.data.data);
+      setCartPath(service_name);
     } catch (error) {
       console.error("Error");
     }
@@ -51,7 +51,7 @@ function CartForm() {
   }, []);
 
   return (
-    <div className="background bg-[#F3F4F6] w-full h-auto relative z-10 py-14 gap-7 mb-[44px] md:py-20 md:mb-0 border-solid border-black border-[2px]">
+    <div className="background bg-[#F3F4F6] w-full h-auto relative z-10 py-14 gap-7 mb-[44px] md:py-20 md:mb-0 ">
       <ServiceImage />
       <div className="container h-auto mx-auto relative z-10 flex flex-col px-4 gap-4 md:px-20 md:gap-8">
         <MuiBreadcrumbs dataFromState={services} />
@@ -71,7 +71,7 @@ function CartForm() {
             <WrappedPaymentForm />
           )}
         </div>
-        <OrderSummary summaryOrder={summaryOrder} />
+        <OrderSummary summaryOrder={summaryOrder} service_name={service_name} />
       </div>
     </div>
   );

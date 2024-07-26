@@ -3,12 +3,17 @@ import servicesRouter from "./routes/servicecards.mjs";
 import cors from "cors";
 import authRouter from "./controllers/authController.mjs";
 import adminRouter from "./routes/admins.mjs";
+import userRouter from "./routes/users.mjs";
 import uploadsRouter from "./routes/upload.mjs";
 import cartsRouter from "./routes/cart-routes.mjs";
 import technicianRouter from "./routes/technicians.mjs";
 import "dotenv/config";
 import paymentRoutes from "./routes/paymentRoutes.mjs";
-
+import orderRouter from "./routes/order.mjs";
+import adminserviceslistRouter from "./routes/admin-serviceslist.mjs";
+import promotionRouter from "./routes/admin-promotion.mjs";
+import categoriesRouter from "./routes/admin-categories.mjs";
+import adminserviceRouter from "./routes/adminhandleservices.mjs";
 import {
   authenticateToken,
   authorizeAdmin,
@@ -29,6 +34,11 @@ app.use(express.json());
 app.use("/auth", authRouter);
 
 app.use("/admin", authenticateToken, authorizeAdmin, adminRouter);
+app.use("/promotion", promotionRouter);
+app.use("/adminserviceslist", adminserviceslistRouter);
+app.use("/adminservice", adminserviceRouter);
+
+app.use("/categories", categoriesRouter);
 
 app.use("/services", servicesRouter);
 app.use("/cart", cartsRouter);
@@ -39,7 +49,11 @@ app.use(
   authorizeTechnician,
   technicianRouter
 );
+
 app.use("/api/payments", paymentRoutes);
+app.use("/", orderRouter);
+
+app.use("/user", userRouter);
 
 app.use("/", servicesRouter);
 

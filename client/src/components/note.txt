@@ -1,0 +1,173 @@
+server
+
+adminserviceRouter.post("/post", upload.single("image"), async (req, res) => {
+  try {
+    const { service_name, category_name, subServiceItems } = req.body;
+
+    const { data: category, error: categoryError } = await supabase
+      .from("categories")
+      .select("category_id")
+      .eq("category_name", category_name)
+      .single();
+
+    if (categoryError) {
+      throw new Error(
+        "Error occurred while fetching category: " + categoryError.message
+      );
+    }
+
+    if (!category) {
+      throw new Error("Category not found");
+    }
+
+    const category_id = category.category_id;
+
+    const { data: lastService, error: lastServiceError } = await supabase
+      .from("services")
+      .select("position_id")
+      .eq("category_id", category_id)
+      .order("position_id", { ascending: false })
+      .limit(1)
+      .single();
+
+    if (lastServiceError && lastServiceError.code !== "PGRST116") {
+      throw lastServiceError;
+    }
+
+    const position_id = lastService ? lastService.position_id + 1 : 1;
+
+    const file = req.file;
+    let imageUrl = null;
+
+    if (file) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "service_images" },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+        stream.end(file.buffer);
+      });
+
+      imageUrl = uploadResult.secure_url;
+    }
+
+    const { data: serviceData, error: serviceError } = await supabase
+      .from("services")
+      .insert([{ service_name, category_id, position_id, image: imageUrl }])
+      .select("service_id")
+      .single();
+
+    if (serviceError) {
+      throw serviceError;
+    }
+
+    const service_id = serviceData.service_id;
+
+    const subServiceInserts = subServiceItems.map((item) => ({
+      service_id,
+      service_lists: item.name,
+      price: item.price ? parseFloat(item.price) : 0,
+      units: item.unit,
+      quantity: 0,
+    }));
+
+    const { error: subServiceError } = await supabase
+      .from("service_list")
+      .insert(subServiceInserts);
+
+    if (subServiceError) {
+      throw subServiceError;
+    }
+
+    res.status(200).json({ message: "อัพโหลดข้อมูลสำเร็จ" });
+  } catch (error) {
+    console.error("Error uploading data", error);
+    res
+      .status(500)
+      .json({ error: "เกิดข้อผิดพลาดในการอัพโหลดข้อมูล: " + error.message });
+  }
+});
+
+--------------
+client
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!servicename.trim()) {
+    alert("กรุณากรอกชื่อบริการ");
+    return;
+  }
+
+  if (!categoryName.trim()) {
+    alert("กรุณาเลือกหมวดหมู่");
+    return;
+  }
+
+  const newErrors = {};
+
+  for (let item of subServiceItems) {
+    if (!item.price.trim()) {
+      newErrors.price = "กรุณากรอกราคา";
+    } else if (!/^\d+(\.\d{1,2})?$/.test(item.price)) {
+      newErrors.price = "กรุณากรอกราคาให้ถูกต้อง";
+    }
+
+    if (!item.name.trim() || !item.price.trim() || !item.unit.trim()) {
+      alert(
+        "กรุณากรอกข้อมูลในฟิลด์ชื่อรายการ, ค่าบริการต่อหน่วย และหน่วยบริการให้ครบถ้วน"
+      );
+      return;
+    }
+  }
+
+  if (Object.keys(newErrors).length > 0) {
+    // Display the errors
+    alert(newErrors.price);
+    return;
+  }
+
+  setUploading(true);
+
+ 
+    try {
+      const formData = new FormData();
+      formData.append("service_name", servicename);
+      formData.append("category_name", categoryName);
+      formData.append("image", uploadedImage);
+
+      subServiceItems.forEach((item, index) => {
+        formData.append(`subServiceItems[${index}][name]`, item.name);
+        formData.append(`subServiceItems[${index}][price]`, item.price);
+        formData.append(`subServiceItems[${index}][unit]`, item.unit);
+      });
+
+      const response = await axios.post(
+        "http://localhost:4000/adminservice/post",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setMessage("อัพโหลดข้อมูลสำเร็จ");
+        setServicename("");
+        setCategoryName("");
+        setSubServiceItems([{ name: "", price: "", unit: "" }]);
+        setUploadedImage(null);
+        window.location.href = "/admin/service/create";  
+      }
+    } catch (error) {
+      console.error("Error uploading data", error);
+      setMessage("เกิดข้อผิดพลาดในการอัพโหลดข้อมูล");
+    } finally {
+      setUplo

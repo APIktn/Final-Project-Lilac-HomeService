@@ -123,7 +123,7 @@ function LoginPage() {
                 เข้าสู่ระบบ
               </button>
             </div>
-            <div className="flex items-center mb-4">
+            {/* <div className="flex items-center mb-4">
               <hr className="flex-grow border-gray-300" />
               <span className="px-2 text-gray-700">หรือเข้าสู่ระบบใช้ผ่าน</span>
               <hr className="flex-grow border-gray-300" />
@@ -140,7 +140,7 @@ function LoginPage() {
                 />
                 เข้าสู่ระบบด้วย Facebook
               </button>
-            </div>
+            </div> */}
           </form>
           <div className="mt-4 text-center flex justify-center items-center space-x-1 ">
             <span className="text-gray-700 whitespace-nowrap">

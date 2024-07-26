@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import Navbar from "../components/Navbar_tech";
+import Footer from "../components/Footer";
+import ServiceListHeader from "../components/customer/ServiceListHeader";
+import ServiceListBody from "../components/customer/TechPending";
 
-function HomePage_technician() {
+const HomePage_technician = () => {
   return (
-    <div>
-      <h1>ยินดีต้อนรับเข้าสู่ระบบช่างเทคนิค</h1>
-    </div>
+    <>
+      <Navbar />
+      <ServiceListHeader />
+      <ServiceListBody />
+      <Footer />
+    </>
   );
-}
+};
 
 export default HomePage_technician;

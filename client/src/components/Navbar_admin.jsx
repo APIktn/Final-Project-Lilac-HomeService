@@ -90,28 +90,26 @@ const Navbar_admin = () => {
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             transformOrigin={{ vertical: "top", horizontal: "right" }}
           >
-            <CustomMenuItem onClick={() => handleMenuItemClick("/profile")}>
+            <CustomMenuItem onClick={() => handleMenuItemClick("/admininfo")}>
               <img src={person} alt="person" className="mr-1 h-8 sm:h-6" />
               ข้อมูลผู้ใช้งาน
             </CustomMenuItem>
-            <CustomMenuItem
-              onClick={() => handleMenuItemClick("/CustomerServiceList")}
-            >
+            <CustomMenuItem onClick={() => handleMenuItemClick("/pending")}>
               <img src={order} alt="order" className="mr-1 h-8 sm:h-6" />
               รายการคำสั่งซ่อม
             </CustomMenuItem>
-            <CustomMenuItem
+            {/* <CustomMenuItem
               className="border-b-[1px]"
               onClick={() => handleMenuItemClick("/CustomerServiceHistory")}
             >
               <img src={history} alt="history" className=" mr-1 h-8 sm:h-6" />
               ประวัติการซ่อม
-            </CustomMenuItem>
+            </CustomMenuItem> */}
             {/* แสดงเฉพาะ admin */}
             {/* {user?.role === "admin" && ( */}
             <CustomMenuItem
               className="border-b-[1px]"
-              onClick={() => handleMenuItemClick("/admin")}
+              onClick={() => handleMenuItemClick("/admin/category")}
             >
               <img src={history} alt="admin" className="mr-1 h-8 sm:h-6" />
               Admin Dashboard

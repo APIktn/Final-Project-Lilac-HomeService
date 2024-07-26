@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import { useContext, useEffect } from "react";
+import { CartContext } from "../../contexts/cartContext";
+import axios from "axios";
 
-function OrderSummary({ summaryOrder }) {
+function OrderSummary({ summaryOrder, service_name }) {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const { activeStep, netPrice, setNetPrice, logisticsInfo, setOrder, order } =
+    useContext(CartContext);
 
   const countProducts = (servicesArray) => {
     const counts = servicesArray.reduce((acc, service) => {
@@ -31,16 +36,39 @@ function OrderSummary({ summaryOrder }) {
   };
 
   const summaryData = countProducts(summaryOrder);
+  const serviceInfo = summaryData.map((item) => ({
+    service_name: item.name,
+    service_amount: item.count,
+  }));
 
-  const summaryPrice = summaryData.reduce(
-    (acc, curr) => (acc += curr.price * curr.count),
-    0
-  );
+  const fetchNetPrice = async (summaryData, service_name) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/cart/${service_name}`,
+        { summaryData }
+      );
+      await setNetPrice(response.data.netPrice);
+    } catch (error) {
+      console.error("Error fetching net price from server", error);
+    }
+  };
+  useEffect(() => {
+    if (order) {
+      console.log("Data in order:", order);
+    }
+  }, [order]);
+
+  useEffect(() => {
+    if (summaryOrder.length > 0) {
+      fetchNetPrice(summaryData, service_name);
+      setOrder({ serviceInfo });
+    }
+  }, [summaryOrder]);
 
   if (!summaryOrder || !summaryOrder[0]) {
     return (
       <div className="w-full md:basis-1/3 ">
-        <div className="fixed bottom-[72px] left-0 md:sticky md:top-0 w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-t-[8px] md:rounded-[8px] flex flex-col overflow-hidden z-20">
+        <div className="fixed bottom-[72px] left-0 md:sticky md:top-14 w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-t-[8px] md:rounded-[8px] flex flex-col overflow-hidden z-20">
           <Accordion
             disableGutters
             elevation={0}
@@ -65,29 +93,12 @@ function OrderSummary({ summaryOrder }) {
                 />
               }
             >
-              <p className="font-prompt font-[500] text-gray-700">สรุปรายการ</p>
+              <p className="font-prompt font-[500] text-[16px] md:font-[400] md:text-[20px] text-gray-700">
+                สรุปรายการ
+              </p>
             </AccordionSummary>
             <AccordionDetails>
-              <div className="service-summary flex flex-row justify-between">
-                <p className="text-[14px]"></p>
-                <p className="text-[14px]">0 รายการ</p>
-              </div>
               <hr className="mt-[8px] mb-[8px] border-solid border-[1px] border-gray-300" />
-
-              <div className="logistics-summary flex flex-col gap-1">
-                <div className="date-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700"></p>
-                  <p className="text-[14px] text-black"></p>
-                </div>
-                <div className="time-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700"></p>
-                  <p className="text-[14px] text-black"></p>
-                </div>
-                <div className="address-container flex flex-row justify-between">
-                  <p className="text-[14px] text-gray-700 basis-1/2"></p>
-                  <p className="text-[14px] text-black basis-1/2"></p>
-                </div>
-              </div>
             </AccordionDetails>
           </Accordion>
           <div className="px-[16px] pb-[16px] items-start">
@@ -131,31 +142,62 @@ function OrderSummary({ summaryOrder }) {
               />
             }
           >
-            <p className="font-prompt font-[500] text-gray-700">สรุปรายการ</p>
+            <p className="font-prompt font-[500] text-[16px] md:font-[400] md:text-[20px] text-gray-700">
+              สรุปรายการ
+            </p>
           </AccordionSummary>
           <AccordionDetails>
-            {summaryData.map((item) => (
-              <div className="service-summary flex flex-row justify-between">
-                <p className="text-[14px]">{item.name}</p>
-                <p className="text-[14px]">{item.count} รายการ</p>
+            {summaryData.map((item, index) => (
+              <div
+                key={index}
+                className="service-summary flex flex-row justify-between"
+              >
+                <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black">
+                  {item.name}
+                </p>
+                <p className="font-prompt font-[400] md:font-[300] text-[14px] text-[#646C80]">
+                  {item.count} รายการ
+                </p>
               </div>
             ))}
-            <hr className="mt-[8px] mb-[8px] border-solid border-[1px] border-gray-300" />
-
-            <div className="logistics-summary flex flex-col gap-1">
-              <div className="date-container flex flex-row justify-between">
-                <p className="text-[14px] text-gray-700"></p>
-                <p className="text-[14px] text-black"></p>
+            {activeStep === 2 && (
+              <div className="logistics-summary flex flex-col gap-1">
+                <hr className="mt-6 mb-6 border-solid border-[1px] border-[#CCD0D7] " />
+                <div className="date-container flex flex-row justify-between">
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-gray-700">
+                    วันที่
+                  </p>
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black text-end">
+                    {logisticsInfo.date}
+                  </p>
+                </div>
+                <div className="time-container flex flex-row justify-between">
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-gray-700">
+                    เวลา
+                  </p>
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black text-end">{`${logisticsInfo.time} น.`}</p>
+                </div>
+                <div className="address-container flex flex-row justify-between">
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-gray-700 basis-1/2">
+                    สถานที่
+                  </p>
+                  <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black basis-1/2 text-end">
+                    {logisticsInfo.place}
+                  </p>
+                </div>
+                {logisticsInfo.moreInfos && (
+                  <div className="more-info-container flex flex-row justify-between">
+                    <p className="font-prompt font-[400] md:font-[300] text-[14px] text-gray-700 basis-1/2">
+                      ข้อมูลเพิ่มเติม
+                    </p>
+                    <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black basis-1/2 text-end">
+                      {logisticsInfo.moreInfos}
+                    </p>
+                  </div>
+                )}
               </div>
-              <div className="time-container flex flex-row justify-between">
-                <p className="text-[14px] text-gray-700"></p>
-                <p className="text-[14px] text-black"></p>
-              </div>
-              <div className="address-container flex flex-row justify-between">
-                <p className="text-[14px] text-gray-700 basis-1/2"></p>
-                <p className="text-[14px] text-black basis-1/2"></p>
-              </div>
-            </div>
+            )}
+            <hr className="mt-6 mb-[8px] border-solid border-[1px] border-[#CCD0D7]" />
           </AccordionDetails>
         </Accordion>
         <div className="px-[16px] pb-[16px] items-start">
@@ -163,8 +205,8 @@ function OrderSummary({ summaryOrder }) {
             <p className="text-[16px] font-[400] font-prompt text-gray-700">
               รวม
             </p>
-            <p className="text-[16px] font-prompt font-[500] text-black">
-              {summaryPrice} ฿
+            <p className="text-[16px] font-prompt font-[500] md:font-[600] text-black">
+              {netPrice} ฿
             </p>
           </div>
         </div>

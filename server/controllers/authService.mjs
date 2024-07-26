@@ -22,7 +22,7 @@ export const loginUser = async (email, password, role) => {
 
   const token = jwt.sign(
     {
-      id: user.id,
+      user_id: user.user_id,
       role: user.role,
       firstname: user.firstname,
       lastname: user.lastname,
@@ -35,6 +35,7 @@ export const loginUser = async (email, password, role) => {
   return {
     token,
     user: {
+      user_id: user.user_id,
       firstname: user.firstname,
       lastname: user.lastname,
       profile_image: user.profile_image,
