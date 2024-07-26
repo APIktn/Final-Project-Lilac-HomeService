@@ -12,9 +12,9 @@ import axios from "axios";
 import WrappedPaymentForm from "./forms/ServicePayment";
 
 function CartForm() {
-  const { activeStep, setCartPath } = useContext(CartContext);
+  const { activeStep, setCartPath, services, setServices } =
+    useContext(CartContext);
   const { service_name } = useParams();
-  const [services, setServices] = useState([]);
   const [summaryOrder, setSummaryOrder] = useState([]);
 
   const getServices = async () => {

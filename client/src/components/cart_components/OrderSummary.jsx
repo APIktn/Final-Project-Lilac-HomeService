@@ -52,11 +52,6 @@ function OrderSummary({ summaryOrder, service_name }) {
       console.error("Error fetching net price from server", error);
     }
   };
-  useEffect(() => {
-    if (order) {
-      console.log("Data in order:", order);
-    }
-  }, [order]);
 
   useEffect(() => {
     if (summaryOrder.length > 0) {
