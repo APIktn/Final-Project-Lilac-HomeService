@@ -36,8 +36,41 @@ orderRouter.get("/completeorder", authenticateToken, async (req, res) => {
       return res.status(404).json({ error: "ไม่พบข้อมูลคำสั่งซื้อ" });
     }
 
+    // Accumulate data for each order_id
+    const accumulatedOrderDetails = orderdetailData.reduce((acc, order) => {
+      if (!acc[order.order_id]) {
+        acc[order.order_id] = {
+          ...order,
+          service_lists: Array.isArray(order.service_lists)
+            ? order.service_lists
+            : [order.service_lists],
+          quantity_per_order: Array.isArray(order.quantity_per_order)
+            ? order.quantity_per_order
+            : [order.quantity_per_order],
+        };
+      } else {
+        acc[order.order_id] = {
+          ...acc[order.order_id],
+          ...order,
+          service_lists: acc[order.order_id].service_lists.concat(
+            Array.isArray(order.service_lists)
+              ? order.service_lists
+              : [order.service_lists]
+          ),
+          quantity_per_order: acc[order.order_id].quantity_per_order.concat(
+            Array.isArray(order.quantity_per_order)
+              ? order.quantity_per_order
+              : [order.quantity_per_order]
+          ),
+        };
+      }
+      return acc;
+    }, {});
+
+    const filteredOrderDetails = Object.values(accumulatedOrderDetails);
+
     const technicianIds = [
-      ...new Set(orderdetailData.map((order) => order.technician_id)),
+      ...new Set(filteredOrderDetails.map((order) => order.technician_id)),
     ];
 
     const { data: technicianData, error: techError } = await supabase
@@ -54,7 +87,7 @@ orderRouter.get("/completeorder", authenticateToken, async (req, res) => {
       return acc;
     }, {});
 
-    const enrichedOrderDetails = orderdetailData.map((order) => ({
+    const enrichedOrderDetails = filteredOrderDetails.map((order) => ({
       ...order,
       technician_name:
         techniciansMap[order.technician_id] || "ไม่พบชื่อพนักงาน",
@@ -87,14 +120,47 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
           `
       )
       .eq("orders.user_id", user_id)
-      .in("status", ["ดำเนินการสำเร็จ"]);
+      .in("status", ["รอดำเนินการ", "กำลังดำเนินการ"]);
 
     if (orderError || !orderdetailData) {
       return res.status(404).json({ error: "ไม่พบข้อมูลคำสั่งซื้อ" });
     }
 
+    // Accumulate data for each order_id
+    const accumulatedOrderDetails = orderdetailData.reduce((acc, order) => {
+      if (!acc[order.order_id]) {
+        acc[order.order_id] = {
+          ...order,
+          service_lists: Array.isArray(order.service_lists)
+            ? order.service_lists
+            : [order.service_lists],
+          quantity_per_order: Array.isArray(order.quantity_per_order)
+            ? order.quantity_per_order
+            : [order.quantity_per_order],
+        };
+      } else {
+        acc[order.order_id] = {
+          ...acc[order.order_id],
+          ...order,
+          service_lists: acc[order.order_id].service_lists.concat(
+            Array.isArray(order.service_lists)
+              ? order.service_lists
+              : [order.service_lists]
+          ),
+          quantity_per_order: acc[order.order_id].quantity_per_order.concat(
+            Array.isArray(order.quantity_per_order)
+              ? order.quantity_per_order
+              : [order.quantity_per_order]
+          ),
+        };
+      }
+      return acc;
+    }, {});
+
+    const filteredOrderDetails = Object.values(accumulatedOrderDetails);
+
     const technicianIds = [
-      ...new Set(orderdetailData.map((order) => order.technician_id)),
+      ...new Set(filteredOrderDetails.map((order) => order.technician_id)),
     ];
 
     const { data: technicianData, error: techError } = await supabase
@@ -111,7 +177,7 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
       return acc;
     }, {});
 
-    const enrichedOrderDetails = orderdetailData.map((order) => ({
+    const enrichedOrderDetails = filteredOrderDetails.map((order) => ({
       ...order,
       technician_name:
         techniciansMap[order.technician_id] || "ไม่พบชื่อพนักงาน",
@@ -119,7 +185,7 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
 
     res.json({ data: enrichedOrderDetails });
   } catch (error) {
-    console.error("Error in GET /incompleteorder", error);
+    console.error("Error in GET /completeorder", error);
     res
       .status(500)
       .json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลคำสั่งซื้อและพนักงาน" });

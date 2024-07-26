@@ -1,9 +1,7 @@
 import * as React from "react";
 import person2 from "../../assets/icons/person2-icon.png";
 import event from "../../assets/icons/event-icon.png";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import { CardActions, Box } from "@mui/material";
+
 import { useNavigate } from "react-router-dom";
 
 const categoryStyles = {
@@ -80,14 +78,18 @@ const OrderCard = ({ orderDetail }) => {
             </p>
           </div>
         </div>
-        <div className="flex flex-row sm:flex-col justify-start">
-          <p className="text-[14px] pt-[5px] md:pt-[20px] text-gray-700">
+        <div className="flex flex-col  justify-start">
+          <div className="text-[14px] pt-[5px] md:pt-[20px] text-gray-700">
             รายการ:{" "}
-          </p>
-          <p className="text-[14px] pt-[5px] text-black">
-            • {orderDetail.service_lists}, จำนวน{" "}
-            {orderDetail.quantity_per_order} บริการ
-          </p>
+          </div>
+          <div>
+            {orderDetail.service_lists.map((service, index) => (
+              <p key={index} className="text-[14px] pt-[5px] text-black">
+                • {service}, จำนวน {orderDetail.quantity_per_order[index] || 0}{" "}
+                บริการ
+              </p>
+            ))}
+          </div>
         </div>
         <button
           className="w-fit p-2 mt-2 bg-blue-600 px-6 rounded-[10px] text-white md:ml-auto md:mt-[-40px]"

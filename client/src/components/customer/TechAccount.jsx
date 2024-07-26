@@ -76,7 +76,7 @@ function CustomerAccount() {
               <img src={order} alt="order" className="h-[24px]" />
               <a
                 href="/technician"
-                className={`text-[14px] p-[12px] ${
+                className={`text-[12px] p-[5px] ${
                   currentPath === "/technician"
                     ? "text-[#1852D6]"
                     : "hover:text-[#9AA1B0]"
@@ -91,7 +91,7 @@ function CustomerAccount() {
               <img src={order} alt="order" className="h-[24px]" />
               <a
                 href="/techinprogress"
-                className={`text-[14px] p-[12px] ${
+                className={`text-[12px] p-[5px] ${
                   currentPath === "/techinprogress"
                     ? "text-[#1852D6]"
                     : "hover:text-[#9AA1B0]"
@@ -106,7 +106,7 @@ function CustomerAccount() {
               <img src={history} alt="history" className="h-[24px]" />
               <a
                 href="/techcompleted"
-                className={`text-[14px] p-[12px] ${
+                className={`text-[12px] p-[5px] ${
                   currentPath === "/techcompleted"
                     ? "text-[#1852D6]"
                     : "hover:text-[#9AA1B0]"

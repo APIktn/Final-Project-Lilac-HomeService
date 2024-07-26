@@ -10,7 +10,7 @@ import order from "../assets/icons/order-icon.png";
 import history from "../assets/icons/history-icon.png";
 import logout1 from "../assets/icons/logout-icon.png";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/authentication";
+import { useTechnicianAuth } from "../contexts/technicianAuthentication";
 
 const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
   fontFamily: "Prompt",
@@ -49,7 +49,7 @@ const Navbar_user = () => {
     handleMenuClose();
   };
 
-  const { logout } = useAuth();
+  const { logout } = useTechnicianAuth();
 
   return (
     <nav className="bg-white shadow-md w-full sticky top-0 z-50">
@@ -125,7 +125,7 @@ const Navbar_user = () => {
             <CustomMenuItem
               onClick={() => {
                 logout();
-                navigate("/");
+                navigate("/technician");
               }}
             >
               <img src={logout1} alt="logout" className="mr-1 h-8 sm:h-6" />
