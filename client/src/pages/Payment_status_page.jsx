@@ -29,7 +29,7 @@ function Payment_status_page() {
   return (
     <>
       <Navbar_user />
-      {billInfo && <PaymentSuccess billInfo={billInfo} />}
+      {billInfo.length > 0 && <PaymentSuccess billInfo={billInfo} />}
     </>
   );
 }

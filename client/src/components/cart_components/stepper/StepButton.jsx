@@ -63,7 +63,7 @@ export default function StepButtons() {
       await new Promise((resolve) => setTimeout(resolve, 0));
       const serviceId = services[0].service_id;
       const detail = address;
-      const date = `${selectedDate.$y}-${String(selectedDate.$M).padStart(
+      const date = `${selectedDate.$y}-${String(selectedDate.$M + 1).padStart(
         2,
         "0"
       )}-${String(selectedDate.$D).padStart(2, "0")}`;
