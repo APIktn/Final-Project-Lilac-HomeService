@@ -39,8 +39,10 @@ cartsRouter.post("/:service_name", (req, res) => {
   let netPrice = 0;
 
   summaryData.forEach((item) => {
-    netPrice += item.price * item.count;
+    netPrice += parseFloat(item.price) * item.count;
   });
+
+  netPrice = netPrice.toFixed(2);
 
   console.log("Calculated net price:", netPrice);
   res.json({ netPrice });
