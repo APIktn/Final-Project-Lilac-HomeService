@@ -48,8 +48,8 @@ const SortFilter = ({
             {sortOption
               ? getLabel(sortingOptions.find((opt) => opt.value === sortOption))
               : getLabel(sortingOptions[0])}
-          </button>
           <ArrowDropDownIcon />
+          </button>
         </span>
         {openDropdown === "sort" && (
           <div

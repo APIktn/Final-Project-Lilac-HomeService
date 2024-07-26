@@ -18,7 +18,8 @@ import DashBoardService from "./AdminServicesList";
 import AdminCategoryCreate from "./AdminCategoyryCreate";
 import AdminCategoryEdit from "./AdminCategoryEdit";
 import AdminPromotionEdit from "./AdminPromotionEdit";
-import AdminServiceEdit from "./AdminServiceEdit";
+import AdminServiceView from "./AdminServiceView";
+import AdminServiceEdit from "./AsminServicesEdit";
 
 
 function AdminAuthenticatedApp() {
@@ -46,7 +47,9 @@ function AdminAuthenticatedApp() {
         <Route path="/admin/category" element={<AdminDashboard />} />
         <Route path="/admin/service/create" element={<AdminServiceCreate />} />
         <Route path="/admin/service" element={<DashBoardService />} />
-        <Route path="/admin/service/view/:service_name" element={<AdminServiceEdit />} />
+        <Route path="/admin/service/view/:service_name" element={<AdminServiceView />} />
+        <Route path="/admin/service/edit/:service_name" element={<AdminServiceEdit />} />
+
 
         <Route
           path="/admin/category/create"

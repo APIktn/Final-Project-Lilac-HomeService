@@ -202,7 +202,7 @@ function AdminCategoryCreate() {
           {/* Workspace */}
           <div className="p-10 pt-12 flex-1 overflow-auto rounded-md ">
             <div className="rounded-md  rounded-b-none"></div>
-            <div className="bg-white p-4 rounded-md  h-[124px]">
+            <div className="bg-white p-4 rounded-md rounded-b-none h-[124px]">
               <div className="flex items-center mt-5">
                 <div className="w-[205px] text-[#646C80]">
                   ชื่อหมวดหมู่<span className="text-red-600">*</span>
@@ -220,7 +220,7 @@ function AdminCategoryCreate() {
                 <div className="text-red-600 mt-2 ml-52">{validationMessage}</div>
               )}
               {createCategory && (
-                <div className="flex flex-col gap-7 -mx-4 mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">
+                <div className="flex flex-col gap-7 -mx-4 rounded-t-none mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">
                   <div className="">                    
                     <hr className="border-t-2 border-[#CCD0D7] w-[1235px] ml-5 -mt-10 mb-14" />
                     <div>

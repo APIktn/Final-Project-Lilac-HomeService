@@ -13,7 +13,7 @@ import Frame from "../assets/icons/Frame.svg";
 import { format } from "date-fns";
 import dayjs from "dayjs";
 
-function AdminServiceCreate() {
+function AdminServiceView() {
   // const [servicename, setServicename] = useState("");
   const navigate = useNavigate();  
   const [serviceName, setServiceName] = useState([]); 
@@ -110,7 +110,7 @@ function AdminServiceCreate() {
         </div>          
          <div className="flex items-center space-x-6 mr-8">
            <button
-             onClick={() => navigate("/admin/service")}
+             onClick={() => navigate(`/admin/service/edit/${serviceName.length > 0 ? serviceName[0].service_name : "Loading..."}`)}
              className="bg-[#336DF2]  text-white py-2 px-4 rounded-md w-[112px] h-11"
            >
              แก้ไข
@@ -195,17 +195,11 @@ function AdminServiceCreate() {
               {serviceName.length > 0 ? dayjs(serviceName[0].service_list[0].updated_at).format("DD/MM/YYYY HH:mm A") : "Loading..."}               
               </span>                        
               </span>
-
-
             </div>
             </div>
       </div>
-      </div>
-
-     
-
-   
+      </div>   
   );
 }
 
-export default AdminServiceCreate;
+export default AdminServiceView;

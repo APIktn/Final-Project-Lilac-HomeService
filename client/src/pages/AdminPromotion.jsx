@@ -275,7 +275,7 @@ function AdminPromotion() {
                     <img
                       src={vectorEdit}
                       alt="Edit"
-                      className="cursor-pointer"
+                      className="cursor-pointer ml-9"
                       onClick={() =>
                         navigate(`/admin/promotion/edit/${item.promo_id}`)
                       }                

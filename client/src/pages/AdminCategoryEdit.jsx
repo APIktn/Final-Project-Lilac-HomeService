@@ -272,7 +272,7 @@ function AdminCategoryEdit() {
                   <div className="text-red-600 mt-2 ml-52">{validationMessage}</div>
                 )}
                 {createCategory && (
-                 <div className="flex flex-col gap-7 -mx-4 mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">
+                 <div className="flex flex-col gap-7 -mx-4 rounded-t-none mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">
                  <div className="">                    
                    <hr className="border-t-2 border-[#CCD0D7] w-[1235px] ml-5 -mt-10 mb-14" />
                    <div>
