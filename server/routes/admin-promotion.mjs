@@ -35,6 +35,38 @@ promotionRouter.get("/", async (req, res) => {
   }
 });
 
+// Fetch a single promotion code by ID
+promotionRouter.get("/:promo_id", async (req, res) => {
+  const promoId = req.params.promo_id;
+
+  try {
+    const { data, error } = await supabase
+      .from("promotioncodes")
+      .select("*")
+      .eq("promo_id", promoId)
+      .single();
+
+    if (error) throw error;
+
+    if (!data) {
+      return res.status(404).json({
+        message: `Promotion code with promo_id ${promo_id} not found`,
+      });
+    }
+
+    res.status(200).json({
+      message: "Promotion code retrieved successfully",
+      data,
+    });
+  } catch (error) {
+    console.error("Error retrieving promotion code:", error.message);
+    res.status(500).json({
+      message: "Error retrieving promotion code",
+      error: error.message,
+    });
+  }
+});
+
 //post promotion
 promotionRouter.post("/", async (req, res) => {
   const {
@@ -56,7 +88,36 @@ promotionRouter.post("/", async (req, res) => {
     });
   }
 
+  // Ensure expired_date is not set to a time in the past
+  const currentTime = new Date().toLocaleString("en-US", {
+    timeZone: "Asia/Bangkok",
+  });
+  const expirationTime = new Date(expired_date).toLocaleString("en-US", {
+    timeZone: "Asia/Bangkok",
+  });
+
+  if (new Date(expirationTime) < new Date(currentTime)) {
+    return res.status(400).json({
+      message: "Expired date cannot be set in the past",
+    });
+  }
+
   try {
+    // Check if the code already exists in the database
+    const { data: existingCode, error: codeError } = await supabase
+      .from("promotioncodes")
+      .select("promo_id")
+      .eq("code", code);
+
+    if (codeError) throw codeError;
+
+    if (existingCode.length > 0) {
+      return res.status(400).json({
+        message: "มีหมวดหมู่นี้แล้วกรุณากรอกชื่ออื่น",
+      });
+    }
+
+    // Insert the new promotion code
     const { data, error } = await supabase.from("promotioncodes").insert([
       {
         code,
@@ -105,6 +166,75 @@ promotionRouter.delete("/:promo_id", async (req, res) => {
     console.error("Error deleting promotion code:", error);
     res.status(500).json({
       message: "Error deleting promotion code",
+      error: error.message,
+    });
+  }
+});
+
+// Update (patch) promotion code
+promotionRouter.patch("/edit/:promo_id", async (req, res) => {
+  const { promo_id } = req.params;
+  const {
+    code,
+    baht_discount,
+    percent_discount,
+    total_code,
+    updated_at,
+    created_at,
+    expired_date,
+  } = req.body;
+
+  // Validate percent_discount is between 1 and 100 or null
+  if (
+    percent_discount !== null &&
+    (percent_discount < 1 || percent_discount > 100)
+  ) {
+    return res.status(400).json({
+      message: "Percent discount must be between 1 and 100, or null",
+    });
+  }
+
+  // Ensure expired_date is not set to a time in the past
+  const currentTime = new Date().toLocaleString();
+  const expirationTime = new Date(expired_date).toLocaleString();
+
+  if (new Date(expirationTime) < new Date(currentTime)) {
+    return res.status(400).json({
+      message: "Expired date cannot be set in the past",
+    });
+  }
+
+  try {
+    // Update the promotion code
+    const { data, error } = await supabase
+      .from("promotioncodes")
+      .update({
+        code,
+        baht_discount,
+        percent_discount,
+        total_code,
+        created_at,
+        expired_date,
+        updated_at, // Set updated_at to the current time
+      })
+      .eq("promo_id", promo_id);
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      return res.status(404).json({
+        message: `Promotion code with promo_id ${promo_id} not found`,
+      });
+    }
+
+    res.status(200).json({
+      message: `Promotion code with promo_id ${promo_id} updated successfully`,
+      data,
+    });
+  } catch (error) {
+    console.error("Error updating promotion code:", error.message);
+    res.status(500).json({
+      message: "Error updating promotion code",
       error: error.message,
     });
   }

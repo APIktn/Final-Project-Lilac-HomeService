@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import vectorCategory from "../assets/icons/Vector-category.svg";
 import vectorService from "../assets/icons/Vector-service.svg";
 import vectorPromotionCode from "../assets/icons/Vector-promotion-code.svg";
@@ -13,8 +13,11 @@ import vectorUpload from "../assets/icons/Vector-upload.svg";
 import vectorDragDrop from "../assets/icons/Vector-dragdrop.svg";
 import axios from "axios";
 import { useAdminAuth } from "../contexts/adminAuthentication";
+import { format } from "date-fns";
+import dayjs from "dayjs";
+import Frame from "../assets/icons/Frame.svg";
 
-function AdminServiceCreate() {
+function AdminServiceEdit() {
   const [servicename, setServicename] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
@@ -30,22 +33,13 @@ function AdminServiceCreate() {
   const { state, logout } = useAdminAuth();
   const { admin } = state;
   const[categories,setCategories] = useState([])
+  const [isCreated, setIsCreated] = useState(false); 
+  const [OriginalServiceList, setOriginalServiceList] = useState([]);
+  const {service_name} = useParams();  
+ 
 
-  
-
-  const handleCreate = () => {
-    if (categoryName.trim()) {
-      onCategoryCreate({
-        id: Date.now().toString(),
-        category: categoryName.trim(),
-        created: new Date().toLocaleString(),
-        modified: new Date().toLocaleString(),
-      });
-      navigate("/admindashboard");
-      setCategoryName("");
-    } else {
-      alert("Please enter a category name.");
-    }
+  const handleCreate = () => {    
+    setIsCreated(true);
   };
 
   const handleDragStart = (e, draggedIndex) => {
@@ -82,12 +76,46 @@ function AdminServiceCreate() {
     setShowDeleteModal(true);
   };
 
+  // const handleDeleteConfirm = async () => {
+  //   try {
+  //     await axios.delete(
+  //       `http://localhost:4000/adminservice/${itemToDelete.
+  //         service_list_id}`
+  //     );
+  //     setSubServiceItems((prevItems) =>
+  //       prevItems.filter(
+  //         (prevItem) => prevItem.
+  //         service_list_id !== itemToDelete.
+  //         service_list_id
+  //       )
+  //     );
+  //     setShowDeleteModal(false);
+  //     setItemToDelete(null);
+  //     window.location.href = `/admin/service/view/${service_name}`;          
+  //   } catch (error) {
+  //     console.error("Error deleting:", error);
+  //     // Handle error state or notification to the user
+  //   }
+  // };
+
   const handleDeleteConfirm = () => {
     setSubServiceItems(
-      subServiceItems.filter((item) => item.id !== itemToDelete.id)
+      subServiceItems.filter((item) => item.service_list_id !== itemToDelete.service_list_id)
     );
     setShowDeleteModal(false);
     setItemToDelete(null);
+  };
+
+  const handleEdit = () => {
+    setIsEdit(true);
+  };
+
+  const handleCancel = () => {
+    setUploadedImage(false);
+    setCategoryName(false);
+    setSubServiceItems(false);
+    servicename(false);
+    !setIsEdit();
   };
 
   const handleDeleteCancel = () => {
@@ -124,10 +152,35 @@ function AdminServiceCreate() {
     e.preventDefault();
   };
 
+  const getServicesEdit = async (service_name) => {
+    try {
+      const result = await axios.get(
+        `http://localhost:4000/adminservice/${service_name}`
+      );
+
+      console.log("Fetched category:", result.data.data[0].service_list
+      );
+
+      setServicename(result.data.data[0].service_name);
+      setCategoryName(result.data.data[0].categories.category_name)
+      setUploadedImage(result.data.data[0].image)
+      setSubServiceItems(result.data.data[0].service_list)
+      setOriginalServiceList(result.data.data[0].service_list)
+    } catch (error) {
+      console.error("Error fetching category:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (service_name) {
+      getServicesEdit(service_name);
+    }
+  }, [service_name]);
+
   const getCategories = async () => {
     try {
       const result = await axios.get("http://localhost:4000/categories");
-      console.log("Fetched categories:", result.data.data);
+      // console.log("Fetched categories:", result.data.data);
       setCategories(result.data.data);      
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -157,12 +210,13 @@ function AdminServiceCreate() {
   const handleSubmit = async (e) => {
   e.preventDefault();
 
-  if (!servicename.trim()) {
+  // Ensure servicename and categoryName are defined and not empty
+  if (!servicename || !servicename.trim()) {
     alert("กรุณากรอกชื่อบริการ");
     return;
   }
 
-  if (!categoryName.trim()) {
+  if (!categoryName || !categoryName.trim()) {
     alert("กรุณาเลือกหมวดหมู่");
     return;
   }
@@ -170,13 +224,20 @@ function AdminServiceCreate() {
   const newErrors = {};
 
   for (let item of subServiceItems) {
-    if (!item.price.trim()) {
+    if (!item) continue; // Skip if item is undefined or null
+
+    // Convert item.price to string and check if it's empty
+    const priceStr = String(item.price).trim();
+    if (!priceStr) {
       newErrors.price = "กรุณากรอกราคา";
-    } else if (!/^\d+(\.\d{1,2})?$/.test(item.price)) {
+    } else if (!/^\d+(\.\d{1,2})?$/.test(priceStr)) {
       newErrors.price = "กรุณากรอกราคาให้ถูกต้อง";
     }
 
-    if (!item.name.trim() || !item.price.trim() || !item.unit.trim()) {
+    // Convert item.name and item.unit to strings and check if they're empty
+    const nameStr = String(item.service_lists).trim();
+    const unitStr = String(item.units).trim();
+    if (!nameStr || !unitStr) {
       alert(
         "กรุณากรอกข้อมูลในฟิลด์ชื่อรายการ, ค่าบริการต่อหน่วย และหน่วยบริการให้ครบถ้วน"
       );
@@ -185,55 +246,69 @@ function AdminServiceCreate() {
   }
 
   if (Object.keys(newErrors).length > 0) {
-    // Display the errors
     alert(newErrors.price);
+    return;
+  }
+
+  // Filter out invalid sub-service items
+  const validSubServiceItems = subServiceItems.filter(item => {
+    return item && 
+           String(item.name).trim() &&
+           String(item.unit).trim();
+  });
+
+  if (validSubServiceItems.length === 0) {
+    alert("กรุณากรอกข้อมูลที่ถูกต้องในรายการย่อย");
     return;
   }
 
   setUploading(true);
 
- 
-    try {
-      const formData = new FormData();
-      formData.append("service_name", servicename);
-      formData.append("category_name", categoryName);
-      formData.append("image", uploadedImage);
+  try {
+    const formData = new FormData();
+    formData.append("service_name", servicename);
+    formData.append("category_name", categoryName);
+    formData.append("image", uploadedImage);
 
-      subServiceItems.forEach((item, index) => {
-        formData.append(`subServiceItems[${index}][name]`, item.name);
-        formData.append(`subServiceItems[${index}][price]`, item.price);
-        formData.append(`subServiceItems[${index}][unit]`, item.unit);
-      });
+    validSubServiceItems.forEach((item, index) => {
+      formData.append(`subServiceItems[${index}][name]`, String(item.service_lists).trim());
+      formData.append(`subServiceItems[${index}][price]`, String(item.price).trim());
+      formData.append(`subServiceItems[${index}][unit]`, String(item.units).trim());
+    });
 
-      const response = await axios.post(
-        "http://localhost:4000/adminservice/post",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        setMessage("อัพโหลดข้อมูลสำเร็จ");
-        setServicename("");
-        setCategoryName("");
-        setSubServiceItems([{ name: "", price: "", unit: "" }]);
-        setUploadedImage(null);
-        window.location.href = "/admin/service/create";  
+    const response = await axios.put(
+      `http://localhost:4000/adminservice/update/${service_name}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }
-    } catch (error) {
-      console.error("Error uploading data", error);
-      setMessage("เกิดข้อผิดพลาดในการอัพโหลดข้อมูล");
-    } finally {
-      setUploading(false);
-    }
-  };
+    );
 
+    if (response.status === 200) {
+      setMessage("อัพเดตข้อมูลสำเร็จ");
+      setServicename("");
+      setCategoryName("");
+      setSubServiceItems([{ service_lists: "", price: "", units: "" }]);
+      setUploadedImage(null);
+      window.location.href = `/admin/service/view/${service_name}`;
+    }
+  } catch (error) {
+    console.error("Error updating data", error);
+    setMessage("เกิดข้อผิดพลาดในการอัพเดตข้อมูล");
+  } finally {
+    setUploading(false);
+  }
+};
+
+  
+  
   useEffect(() => {
     handleAddSubService();
   }, []);
+  
+  
 
   return (
     <form id="upload-form" onSubmit={handleSubmit}>
@@ -288,7 +363,16 @@ function AdminServiceCreate() {
         <div className="flex-1 flex flex-col bg-[#EFEFF2]">
           {/* Admin Topbar */}
           <div className="bg-white p-4 flex justify-between items-center ">
-            <div className="text-[20px] font-medium ml-6">เพิ่มบริการ</div>
+          <div className="flex flex-row -ml-8">
+       <img src={Frame} alt="frame" className="ml-10" />
+       <div className="ml-5 mt-4">    
+         <p className="text-[14px] font-normal text-[#646C80]">บริการ</p>    
+         <p className="text-[20px] font-medium text-[#232630]"
+         >
+           {servicename.length > 0 ? servicename : "Loading..."}
+          </p>     
+        </div> 
+        </div>     
             <div className="flex items-center space-x-6 mr-8">
               <button
                 onClick={() => navigate("/admin/service")}
@@ -296,13 +380,22 @@ function AdminServiceCreate() {
               >
                 ยกเลิก
               </button>
-              <button
-                type="submit"
-                className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11"
-                disabled={uploading}
-              >
-                {uploading ? "กำลังอัพโหลด..." : "สร้าง"}
-              </button>
+              {isCreated ? (
+                  <button
+                    className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11 justify-center"
+                    onClick={handleSubmit }
+                  >
+                    ยืนยัน
+                  </button>
+                ) : null}
+              {!isCreated ? (
+                  <button
+                    className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11 justify-center"
+                    onClick={handleCreate}
+                  >
+                    สร้าง
+                  </button>
+                ) : null}
             </div>
           </div>
 
@@ -327,7 +420,7 @@ function AdminServiceCreate() {
                         setServicename(event.target.value);
                       }}
                       value={servicename}
-                      className="border border-gray-300  p-2 w-[433px] rounded-lg"
+                      className="border border-gray-300  p-2 w-[433px] rounded-lg pl-4"
                     />
                   </div>
                   <div className="flex items-center mb-10 w-[662px] justify-between">
@@ -335,7 +428,7 @@ function AdminServiceCreate() {
                       หมวดหมู่<span className="text-red-500">*</span>
                     </label>
                     <select
-                      className="border border-gray-300  p-2 w-[433px] rounded-lg"
+                      className="border border-gray-300  p-2 w-[433px] rounded-lg pl-4"
                       value={categoryName}
                       onChange={(e) => setCategoryName(e.target.value)}
                     >
@@ -363,7 +456,7 @@ function AdminServiceCreate() {
                           <div className="image-preview-container w-[350px] h-[140px] ">
                             <img
                               className="image-preview w-[350px] h-[140px] object-cover"
-                              src={URL.createObjectURL(uploadedImage)}
+                              src={typeof uploadedImage === "string" ? uploadedImage : URL.createObjectURL(uploadedImage)}
                               alt="Preview"
                             />
                           </div>
@@ -437,32 +530,13 @@ function AdminServiceCreate() {
                     <p className="font-normal mb-2">ชื่อรายการ</p>
                     <input
                       type="text"
-                      className="border border-gray-300 rounded-md p-2 w-full"
-                      value={item.name}
+                      className="border border-gray-300 rounded-md p-2 w-full text-[#000000]"
+                      value={item.service_lists || ''}
                       onChange={(e) =>
                         setSubServiceItems((prevItems) =>
                           prevItems.map((prevItem, idx) =>
                             idx === index
-                              ? { ...prevItem, name: e.target.value }
-                              : prevItem
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="col-span-3 w-[240px] font-normal text-[16px] text-[#646C80] ">
-                    <p className=" mb-2">ค่าบริการ / 1 หน่วย</p>
-                    <input
-                      type="text"
-                      className="border border-gray-300 rounded-md p-2 w-full"
-                      value={item.price}
-                      placeholder="฿"
-                      style={{ textAlign: 'right' }}
-                      onChange={(e) =>
-                        setSubServiceItems((prevItems) =>
-                          prevItems.map((prevItem, idx) =>
-                            idx === index
-                              ? { ...prevItem, price: e.target.value }
+                              ? { ...prevItem, service_lists: e.target.value }
                               : prevItem
                           )
                         )
@@ -473,18 +547,40 @@ function AdminServiceCreate() {
                     <p className=" mb-2">หน่วยบริการ</p>
                     <input
                       type="text"
-                      className="border border-gray-300 rounded-md p-2 w-full"
-                      value={item.unit}
+                      className="border border-gray-300 rounded-md p-2 w-full text-[#000000]"
+                      value={item.units || ''}                      
                       onChange={(e) =>
                         setSubServiceItems((prevItems) =>
                           prevItems.map((prevItem, idx) =>
                             idx === index
-                              ? { ...prevItem, unit: e.target.value }
+                              ? { ...prevItem, units: e.target.value }
                               : prevItem
                           )
                         )
                       }
                     />
+                  </div>
+                  <div className="col-span-3 w-[240px] font-normal text-[16px] text-[#646C80] ">
+                    <p className=" mb-2">ค่าบริการ / 1 หน่วย</p>
+                    <span className="flex flex-row">
+                    <input
+                      type="text"                    
+                      className="border border-gray-300 rounded-md p-2 w-full text-[#000000]"
+                      value={item.price || ''}                             
+                      placeholder="฿"
+                      style={{ textAlign: 'left' }}
+                      onChange={(e) =>
+                        setSubServiceItems((prevItems) =>
+                          prevItems.map((prevItem, idx) =>
+                            idx === index
+                              ? { ...prevItem, price: e.target.value }
+                              : prevItem
+                          )
+                        )
+                      }
+                    />
+                    <span className="text-[18px] mt-2 ml-2">฿</span>
+                    </span>
                   </div>
                   <div>
                     <p
@@ -502,40 +598,78 @@ function AdminServiceCreate() {
             <div className=" bg-white p-4 rounded-b-lg">
               <button
                 onClick={handleAddSubService}
-                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 ml-2 mb-6 rounded-lg w-[185px] h-11 flex items-center justify-cent text-[16px] font-medium"
+                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 ml-2 mb-8 rounded-lg  w-[185px] h-11 flex items-center justify-cent text-[16px] font-medium"
                 type="button"
               >
                 <span className="ml-6">เพิ่มบริการ</span><span className="text-[25px] ml-3" >+</span>
               </button>
             </div>
+            {isCreated && (
+                 <div className="flex flex-col gap-7 -mx-[2p3] rounded-t-none mb-4  pb-4 h-[180px] w-[1400px] pt-10 bg-white -mt-1">
+                 <div className="">                    
+                   <hr className="border-t-2 border-[#CCD0D7] w-[1350px] ml-5 -mt-10 mb-14" />
+                   <div className="ml-2">
+                   <span className="block ml-5 font-medium text-[16px] text-[#646C80] ">
+                      สร้างเมื่อ
+                    <span className="ml-[210px] font-normal text-[16px] text-[#000000]">
+                     {dayjs().format("DD/MM/YYYY")} {" "}
+                     {dayjs().format("HH:mm A")}           
+                   </span>                        
+                   </span>
+                   <span className="block ml-5 font-medium text-[16px] text-[#646C80] pt-7 mb-5 mt-3">
+                     แก้ไขล่าสุด
+                    <span className="ml-[195px] font-normal text-[16px] text-[#000000]">
+                     {dayjs().format("DD/MM/YYYY")} {" "}
+                     {dayjs().format("HH:mm A")}           
+                   </span>                        
+                   </span>                    
+                 </div>
+               </div>
+               </div>
+                )}
           </div>
         </div>
         {showDeleteModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-4 rounded-md ">
-              <div className="text-lg mb-4">
-                คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?
-              </div>
-              <div className="flex justify-end space-x-4">
-                <button
-                  onClick={handleDeleteCancel}
-                  className="bg-gray-200 text-gray-700 py-2 px-4 rounded-md"
-                >
-                  ยกเลิก
-                </button>
-                <button
-                  onClick={handleDeleteConfirm}
-                  className="bg-red-500 text-white py-2 px-4 rounded-md"
-                >
-                  ลบ
-                </button>
-              </div>
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-2xl shadow-md">
+            <div className="flex justify-between items-center mb-4 flex-col relative w-[300px] h-[30px] ">
+              <img src={vectorAlert} alt="Alert" />
+              <img
+                src={vectorClose}
+                alt="Close"
+                className="cursor-pointer absolute -right-5 -top-6"
+                onClick={handleDeleteCancel}
+              />
+            </div>
+            <p className="text-center  text-[20px]">ยืนยันการลบรายการ?</p>
+            <p className="text-center text-[16px] text-[#636678]">
+              คุณต้องการลบรายการ </p>
+              <p className="text-center mb-4 text-[16px] text-[#636678]">
+                ' {itemToDelete ? itemToDelete.service_lists : ""} '
+            </p>
+            <p className="text-center mb-4 text-[16px] text-[#636678] -mt-4">
+              ใช่หรือไม่
+            </p>
+            <div className="flex justify-center">
+              <button
+                onClick={handleDeleteConfirm}
+                className="bg-[#336DF2] text-white py-2 px-4 rounded-md mr-2 w-[112px] h-[44px]"
+              >
+                ลบรายการ
+              </button>
+              <button
+                onClick={handleDeleteCancel}               
+                className="bg-white text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-[44px] border-[#336DF2] border-2"
+              >
+                ยกเลิก
+              </button>
             </div>
           </div>
-        )}
+        </div>
+      )}
       </div>
     </form>
   );
 }
 
-export default AdminServiceCreate;
+export default AdminServiceEdit;

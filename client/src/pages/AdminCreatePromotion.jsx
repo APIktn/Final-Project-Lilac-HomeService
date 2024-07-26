@@ -17,12 +17,15 @@ import vectorClose from "../assets/icons/Vector-close.svg";
 import vectorDate from "../assets/icons/Vector-date.svg";
 import vectorTime from "../assets/icons/Vector-time.svg";
 import vectorBin from "../assets/icons/Vector-bin.svg";
+import { useAdminAuth } from "../contexts/adminAuthentication";
 
 import {
   transformToUppercase,
   validatePromotionCode,
 } from "../utils/promotionCodeUtils";
 function AdminCreatePromotion() {
+  const { state, logout } = useAdminAuth();
+  const { admin } = state;
   const [createCode, setCreateCode] = useState(false);
   const [promotionName, setPromotionName] = useState("");
   const [promotionType, setPromotionType] = useState("fixed");
@@ -153,6 +156,7 @@ function AdminCreatePromotion() {
 
   const handleCancel = () => {
     setCreateCode(false);
+    navigate("/admin/promotion")
   };
 
   const handleFixedRadioChange = () => {
@@ -170,8 +174,23 @@ function AdminCreatePromotion() {
       await axios.post("http://localhost:4000/promotion", data);
 
       console.log(data);
+      navigate("/admin/promotion");
     } catch (error) {
-      console.error("Error creating promotion code:", error);
+      if (error.response && error.response.status === 400) {
+        const errorMessage = error.response.data.message;
+
+        if (errorMessage.includes("Expired date cannot be set in the past")) {
+          alert("กรุณาตั้งเวลาหมดอายุหลังเวลาจริงอย่างน้อย 5 นาที");
+        } else if (
+          errorMessage.includes("มีหมวดหมู่นี้แล้วกรุณากรอกชื่ออื่น")
+        ) {
+          alert("Promotioncode นี้มีอยู่แล้วกรุณาตั้งชื่ออื่น");
+        } else {
+          alert("เกิดข้อผิดพลาดในการสร้างรหัสโปรโมชั่น");
+        }
+      } else {
+        console.error("Error creating promotion code:", error);
+      }
     }
   };
 
@@ -196,52 +215,53 @@ function AdminCreatePromotion() {
     <form onSubmit={handleSubmit}>
       <div className="flex h-screen">
         {/* Sidebar */}
-        <div className="bg-[#001C59] w-[240px] p-4 flex flex-col justify-between">
-          <div>
-            <div
-              className="bg-[#E7EEFF] p-2 rounded-lg flex items-center justify-center mb-6"
-              onClick={() => navigate("/")}
-            >
-              <img src={vectorHouse} alt="House" className="mr-2" />
-              <span className="text-[#336DF2] text-[20px]">Homeservice</span>
-            </div>
-            <div
-              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/dashboard")}
-            >
-              <img src={vectorCategory} alt="Category" className="mr-2" />
-              <span className="text-white">หมวดหมู่</span>
-            </div>
-            <div
-              className="flex items-center mb-4 p-2 rounded-md hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/servicelist")}
-            >
-              <img src={vectorService} alt="Service" className="mr-2" />
-              <span className="text-white">บริการ</span>
-            </div>
-            <div
-              className="flex items-center p-2 rounded-md bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/promotion")}
-            >
-              <img
-                src={vectorPromotionCode}
-                alt="Promotion Code"
-                className="mr-2"
-              />
-              <span className="text-white">Promotion Code</span>
-            </div>
+        <div className="bg-[#001C59] w-[240px] flex flex-col justify-between">
+        <div>
+        <div
+            className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
+            onClick={() => navigate("/")}
+          >
+            <img src={vectorHouse} alt="House" className="w-[26.06px] h-[26.06px] mr-2" />
+            <span className="text-[#336DF2] text-[20px] font-medium mt-1">HomeServices</span>
           </div>
-          <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer">
-            <img src={vectorLogout} alt="Logout" className="mr-2" />
-            <span className="text-white">ออกจากระบบ</span>
+          <div
+            className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer"
+            onClick={() => navigate("/admin/category")}
+          >
+            <img src={vectorCategory} alt="Category" className="mr-2 ml-2" />
+            <span className="text-[#F1F1F1] text-base ml-3">หมวดหมู่</span>
+          </div>
+          <div
+            className="flex items-center p-4  hover:bg-[#022B87] cursor-pointer"
+            onClick={() => navigate("/admin/service")}
+          >
+            <img src={vectorService} alt="Service" className="mr-2 ml-2" />
+            <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
+          </div>
+          <div className="flex items-center p-4 bg-[#022B87] cursor-pointer">
+            <img
+              src={vectorPromotionCode}
+              alt="Promotion Code"
+              className="mr-2 ml-2"
+            />
+            <span className="text-[#F1F1F1] text-base ml-3">Promotion Code</span>
           </div>
         </div>
+        <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
+          <img src={vectorLogout} alt="Logout" className="mr-2" />
+          <span className="text-[#F1F1F1] text-base ml-2"  
+                onClick={() => {
+                logout();
+                navigate("/admin");
+              }}>ออกจากระบบ</span>
+        </div>
+      </div>
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col bg-[#EFEFF2]">
           {/* Admin Topbar */}
-          <div className="bg-white p-4 flex justify-between items-center">
-            <div className="text-lg">
+          <div className="bg-white p-4 flex justify-between items-center ">
+            <div className="text-lg mx-4">
               <div className="text-lg">
                 {createCode ? (
                   <div>
@@ -253,17 +273,17 @@ function AdminCreatePromotion() {
                 )}
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 mr-4">
               <div
                 onClick={handleCancel}
-                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-40 h-11 text-center cursor-pointer"
+                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-11 text-center cursor-pointer"
               >
                 ยกเลิก
               </div>
 
               {createCode ? (
                 <button
-                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
+                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11"
                   type="submit"
                   onClick={handleSubmit}
                 >
@@ -273,7 +293,7 @@ function AdminCreatePromotion() {
 
               {!createCode ? (
                 <button
-                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
+                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11"
                   onClick={handleCreatePromotion}
                 >
                   สร้าง
@@ -299,7 +319,7 @@ function AdminCreatePromotion() {
 
           {/* Workspace */}
           <div className="p-4 pt-8 flex-1 overflow-auto rounded-md shadow-md text-[#646C80]">
-            <div className="bg-white p-4 rounded-md shadow-md h-[430px]">
+            <div className="bg-white p-6 pt-8 rounded-md  h-[550px]">
               <div className="flex  mb-7 items-center">
                 <div className="w-[205px]">Promotion Code</div>
                 <input
@@ -497,9 +517,27 @@ function AdminCreatePromotion() {
                   <p className="text-red-500">กรุณากรอกข้อมูลให้ครบ</p>
                 )}
               </div>
+              {createCode && (
+                <div className="flex flex-col border-t border-[#CCD0D7] mb-4 pb-4 pt-10 h-[100px] w-[380]  bg-white">
+                  <div className="flex">
+                    <div className="w-[205px]">สร้างเมื่อ</div>
+                    <p>
+                      {dayjs(selectedDate).format("DD/MM/YYYY")} เวลา{" "}
+                      {dayjs(selectedTime).format("HH:mm A")}
+                    </p>
+                  </div>
+                  <div className="flex mt-6">
+                    <div className="w-[205px]">แก้ไขล่าสุด</div>
+                    <p>
+                      {dayjs(selectedDate).format("DD/MM/YYYY")} เวลา{" "}
+                      {dayjs(selectedTime).format("HH:mm A")}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {createCode && (
+            {/* {createCode && (
               <div className="flex flex-col border-t border-[#CCD0D7] mb-4 pb-4 h-[100px] w-[380] p-5 bg-white">
                 <div className="flex">
                   <div className="w-[205px]">สร้างเมื่อ</div>
@@ -516,8 +554,8 @@ function AdminCreatePromotion() {
                   </p>
                 </div>
               </div>
-            )}
-            {createCode && (
+            )} */}
+            {/* {createCode && (
               <div>
                 <p>test</p>
                 <img
@@ -527,7 +565,7 @@ function AdminCreatePromotion() {
                   onClick={() => handleDeleteClick(promotionName)}
                 />
               </div>
-            )}
+            )} */}
           </div>
         </div>
 
