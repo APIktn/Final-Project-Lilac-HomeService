@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar_admin from "../components/Navbar_admin";
-import PaymentSuccess from "../components/cart_components/PaymentSuccess";
+import PaymentSuccess_admin from "../components/cart_components/PaymentSuccess_admin";
 import axios from "axios";
 
 function Payment_status_page() {
@@ -29,7 +29,7 @@ function Payment_status_page() {
   return (
     <>
       <Navbar_admin />
-      {billInfo.length > 0 && <PaymentSuccess billInfo={billInfo} />}
+      {billInfo.length > 0 && <PaymentSuccess_admin billInfo={billInfo} />}
     </>
   );
 }
