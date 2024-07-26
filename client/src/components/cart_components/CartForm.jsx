@@ -9,6 +9,7 @@ import ServiceForm from "./forms/ServiceForm";
 import ServicePayment from "./forms/ServicePayment";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import WrappedPaymentForm from "./forms/ServicePayment";
 
 function CartForm() {
   const { activeStep, setCartPath } = useContext(CartContext);
@@ -48,6 +49,7 @@ function CartForm() {
   useEffect(() => {
     getServices();
   }, []);
+
   return (
     <div className="background bg-[#F3F4F6] w-full h-auto relative z-10 py-14 gap-7 mb-[44px] md:py-20 md:mb-0 ">
       <ServiceImage />
@@ -66,7 +68,7 @@ function CartForm() {
           ) : activeStep === 1 ? (
             <ServiceForm />
           ) : (
-            <ServicePayment />
+            <WrappedPaymentForm />
           )}
         </div>
         <OrderSummary summaryOrder={summaryOrder} service_name={service_name} />

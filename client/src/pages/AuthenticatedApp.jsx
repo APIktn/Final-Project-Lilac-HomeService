@@ -7,6 +7,8 @@ import CustomerServiceList from "./CustomerServiceList";
 import CartPage from "./CartPage";
 import CustomerServiceHistory from "./CustomerServiceHistory";
 import CustomerInfo from "./CustomerInfo";
+import SuccessPage from "../components/cart_components/SuccessPage";
+import CancelPage from "../components/cart_components/CancelPage";
 import Payment_status_page from "./Payment_status_page";
 
 function AuthenticatedApp() {
@@ -25,6 +27,8 @@ function AuthenticatedApp() {
           element={<CustomerServiceHistory />}
         />
         <Route path="/CustomerInfo" element={<CustomerInfo />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/cancel" element={<CancelPage />} />
       </Routes>
     </div>
   );

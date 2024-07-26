@@ -7,6 +7,8 @@ import userRouter from "./routes/users.mjs";
 import uploadsRouter from "./routes/upload.mjs";
 import cartsRouter from "./routes/cart-routes.mjs";
 import technicianRouter from "./routes/technicians.mjs";
+import "dotenv/config";
+import paymentRoutes from "./routes/paymentRoutes.mjs";
 import orderRouter from "./routes/order.mjs";
 import adminserviceslistRouter from "./routes/admin-serviceslist.mjs";
 import promotionRouter from "./routes/admin-promotion.mjs";
@@ -47,13 +49,13 @@ app.use(
   authorizeTechnician,
   technicianRouter
 );
+
+app.use("/api/payments", paymentRoutes);
 app.use("/", orderRouter);
 
 app.use("/user", userRouter);
 
-
 app.use("/", servicesRouter);
-
 
 app.get("/test", (req, res) => {
   return res.json("Server API is working 🚀");
