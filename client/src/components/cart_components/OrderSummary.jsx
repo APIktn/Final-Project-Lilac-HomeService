@@ -63,7 +63,7 @@ function OrderSummary({ summaryOrder, service_name }) {
   if (!summaryOrder || !summaryOrder[0]) {
     return (
       <div className="w-full md:basis-1/3 ">
-        <div className="fixed bottom-[72px] left-0 md:sticky md:top-14 w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-t-[8px] md:rounded-[8px] flex flex-col overflow-hidden z-20">
+        <div className="fixed bottom-[72px] left-0 lg:sticky lg:top-16 w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-t-[8px] md:rounded-[8px] flex flex-col overflow-hidden z-20">
           <Accordion
             disableGutters
             elevation={0}
@@ -112,7 +112,7 @@ function OrderSummary({ summaryOrder, service_name }) {
   }
   return (
     <div className="w-full md:basis-1/3 ">
-      <div className="fixed bottom-[72px] left-0 md:sticky md:top-0 w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-t-[8px] md:rounded-[8px] flex flex-col overflow-hidden z-20">
+      <div className="fixed bottom-[72px] left-0 md:sticky md:top-16 w-full bg-white border-solid border-[1px] border-[#D8D8D8] rounded-t-[8px] md:rounded-[8px] flex flex-col overflow-hidden z-20">
         <Accordion
           disableGutters
           elevation={0}
@@ -147,10 +147,10 @@ function OrderSummary({ summaryOrder, service_name }) {
                 key={index}
                 className="service-summary flex flex-row justify-between"
               >
-                <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black">
+                <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black basis-3/5">
                   {item.name}
                 </p>
-                <p className="font-prompt font-[400] md:font-[300] text-[14px] text-[#646C80]">
+                <p className="font-prompt font-[400] md:font-[300] text-[14px] text-[#646C80] text-end basis-2/5">
                   {item.count} รายการ
                 </p>
               </div>

@@ -18,7 +18,6 @@ import AdminDashboard from "./AdminDashBoard";
 import AdminServiceCreate from "./AdminServicesCreated";
 import DashBoardService from "./AdminServicesList";
 import Payment_status_page from "./Payment_status_page";
-import CustomerServiceHistory from "./CustomerServiceHistory";
 import Payment_status_page_admin from "./Payment_status_page_admin";
 
 function AdminAuthenticatedApp() {
@@ -46,10 +45,6 @@ function AdminAuthenticatedApp() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/service/create" element={<AdminServiceCreate />} />
         <Route path="/admin/servicelist" element={<DashBoardService />} />
-        <Route
-          path="/CustomerServiceHistory"
-          element={<CustomerServiceHistory />}
-        />
         <Route path="/payment-status" element={<Payment_status_page_admin />} />
       </Routes>
     </div>
