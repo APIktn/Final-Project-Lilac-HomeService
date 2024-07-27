@@ -54,12 +54,7 @@ const PaymentForm = () => {
       // Confirm the payment
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
-          card: {
-            number: cardNumberElement,
-            exp_month: cardExpiryElement,
-            exp_year: cardExpiryElement,
-            cvc: cardCvcElement,
-          },
+          card: cardNumberElement,
           billing_details: {
             email: email,
           },
