@@ -2,8 +2,13 @@
 import { Router } from "express";
 import Stripe from "stripe";
 import "dotenv/config";
+import generatePayload from "promptpay-qr";
+import _ from "lodash";
+import QRcode from "qrcode";
 
 const router = Router();
+
+//---------------Stripe Payment---------------/////
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-11-15",
 });
@@ -34,4 +39,29 @@ router.post("/create-payment-intent", async (req, res) => {
   }
 });
 
+//---------------Promptpay Payment---------------/////
+router.post("/generateQR", (req, res) => {
+  const amount = parseFloat(_.get(req, ["body", "amount"]));
+  const mobileNumber = "0805406357";
+  const payload = generatePayload(mobileNumber, { amount });
+  const option = {
+    color: {
+      dark: "#000",
+      light: "#FFF",
+    },
+  };
+  QRcode.toDataURL(payload, option, (err, url) => {
+    if (err) {
+      return res.status(400).json({
+        message: "Error generating QR Code :",
+        err,
+      });
+    } else {
+      return res.status(200).json({
+        message: "Succeed",
+        url,
+      });
+    }
+  });
+});
 export default router;

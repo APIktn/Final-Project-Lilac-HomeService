@@ -9,54 +9,31 @@ import {
 } from "@stripe/react-stripe-js";
 import { CartContext } from "../../../contexts/cartContext";
 import PaymentRadio from "../utils/PaymentRadio";
+import axios from "axios";
 
 const ServicePayment = () => {
   const [selected, setSelected] = useState("credit-card");
   const { netPrice, email, setEmail } = useContext(CartContext);
-  //   event.preventDefault();
+  const [qrSrc, setQrSrc] = useState("");
 
-  //   if (!stripe || !elements) {
-  //     return;
-  //   }
+  const genQR = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/payments/generateQR",
+        {
+          amount: netPrice,
+        }
+      );
+      setQrSrc(response.data.url);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
-  //   const cardNumberElement = elements.getElement(CardNumberElement);
-  //   // const cardExpiryElement = elements.getElement(CardExpiryElement);
-  //   // const cardCvcElement = elements.getElement(CardCvcElement);
-
-  //   try {
-  //     // Create Payment Intent on the server
-  //     const response = await axios.post(
-  //       "http://localhost:4000/api/payments/create-payment-intent",
-  //       {
-  //         amount: netPrice * 100, //
-  //         currency: "thb",
-  //       }
-  //     );
-
-  //     const { clientSecret } = response.data;
-
-  //     // Confirm the payment
-  //     const result = await stripe.confirmCardPayment(clientSecret, {
-  //       payment_method: {
-  //         card: cardNumberElement,
-  //         billing_details: {
-  //           email: email,
-  //         },
-  //       },
-  //     });
-
-  //     if (result.error) {
-  //       console.error(result.error.message);
-  //     } else {
-  //       if (result.paymentIntent.status === "succeeded") {
-  //         console.log("Payment successful");
-  //         navigate("/success"); // Redirect to the success page
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
+  function handleQR() {
+    genQR();
+    setSelected("propmt-pay");
+  }
 
   return (
     <div className="payment-background w-full min-h-full">
@@ -69,7 +46,7 @@ const ServicePayment = () => {
           <PaymentRadio
             id="prompt-pay"
             checked={selected === "propmt-pay"}
-            onChange={() => setSelected("propmt-pay")}
+            onChange={() => handleQR()}
             icon={
               <QrCode2OutlinedIcon
                 className={
@@ -155,6 +132,17 @@ const ServicePayment = () => {
               </label>
             </div>
           </form>
+        )}
+
+        {selected === "propmt-pay" && (
+          <div className="flex justify-center items-center">
+            <img
+              id="imgqr"
+              src={qrSrc}
+              alt="QR Code"
+              className="w-full md:w-96 object-contain"
+            />
+          </div>
         )}
 
         <hr className="border-solid border-[1px] border-[#CCD0D7] " />
