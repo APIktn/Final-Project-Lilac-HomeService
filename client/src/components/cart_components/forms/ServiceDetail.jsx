@@ -20,7 +20,7 @@ function ServiceDetail({ dataFromState, getSummaryOrder, deleteSummaryOrder }) {
                   ? `list-detail-container border-solid border-b-[1px] border-gray-300 py-4 md:py-6 flex flex-row justify-between`
                   : `list-detail-container py-4 md:py-6 flex flex-row justify-between`
               }
-              key={item.id}
+              key={index}
             >
               <div className="detail flex flex-col gap-1 ">
                 <p className="text-[16px] md:text-[18px] font-[500]">
@@ -37,7 +37,7 @@ function ServiceDetail({ dataFromState, getSummaryOrder, deleteSummaryOrder }) {
               </div>
               <div className="pl-2 flex items-start justify-end">
                 <Counter
-                  key={index}
+                  key={`counter-${index}`}
                   dataFromState={dataFromState[0]}
                   getSummaryOrder={getSummaryOrder}
                   dataIndex={index}

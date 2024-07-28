@@ -18,7 +18,6 @@ function PaymentRadio(props) {
       >
         {props.icon}
         <label
-          for="prompt-pay"
           className={
             props.checked
               ? "font-[500] text-[16px] text-[#336DF2]"

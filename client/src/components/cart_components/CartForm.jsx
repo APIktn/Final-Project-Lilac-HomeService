@@ -9,7 +9,6 @@ import ServiceForm from "./forms/ServiceForm";
 import ServicePayment from "./forms/ServicePayment";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import WrappedPaymentForm from "./forms/ServicePayment";
 
 function CartForm() {
   const { activeStep, setCartPath, services, setServices } =
@@ -68,7 +67,7 @@ function CartForm() {
           ) : activeStep === 1 ? (
             <ServiceForm />
           ) : (
-            <WrappedPaymentForm />
+            <ServicePayment />
           )}
         </div>
         <OrderSummary summaryOrder={summaryOrder} service_name={service_name} />

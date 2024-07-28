@@ -6,8 +6,8 @@ const CartContextProvider = (props) => {
   const [cartPath, setCartPath] = useState("");
   const [activeStep, setActiveStep] = useState(0);
   const [netPrice, setNetPrice] = useState(0);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(undefined);
+  const [selectedTime, setSelectedTime] = useState(undefined);
   const [address, setAddress] = useState("");
   const [provinces, setProvinces] = useState([]);
   const [amphures, setAmphures] = useState([]);
@@ -22,12 +22,13 @@ const CartContextProvider = (props) => {
     amphure: "",
     tambon: "",
   });
-  const [moreInfo, setMoreInfo] = useState(null);
-  const [order, setOrder] = useState(null);
+  const [moreInfo, setMoreInfo] = useState(undefined);
+  const [order, setOrder] = useState(undefined);
   const [logisticsInfo, setLogisticsInfo] = useState({});
-  const [billInfo, setBillInfo] = useState(null);
+  const [billInfo, setBillInfo] = useState(undefined);
   const [counters, setCounters] = useState({});
   const [services, setServices] = useState([]);
+  const [email, setEmail] = useState("");
 
   const updateCounter = (id, value) => {
     setCounters((prev) => ({
@@ -71,6 +72,8 @@ const CartContextProvider = (props) => {
     setCartPath,
     services,
     setServices,
+    email,
+    setEmail,
   };
 
   return (

@@ -4,7 +4,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
 import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import { TextField, MenuItem } from "@mui/material";
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CartContext } from "../../../contexts/cartContext";
 
@@ -207,7 +207,7 @@ function ServiceForm() {
                 </label>
                 <DesktopDatePicker
                   label={selectedDate ? "" : "กรุณาเลือกวันที่"}
-                  value={selectedDate}
+                  value={selectedDate || null}
                   format="DD/MM/YYYY"
                   onChange={(newValue) => {
                     setSelectedDate(newValue);
@@ -329,7 +329,7 @@ function ServiceForm() {
                 <ThemeProvider theme={theme}>
                   <DesktopTimePicker
                     label={selectedTime ? "" : "กรุณาเลือกเวลา"}
-                    value={selectedTime}
+                    value={selectedTime || null}
                     onChange={(newValue) => {
                       setSelectedTime(newValue);
                     }}

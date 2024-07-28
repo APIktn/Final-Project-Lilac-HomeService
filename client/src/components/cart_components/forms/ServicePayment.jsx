@@ -2,77 +2,61 @@
 import React, { useContext, useState } from "react";
 import QrCode2OutlinedIcon from "@mui/icons-material/QrCode2Outlined";
 import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
-import { loadStripe } from "@stripe/stripe-js";
 import {
-  Elements,
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement,
-  useStripe,
-  useElements,
 } from "@stripe/react-stripe-js";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../../contexts/cartContext";
 import PaymentRadio from "../utils/PaymentRadio";
 
-const stripePromise = loadStripe(
-  "pk_test_51Pd5PtRuueEv9DGjDVcq53KQhCXnPthtn8Ua0El6SAkY3IecUvvETIuHa2O1QYBBKmK8jxbXKw2eqmnrmiokYgD000yWzkvOgY"
-);
-
-const PaymentForm = () => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+const ServicePayment = () => {
   const [selected, setSelected] = useState("credit-card");
-  const { netPrice } = useContext(CartContext);
+  const { netPrice, email, setEmail } = useContext(CartContext);
+  //   event.preventDefault();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  //   if (!stripe || !elements) {
+  //     return;
+  //   }
 
-    if (!stripe || !elements) {
-      return;
-    }
+  //   const cardNumberElement = elements.getElement(CardNumberElement);
+  //   // const cardExpiryElement = elements.getElement(CardExpiryElement);
+  //   // const cardCvcElement = elements.getElement(CardCvcElement);
 
-    const cardNumberElement = elements.getElement(CardNumberElement);
-    const cardExpiryElement = elements.getElement(CardExpiryElement);
-    const cardCvcElement = elements.getElement(CardCvcElement);
+  //   try {
+  //     // Create Payment Intent on the server
+  //     const response = await axios.post(
+  //       "http://localhost:4000/api/payments/create-payment-intent",
+  //       {
+  //         amount: netPrice * 100, //
+  //         currency: "thb",
+  //       }
+  //     );
 
-    try {
-      // Create Payment Intent on the server
-      const response = await axios.post(
-        "http://localhost:4000/api/payments/create-payment-intent",
-        {
-          amount: netPrice * 100, //
-          currency: "thb",
-        }
-      );
+  //     const { clientSecret } = response.data;
 
-      const { clientSecret } = response.data;
+  //     // Confirm the payment
+  //     const result = await stripe.confirmCardPayment(clientSecret, {
+  //       payment_method: {
+  //         card: cardNumberElement,
+  //         billing_details: {
+  //           email: email,
+  //         },
+  //       },
+  //     });
 
-      // Confirm the payment
-      const result = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: cardNumberElement,
-          billing_details: {
-            email: email,
-          },
-        },
-      });
-
-      if (result.error) {
-        console.error(result.error.message);
-      } else {
-        if (result.paymentIntent.status === "succeeded") {
-          console.log("Payment successful");
-          navigate("/success"); // Redirect to the success page
-        }
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  //     if (result.error) {
+  //       console.error(result.error.message);
+  //     } else {
+  //       if (result.paymentIntent.status === "succeeded") {
+  //         console.log("Payment successful");
+  //         navigate("/success"); // Redirect to the success page
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
   return (
     <div className="payment-background w-full min-h-full">
@@ -118,7 +102,7 @@ const PaymentForm = () => {
         </div>
 
         {selected === "credit-card" && (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <form className="flex flex-col gap-6">
             <label className="font-[500] text-[16px] text-[#323640]">
               ที่อยู่อีเมล
               <span className="text-red-600">*</span>
@@ -170,10 +154,6 @@ const PaymentForm = () => {
                 />
               </label>
             </div>
-
-            <button type="submit" disabled={!stripe}>
-              Pay
-            </button>
           </form>
         )}
 
@@ -199,10 +179,4 @@ const PaymentForm = () => {
   );
 };
 
-const WrappedPaymentForm = () => (
-  <Elements stripe={stripePromise}>
-    <PaymentForm />
-  </Elements>
-);
-
-export default WrappedPaymentForm;
+export default ServicePayment;
