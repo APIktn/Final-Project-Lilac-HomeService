@@ -10,6 +10,7 @@ import {
 import { CartContext } from "../../../contexts/cartContext";
 import PaymentRadio from "../utils/PaymentRadio";
 import axios from "axios";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ServicePayment = () => {
   const [selected, setSelected] = useState("credit-card");
@@ -22,6 +23,7 @@ const ServicePayment = () => {
     setCardCVC,
   } = useContext(CartContext);
   const [qrSrc, setQrSrc] = useState("");
+  const isMdUp = useMediaQuery("(min-width: 768px)");
 
   const genQR = async () => {
     try {
@@ -44,7 +46,7 @@ const ServicePayment = () => {
 
   return (
     <div className="payment-background w-full min-h-full">
-      <div className="container w-full h-auto bg-white border-solid border-[1px] border-[#CCD0D7] rounded-[8px] flex flex-col p-4 md:p-6 gap-4 md:gap-5">
+      <div className="container w-full h-auto bg-white border-solid border-[1px] border-[#CCD0D7] rounded-[8px] flex flex-col p-4 md:px-6 md:pt-6 md:pb-11 gap-4 md:gap-5">
         <p className="font-[500] text-[18px] text-[#646C80] md:font-400] md:text-[20px]">
           ชำระเงิน
         </p>
@@ -61,7 +63,7 @@ const ServicePayment = () => {
                     ? "text-[#336DF2]"
                     : "text-[#B3B8C4] group-hover:text-[#336DF2]"
                 }
-                sx={{ fontSize: "28px" }}
+                sx={{ fontSize: isMdUp ? "35px" : "28px" }}
               />
             }
             label="พร้อมเพย์"
@@ -78,7 +80,7 @@ const ServicePayment = () => {
                     ? "text-[#336DF2]"
                     : "text-[#B3B8C4] group-hover:text-[#336DF2]"
                 }
-                sx={{ fontSize: "28px" }}
+                sx={{ fontSize: isMdUp ? "35px" : "28px" }}
               />
             }
             label="บัตรเครดิต"
@@ -161,18 +163,18 @@ const ServicePayment = () => {
           </div>
         )}
 
-        <hr className="border-solid border-[1px] border-[#CCD0D7] " />
+        <hr className="border-solid border-[1px] border-[#CCD0D7] my-2 md:mt-6 md:mb-3" />
 
-        <label className="font-[500] text-[16px] text-[#323640] md:mb-5">
+        <label className="font-[500] text-[16px] text-[#323640]">
           Promotion Code
-          <div className="flex gap-4">
+          <div className="flex gap-4 h-[64px] mt-1 md:h-[44px]">
             <input
-              className="w-full h-[64px] md:h-[44px] mt-1 border border-solid border-[#CCD0D7] focus:border-[#336DF2] rounded-[8px] pb-5 md:py-2.5 px-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:focus:text-[#232630] placeholder:text-[#646C80] placeholder:text-wrap basis-2/3 md:basis-1/2"
+              className="w-full h-full border border-solid border-[#CCD0D7] focus:border-[#336DF2] rounded-[8px] pb-6 md:py-0 px-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:focus:text-[#232630] placeholder:text-[#646C80] placeholder:text-wrap basis-2/3 md:basis-1/2 flex items-center"
               type="text"
               placeholder="กรุณากรอกโค้ดส่วนลด (ถ้ามี)"
             />
-            <div className="py-2.5 basis-1/3 md:basis-1/2 md:py-0">
-              <button className="bg-[#336DF2] max-w-[90px] w-full h-full rounded-lg text-white">
+            <div className="basis-1/3 md:basis-1/2 flex items-center">
+              <button className="bg-[#336DF2] max-w-[90px] w-full h-[44px] rounded-lg text-white">
                 ใช้โค้ด
               </button>
             </div>
