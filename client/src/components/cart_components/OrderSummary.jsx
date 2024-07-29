@@ -57,6 +57,8 @@ function OrderSummary({ summaryOrder, service_name }) {
     if (summaryOrder.length > 0) {
       fetchNetPrice(summaryData, service_name);
       setOrder({ serviceInfo });
+    } else {
+      setNetPrice(0);
     }
   }, [summaryOrder]);
 

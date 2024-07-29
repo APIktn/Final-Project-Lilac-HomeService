@@ -18,17 +18,21 @@ const CartContextProvider = (props) => {
     tambon_id: undefined,
   });
   const [selectedNames, setSelectedNames] = useState({
-    province: "",
-    amphure: "",
-    tambon: "",
+    province: undefined,
+    amphure: undefined,
+    tambon: undefined,
   });
   const [moreInfo, setMoreInfo] = useState(undefined);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [order, setOrder] = useState(undefined);
   const [logisticsInfo, setLogisticsInfo] = useState({});
   const [billInfo, setBillInfo] = useState(undefined);
   const [counters, setCounters] = useState({});
   const [services, setServices] = useState([]);
   const [email, setEmail] = useState("");
+  const [cardNumber, setCardNumber] = useState(false);
+  const [cardExpiry, setCardExpiry] = useState(false);
+  const [cardCVC, setCardCVC] = useState(false);
 
   const updateCounter = (id, value) => {
     setCounters((prev) => ({
@@ -38,6 +42,12 @@ const CartContextProvider = (props) => {
   };
 
   const contextValue = {
+    cardNumber,
+    setCardNumber,
+    cardExpiry,
+    setCardExpiry,
+    cardCVC,
+    setCardCVC,
     activeStep,
     setActiveStep,
     netPrice,
@@ -74,6 +84,8 @@ const CartContextProvider = (props) => {
     setServices,
     email,
     setEmail,
+    isDisabled,
+    setIsDisabled,
   };
 
   return (

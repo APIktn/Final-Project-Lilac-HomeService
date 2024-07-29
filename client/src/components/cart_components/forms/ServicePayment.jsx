@@ -13,7 +13,14 @@ import axios from "axios";
 
 const ServicePayment = () => {
   const [selected, setSelected] = useState("credit-card");
-  const { netPrice, email, setEmail } = useContext(CartContext);
+  const {
+    netPrice,
+    email,
+    setEmail,
+    setCardNumber,
+    setCardExpiry,
+    setCardCVC,
+  } = useContext(CartContext);
   const [qrSrc, setQrSrc] = useState("");
 
   const genQR = async () => {
@@ -109,6 +116,9 @@ const ServicePayment = () => {
               <CardNumberElement
                 id="card-number"
                 className="font-prompt w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] rounded-[8px] pt-[11px] pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:font-prompt placeholder:text-[#646C80]"
+                onChange={(e) => {
+                  setCardNumber(e.complete);
+                }}
               />
             </label>
 
@@ -119,6 +129,9 @@ const ServicePayment = () => {
                 <CardExpiryElement
                   id="card-expiry"
                   className="font-prompt w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] rounded-[8px] pt-[11px] pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:font-prompt placeholder:text-[#646C80]"
+                  onChange={(e) => {
+                    setCardExpiry(e.complete);
+                  }}
                 />
               </label>
 
@@ -128,6 +141,9 @@ const ServicePayment = () => {
                 <CardCvcElement
                   id="card-cvc"
                   className="font-prompt w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] rounded-[8px] pt-[11px] pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:font-prompt placeholder:text-[#646C80]"
+                  onChange={(e) => {
+                    setCardCVC(e.complete);
+                  }}
                 />
               </label>
             </div>

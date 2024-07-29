@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { steps } from "./Stepper";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../../contexts/cartContext";
@@ -28,6 +28,11 @@ function StepButtons() {
     order,
     services,
     email,
+    isDisabled,
+    setIsDisabled,
+    cardNumber,
+    cardExpiry,
+    cardCVC,
   } = useContext(CartContext);
 
   const monthMap = {
@@ -176,10 +181,11 @@ function StepButtons() {
     }
   };
 
-  const isDisabled = () => {
+  const enablingStepButton = () => {
     if (activeStep === 0) {
       if (netPrice === 0) {
-        return true;
+        setIsDisabled(true);
+        return;
       }
     } else if (activeStep === 1) {
       if (
@@ -190,11 +196,35 @@ function StepButtons() {
         !selectedNames.amphure ||
         !selectedNames.tambon
       ) {
-        return true;
+        setIsDisabled(true);
+        return;
+      }
+    } else if (activeStep === 2) {
+      if (!email || !cardNumber || !cardExpiry || !cardCVC) {
+        setIsDisabled(true);
+        return;
       }
     }
-    return false;
+    return setIsDisabled(false);
   };
+
+  useEffect(() => {
+    enablingStepButton();
+  }, [
+    netPrice,
+    selectedDate,
+    selectedTime,
+    address,
+    selectedNames.province,
+    selectedNames.amphure,
+    selectedNames.tambon,
+    activeStep,
+    email,
+    elements,
+    cardNumber,
+    cardExpiry,
+    cardCVC,
+  ]);
 
   return (
     <div className="bottom-navigator w-full h-[72px] md:h-[92px] bg-white border-solid border-[1px] border-t-gray-300 sticky bottom-0 z-10 overflow-hidden">
@@ -207,12 +237,12 @@ function StepButtons() {
         </button>
         <button
           className={`${
-            isDisabled()
+            isDisabled
               ? "w-[164px] h-[40px] md:h-[44px] md:text-[16px] font-[500] text-center border-solid border-[1px] bg-gray-300 rounded-[8px] text-gray-100"
               : "w-[164px] h-[40px] md:h-[44px] md:text-[16px] font-[500] text-center border-solid border-[1px] bg-blue-600 rounded-[8px] text-white hover:bg-[#4C7FF4] active:bg-[#0E3FB0]"
           }`}
           onClick={handleClick}
-          disabled={isDisabled()}
+          disabled={isDisabled}
         >
           {activeStep >= steps.length - 1
             ? "ยืนยันการชำระเงิน"
