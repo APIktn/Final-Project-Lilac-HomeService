@@ -122,7 +122,7 @@ function StepButtons() {
       });
 
       if (result.error) {
-        console.error(result.error.message);
+        alert(`Payment failed: ${result.error.message}. Please try again.`);
       } else {
         //--------Payment with Stripe is Succeeded-----/////
         if (result.paymentIntent.status === "succeeded") {
