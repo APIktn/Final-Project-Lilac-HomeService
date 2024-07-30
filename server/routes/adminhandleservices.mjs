@@ -158,120 +158,127 @@ adminserviceRouter.delete("/:service_list_id", async (req, res) => {
   }
 });
 
-adminserviceRouter.put("/update/:service_name", upload.single("image"), async (req, res) => {
-  const oldServiceName = req.params.service_name;
+adminserviceRouter.put(
+  "/update/:service_name",
+  upload.single("image"),
+  async (req, res) => {
+    const oldServiceName = req.params.service_name;
 
-  try {
-    console.log(req.body)
-    const { service_name: newServiceName, category_name, subServiceItems } = req.body;
+    try {
+      const {
+        service_name: newServiceName,
+        category_name,
+        subServiceItems,
+      } = req.body;
 
-    // Validate input
-    if (!newServiceName || !category_name || !subServiceItems) {
-      return res.status(400).json({ error: "กรุณากรอกข้อมูลให้ครบถ้วน" });
-    }
+      if (!newServiceName || !category_name || !subServiceItems) {
+        return res.status(400).json({ error: "กรุณากรอกข้อมูลให้ครบถ้วน" });
+      }
 
-    // Ensure subServiceItems contain valid values
-    const validSubServiceItems = subServiceItems.filter(item => item.name && item.unit && item.name !== 'undefined' && item.unit !== 'undefined');
+      const validSubServiceItems = subServiceItems.filter(
+        (item) =>
+          item.name &&
+          item.unit &&
+          item.name !== "undefined" &&
+          item.unit !== "undefined"
+      );
 
-    if (validSubServiceItems.length === 0) {
-      return res.status(400).json({ error: "กรุณากรอกข้อมูลที่ถูกต้องในรายการย่อย" });
-    }
+      if (validSubServiceItems.length === 0) {
+        return res
+          .status(400)
+          .json({ error: "กรุณากรอกข้อมูลที่ถูกต้องในรายการย่อย" });
+      }
 
-    // Fetch category_id from category_name
-    const { data: category, error: categoryError } = await supabase
-      .from("categories")
-      .select("category_id")
-      .eq("category_name", category_name)
-      .single();
+      const { data: category, error: categoryError } = await supabase
+        .from("categories")
+        .select("category_id")
+        .eq("category_name", category_name)
+        .single();
 
-    if (categoryError || !category) {
-      throw new Error("Error occurred while fetching category: " + (categoryError ? categoryError.message : "Category not found"));
-    }
-
-    const category_id = category.category_id;
-
-    // Handle image upload
-    const file = req.file;
-    let imageUrl = req.body.image;  // Default to the provided image URL
-
-    if (file) {
-      const uploadResult = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { folder: "service_images" },
-          (error, result) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(result);
-            }
-          }
+      if (categoryError || !category) {
+        throw new Error(
+          "Error occurred while fetching category: " +
+            (categoryError ? categoryError.message : "Category not found")
         );
-        stream.end(file.buffer);
-      });
+      }
 
-      imageUrl = uploadResult.secure_url;
+      const category_id = category.category_id;
+
+      const file = req.file;
+      let imageUrl = req.body.image;
+
+      if (file) {
+        const uploadResult = await new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: "service_images" },
+            (error, result) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(result);
+              }
+            }
+          );
+          stream.end(file.buffer);
+        });
+
+        imageUrl = uploadResult.secure_url;
+      }
+
+      const { data: existingService, error: serviceFetchError } = await supabase
+        .from("services")
+        .select("*")
+        .eq("service_name", oldServiceName)
+        .single();
+
+      if (serviceFetchError || !existingService) {
+        return res.status(404).json({ error: "Service not found" });
+      }
+
+      const { service_id } = existingService;
+
+      const { error: serviceError } = await supabase
+        .from("services")
+        .update({ service_name: newServiceName, category_id, image: imageUrl })
+        .eq("service_id", service_id);
+
+      if (serviceError) {
+        throw serviceError;
+      }
+
+      const { error: deleteError } = await supabase
+        .from("service_list")
+        .delete()
+        .eq("service_id", service_id);
+
+      if (deleteError) {
+        throw deleteError;
+      }
+
+      const subServiceInserts = validSubServiceItems.map((item) => ({
+        service_id: service_id,
+        service_lists: item.name,
+        price: item.price ? parseFloat(item.price) : 0,
+        units: item.unit,
+        quantity: 0,
+      }));
+
+      const { error: subServiceError } = await supabase
+        .from("service_list")
+        .insert(subServiceInserts);
+
+      if (subServiceError) {
+        throw subServiceError;
+      }
+
+      res.status(200).json({ message: "อัพเดตข้อมูลสำเร็จ" });
+    } catch (error) {
+      console.error("Error updating data", error);
+      res
+        .status(500)
+        .json({ error: "เกิดข้อผิดพลาดในการอัพเดตข้อมูล: " + error.message });
     }
-
-    // Ensure the service exists before updating
-    const { data: existingService, error: serviceFetchError } = await supabase
-      .from("services")
-      .select("*")
-      .eq("service_name", oldServiceName)
-      .single();
-
-    if (serviceFetchError || !existingService) {
-      return res.status(404).json({ error: "Service not found" });
-    }
-
-    const { service_id } = existingService;
-
-    // Update the service
-    const { error: serviceError } = await supabase
-      .from("services")
-      .update({ service_name: newServiceName, category_id, image: imageUrl })
-      .eq("service_id", service_id);
-
-    if (serviceError) {
-      throw serviceError;
-    }
-
-    // Delete existing sub-service items for the service
-    const { error: deleteError } = await supabase
-      .from("service_list")
-      .delete()
-      .eq("service_id", service_id);
-
-    if (deleteError) {
-      throw deleteError;
-    }
-
-    // Insert new sub-service items
-    const subServiceInserts = validSubServiceItems.map(item => ({
-      service_id: service_id,
-      service_lists: item.name,
-      price: item.price ? parseFloat(item.price) : 0,
-      units: item.unit,
-      quantity: 0,
-    }));
-
-    const { error: subServiceError } = await supabase
-      .from("service_list")
-      .insert(subServiceInserts);
-
-    if (subServiceError) {
-      throw subServiceError;
-    }
-
-    res.status(200).json({ message: "อัพเดตข้อมูลสำเร็จ" });
-  } catch (error) {
-    console.error("Error updating data", error);
-    res.status(500).json({ error: "เกิดข้อผิดพลาดในการอัพเดตข้อมูล: " + error.message });
   }
-});
-
-
-
-
-
+);
 
 export default adminserviceRouter;

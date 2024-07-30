@@ -117,8 +117,9 @@ const SearchBar = () => {
               <input
                 type="text"
                 placeholder="ค้นหาบริการ..."
-                className="flex-grow p-2 outline-none h-[44px] xl:h-[30px]"
+                className="flex-grow p-2 outline-none w-[120px] h-[20px] xl:h-[30px]"
                 // style={{ height: "44px" }}
+
                 value={searchQuery}
                 onChange={handleSearchInputChange}
               />
