@@ -22,17 +22,32 @@ promotionsRouter.post(
         .eq("code", promoCode)
         .single();
 
-      if (error) {
+      if (error || !data) {
         return res.status(400).send("Invalid promotion code");
       }
 
-      if (!data) {
-        return res.status(400).send("Promotion code not found");
+      // Check if the promotion code is active
+      if (!data.is_active) {
+        return res.status(400).send("Promotion code is no longer available");
       }
+
+      // Calculate the new net price
+      let newNetPrice = netPrice;
+      if (data.baht_discount) {
+        newNetPrice -= data.baht_discount;
+      } else if (data.percent_discount) {
+        newNetPrice -= (netPrice * data.percent_discount) / 100;
+      }
+
+      if (newNetPrice < 0) {
+        newNetPrice = 0; // Ensure the net price doesn't go below zero
+      }
+
+      newNetPrice = newNetPrice.toFixed(2);
 
       res.status(200).json({
         message: "Promotion code applied successfully",
-        discount: data.discount,
+        newNetPrice,
       });
     } catch (error) {
       console.error("Error applying promotion code:", error);

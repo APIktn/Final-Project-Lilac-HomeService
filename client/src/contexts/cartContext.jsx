@@ -37,6 +37,8 @@ const CartContextProvider = (props) => {
   const [cardExpiry, setCardExpiry] = useState(false);
   const [cardCVC, setCardCVC] = useState(false);
   const [cardName, setCardName] = useState("");
+  const [discountPrice, setDiscountPrice] = useState(0);
+  const [promoCode, setPromoCode] = useState("");
 
   const updateCounter = (id, value) => {
     setCounters((prev) => ({
@@ -67,8 +69,9 @@ const CartContextProvider = (props) => {
       subdistrict,
       district,
       province,
-      netPrice,
+      discountPrice,
       moredetail: logisticsInfo.moreInfos,
+      promoCode,
     };
 
     //-----Send Formatted Data to Server to Store in DB---/////
@@ -133,6 +136,10 @@ const CartContextProvider = (props) => {
     storeBillInfo,
     cardName,
     setCardName,
+    discountPrice,
+    setDiscountPrice,
+    promoCode,
+    setPromoCode,
   };
 
   return (

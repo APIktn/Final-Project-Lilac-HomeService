@@ -35,6 +35,7 @@ function StepButtons() {
     cardCVC,
     storeBillInfo,
     cardName,
+    discountPrice,
   } = useContext(CartContext);
 
   const monthMap = {
@@ -106,7 +107,7 @@ function StepButtons() {
       const response = await axios.post(
         "http://localhost:4000/api/payments/create-payment-intent",
         {
-          amount: netPrice * 100, //
+          amount: discountPrice * 100, //
           currency: "thb",
         }
       );

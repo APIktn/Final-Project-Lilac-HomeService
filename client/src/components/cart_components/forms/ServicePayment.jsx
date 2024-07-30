@@ -17,26 +17,27 @@ const ServicePayment = () => {
   const [selected, setSelected] = useState("credit-card");
   const {
     netPrice,
-    email,
-    setEmail,
+    discountPrice,
+    setDiscountPrice,
     setCardNumber,
     setCardExpiry,
     setCardCVC,
     setCardName,
     cardName,
     storeBillInfo,
+    promoCode,
+    setPromoCode,
   } = useContext(CartContext);
   const [qrSrc, setQrSrc] = useState("");
   const isMdUp = useMediaQuery("(min-width: 768px)");
   const stripe = useStripe();
-  const [promoCode, setPromoCode] = useState("");
 
   const genQR = async () => {
     try {
       const response = await axios.post(
         "http://localhost:4000/api/payments/create-payment-intent",
         {
-          amount: netPrice * 100,
+          amount: discountPrice * 100,
           currency: "thb",
         }
       );
@@ -95,7 +96,7 @@ const ServicePayment = () => {
   }
 
   const handleInputChange = (event) => {
-    setPromoCode(event.target.value);
+    setPromoCode(event.target.value.toUpperCase());
   };
 
   const handleApplyCode = async () => {
@@ -104,10 +105,14 @@ const ServicePayment = () => {
         "http://localhost:4000/apply-promo-code",
         { promoCode, netPrice }
       );
+      const { newNetPrice, message } = response.data;
       console.log("Response:", response.data);
+      setDiscountPrice(newNetPrice);
       // Handle the response as needed
     } catch (error) {
       console.error("Error applying promo code:", error);
+      setDiscountPrice(netPrice);
+      alert("ไม่สามารถใช้โค้ดนี้ได้ กรุณาลองใหม่อีกครั้ง");
       // Handle the error as needed
     }
   };

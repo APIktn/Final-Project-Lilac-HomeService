@@ -53,9 +53,25 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
   try {
     const { user_id } = req.user;
 
+    const billInfo = req.body;
+
+    const {
+      serviceId,
+      order,
+      date,
+      times,
+      detail,
+      subdistrict,
+      district,
+      province,
+      discountPrice,
+      moredetail,
+      promoCode,
+    } = billInfo;
+
     const { data: orderData, error: orderError } = await supabase
       .from("orders")
-      .insert([{ user_id }])
+      .insert([{ user_id, promotion_code: promoCode }])
       .select();
 
     if (orderError) {
@@ -74,21 +90,6 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
 
     const order_id = orderData[0].order_id;
 
-    const billInfo = req.body;
-
-    const {
-      serviceId,
-      order,
-      date,
-      times,
-      detail,
-      subdistrict,
-      district,
-      province,
-      netPrice,
-      moredetail,
-    } = billInfo;
-
     const orderDetails = order.serviceInfo.map((item) => ({
       order_id,
       service_id: serviceId,
@@ -101,7 +102,7 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
       ad_district: district,
       ad_province: province,
       ad_moredetail: moredetail,
-      total_amount: netPrice,
+      total_amount: discountPrice,
     }));
 
     const { data: orderDetailData, error: orderDetailError } = await supabase
@@ -117,6 +118,41 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
     }
 
     console.log("Order details inserted:", orderDetailData);
+
+    if (promoCode) {
+      // Fetch current total_code
+      const { data: promoData, error: promoFetchError } = await supabase
+        .from("promotioncodes")
+        .select("total_code")
+        .eq("code", promoCode)
+        .single();
+
+      if (promoFetchError) {
+        console.error("Error fetching promotion code:", promoFetchError);
+        return res.status(500).json({
+          message: "Error fetching promotion code",
+          error: promoFetchError.message,
+        });
+      }
+
+      const newTotalCode = promoData.total_code - 1;
+
+      // Update total_code
+      const { data: promoUpdateData, error: promoUpdateError } = await supabase
+        .from("promotioncodes")
+        .update({ total_code: newTotalCode })
+        .eq("code", promoCode);
+
+      if (promoUpdateError) {
+        console.error("Error updating promotion code:", promoUpdateError);
+        return res.status(500).json({
+          message: "Error updating promotion code",
+          error: promoUpdateError.message,
+        });
+      }
+
+      console.log("Promotion code updated:", promoUpdateData);
+    }
 
     res.status(200).json({
       message: "Bill info received and stored successfully",
