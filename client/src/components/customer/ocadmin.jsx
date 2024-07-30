@@ -261,6 +261,12 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
           </div>
         </div>
       </div>
+      <button
+        className="w-fit p-2 mt-2 bg-blue-600 px-6 rounded-[10px] text-white md:ml-auto md:mt-[-40px]"
+        onClick={() => window.location.reload()}
+      >
+        อัพเดทสถานะ
+      </button>
     </div>
   );
 };

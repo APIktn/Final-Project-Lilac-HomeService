@@ -821,11 +821,6 @@ orderRouter.put("/updateTechCard", authenticateToken, async (req, res) => {
           .json({ error: "ไม่สามารถอัพเดตสถานะคำสั่งซื้อได้" });
       }
 
-      // ตรวจสอบว่า orderData มีค่าเป็น null หรือ undefined หรือไม่
-      // if (!orderData || orderData.length === 0) {
-      //   return res.status(404).json({ error: "ไม่พบคำสั่งซื้อที่ระบุ" });
-      // }
-
       res.json({ message: "อัพเดตสถานะคำสั่งซื้อสำเร็จ", data: orderData });
     }
 
