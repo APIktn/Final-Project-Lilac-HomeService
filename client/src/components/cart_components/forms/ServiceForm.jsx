@@ -4,7 +4,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
 import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import { TextField, MenuItem } from "@mui/material";
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CartContext } from "../../../contexts/cartContext";
 
@@ -73,7 +73,7 @@ function ServiceForm() {
       const dependId = input ? Number(input) : undefined;
 
       const selectedItem = list.find((item) => item.id === dependId);
-      const selectedName = selectedItem ? selectedItem.name_th : "";
+      const selectedName = selectedItem ? selectedItem.name_th : undefined;
 
       setSelected((prev) => ({
         ...prev,
@@ -81,11 +81,27 @@ function ServiceForm() {
         [id]: dependId,
       }));
 
-      setSelectedNames((prev) => ({
-        ...prev,
-        ...unSelectChilds,
-        [id.replace("_id", "")]: selectedName,
-      }));
+      setSelectedNames((prev) => {
+        const updatedNames = {
+          ...prev,
+          ...unSelectChilds,
+          [id.replace("_id", "")]: selectedName,
+        };
+
+        if (updatedNames.province === undefined) {
+          return {
+            province: undefined,
+            amphure: undefined,
+            tambon: undefined,
+          };
+        } else if (updatedNames.amphure === undefined) {
+          return {
+            ...updatedNames,
+            tambon: undefined,
+          };
+        }
+        return updatedNames;
+      });
 
       if (!input) return;
 
@@ -194,7 +210,10 @@ function ServiceForm() {
         <p className="font-[500] text-[18px] md:text-[20px] md:font-[400] text-[#646C80]">
           กรอกข้อมูลบริการ
         </p>
-        <form className="form-container flex flex-col py-2 gap-6">
+        <form
+          id="service-form"
+          className="form-container flex flex-col py-2 gap-6"
+        >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <div className="date-and-time-picker-container flex flex-col gap-6 md:flex-row">
               <div className="date-picker-container flex flex-col gap-1 md:basis-1/2">
@@ -207,7 +226,7 @@ function ServiceForm() {
                 </label>
                 <DesktopDatePicker
                   label={selectedDate ? "" : "กรุณาเลือกวันที่"}
-                  value={selectedDate}
+                  value={selectedDate || null}
                   format="DD/MM/YYYY"
                   onChange={(newValue) => {
                     setSelectedDate(newValue);
@@ -329,7 +348,7 @@ function ServiceForm() {
                 <ThemeProvider theme={theme}>
                   <DesktopTimePicker
                     label={selectedTime ? "" : "กรุณาเลือกเวลา"}
-                    value={selectedTime}
+                    value={selectedTime || null}
                     onChange={(newValue) => {
                       setSelectedTime(newValue);
                     }}
@@ -486,6 +505,8 @@ function ServiceForm() {
                 fullWidth
                 label={moreInfo ? "" : "กรุณาระบุข้อมูลเพิ่มเติม"}
                 value={moreInfo}
+                multiline
+                rows={4}
                 onChange={(e) => {
                   setMoreInfo(e.target.value);
                 }}
@@ -499,6 +520,7 @@ function ServiceForm() {
                     border: "1px solid #CCD0D7",
                     borderRadius: "10px",
                     alignItems: "start",
+                    resize: "none",
                   },
                   "& .MuiInputLabel-root": {
                     fontSize: "16px",

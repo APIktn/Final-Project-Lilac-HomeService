@@ -7,12 +7,16 @@ function MuiBreadcrumbs({ dataFromState }) {
 
   const breadcrumbs = [
     <a
+      key="services"
       className="font-prompt text-[14px] font-[400] md:text-[16px] md:font-[500] text-center text-gray-700"
       href="/servicelist"
     >
       บริการของเรา
     </a>,
-    <p className="font-prompt text-[20px] font-[500] md:text-[32px] text-center text-blue-600">
+    <p
+      key="service-name"
+      className="font-prompt text-[20px] font-[500] md:text-[32px] text-center text-blue-600"
+    >
       {dataFromState[0].service_name}
     </p>,
   ];

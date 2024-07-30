@@ -1,11 +1,18 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { steps } from "./Stepper";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../../contexts/cartContext";
 import axios from "axios";
+import {
+  CardNumberElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 
-export default function StepButtons() {
+function StepButtons() {
   const navigate = useNavigate();
+  const stripe = useStripe();
+  const elements = useElements();
   const {
     activeStep,
     setActiveStep,
@@ -20,6 +27,13 @@ export default function StepButtons() {
     cartPath,
     order,
     services,
+    email,
+    isDisabled,
+    setIsDisabled,
+    cardNumber,
+    cardExpiry,
+    cardCVC,
+    storeBillInfo,
   } = useContext(CartContext);
 
   const monthMap = {
@@ -42,8 +56,20 @@ export default function StepButtons() {
     return monthTh;
   };
 
-  const handleNext = async (e) => {
-    e.preventDefault();
+  const handleClick = (event) => {
+    if (activeStep < 2) {
+      handleNext(event);
+    }
+
+    if (activeStep === 2) {
+      handleSubmit(event);
+    }
+  };
+
+  const handleNext = async (event) => {
+    event.preventDefault();
+
+    //------Format Data According to Figma-----/////
     if (selectedDate && selectedTime && address && selectedNames) {
       let addressSummary = {
         date: `${selectedDate.$D} ${getMonthInTh(selectedDate.$M)} ${
@@ -59,47 +85,56 @@ export default function StepButtons() {
       setLogisticsInfo(addressSummary);
     }
 
-    if (activeStep === 2) {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-      const serviceId = services[0].service_id;
-      const detail = address;
-      const date = `${selectedDate.$y}-${String(selectedDate.$M + 1).padStart(
-        2,
-        "0"
-      )}-${String(selectedDate.$D).padStart(2, "0")}`;
-      const time = `${String(selectedTime.$H).padStart(2, "0")}:${String(
-        selectedTime.$m
-      ).padStart(2, "0")}:00`;
-      const subdistrict = selectedNames.tambon;
-      const district = selectedNames.amphure;
-      const province = selectedNames.province;
-      const billInfo = {
-        serviceId,
-        order,
-        date: date,
-        times: time,
-        detail,
-        subdistrict,
-        district,
-        province,
-        netPrice,
-        moredetail: logisticsInfo.moreInfos,
-      };
-
-      try {
-        const response = await axios.post(
-          `http://localhost:4000/cart/${cartPath}/bill`,
-          billInfo
-        );
-        console.log("Server response:", response.data);
-        navigate("/payment-status", {
-          state: { orderId: response.data.order_id },
-        });
-      } catch (error) {
-        console.error("Error sending billInfo to server:", error);
-      }
-    } else if (activeStep < 2) {
+    //------Change Active Step-------/////
+    if (activeStep < 2) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const cardNumberElement = elements.getElement(CardNumberElement);
+
+    try {
+      // Create Payment Intent on the server
+      const response = await axios.post(
+        "http://localhost:4000/api/payments/create-payment-intent",
+        {
+          amount: netPrice * 100, //
+          currency: "thb",
+        }
+      );
+
+      const { clientSecret } = response.data;
+
+      // Confirm the payment
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardNumberElement,
+          billing_details: {
+            email: email,
+          },
+        },
+      });
+
+      if (result.error) {
+        alert(`Payment failed: ${result.error.message}. Please try again.`);
+      } else {
+        //--------Payment with Stripe is Succeeded-----/////
+        if (result.paymentIntent.status === "succeeded") {
+          //------Format Data According to Database----/////
+          await new Promise((resolve) => setTimeout(resolve, 0));
+
+          storeBillInfo();
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -112,10 +147,11 @@ export default function StepButtons() {
     }
   };
 
-  const isDisabled = () => {
+  const enablingStepButton = () => {
     if (activeStep === 0) {
       if (netPrice === 0) {
-        return true;
+        setIsDisabled(true);
+        return;
       }
     } else if (activeStep === 1) {
       if (
@@ -126,11 +162,35 @@ export default function StepButtons() {
         !selectedNames.amphure ||
         !selectedNames.tambon
       ) {
-        return true;
+        setIsDisabled(true);
+        return;
+      }
+    } else if (activeStep === 2) {
+      if (!email || !cardNumber || !cardExpiry || !cardCVC) {
+        setIsDisabled(true);
+        return;
       }
     }
-    return false;
+    return setIsDisabled(false);
   };
+
+  useEffect(() => {
+    enablingStepButton();
+  }, [
+    netPrice,
+    selectedDate,
+    selectedTime,
+    address,
+    selectedNames.province,
+    selectedNames.amphure,
+    selectedNames.tambon,
+    activeStep,
+    email,
+    elements,
+    cardNumber,
+    cardExpiry,
+    cardCVC,
+  ]);
 
   return (
     <div className="bottom-navigator w-full h-[72px] md:h-[92px] bg-white border-solid border-[1px] border-t-gray-300 sticky bottom-0 z-10 overflow-hidden">
@@ -143,12 +203,12 @@ export default function StepButtons() {
         </button>
         <button
           className={`${
-            isDisabled()
+            isDisabled
               ? "w-[164px] h-[40px] md:h-[44px] md:text-[16px] font-[500] text-center border-solid border-[1px] bg-gray-300 rounded-[8px] text-gray-100"
               : "w-[164px] h-[40px] md:h-[44px] md:text-[16px] font-[500] text-center border-solid border-[1px] bg-blue-600 rounded-[8px] text-white hover:bg-[#4C7FF4] active:bg-[#0E3FB0]"
           }`}
-          onClick={handleNext}
-          disabled={isDisabled()}
+          onClick={handleClick}
+          disabled={isDisabled}
         >
           {activeStep >= steps.length - 1
             ? "ยืนยันการชำระเงิน"
@@ -158,3 +218,5 @@ export default function StepButtons() {
     </div>
   );
 }
+
+export default StepButtons;

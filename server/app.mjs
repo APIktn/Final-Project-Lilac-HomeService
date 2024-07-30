@@ -19,6 +19,8 @@ import {
   authorizeAdmin,
   authorizeTechnician,
 } from "./middlewares/authVerify.mjs";
+import bodyParser from "body-parser";
+import _ from "lodash";
 
 const app = express();
 const port = 4000;
@@ -30,6 +32,8 @@ app.use(
 );
 
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/auth", authRouter);
 

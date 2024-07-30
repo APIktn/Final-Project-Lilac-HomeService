@@ -37,10 +37,10 @@ function Bill({ billInfo }) {
             key={index}
             className="service-summary flex flex-row justify-between"
           >
-            <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black">
+            <p className="font-prompt font-[400] md:font-[300] text-[14px] text-black basis-2/3">
               {item.service_lists}
             </p>
-            <p className="font-prompt font-[400] md:font-[300] text-[14px] text-[#646C80] md:text-black">
+            <p className="font-prompt font-[400] md:font-[300] text-[14px] text-[#646C80] text-end md:text-black basis-1/3">
               {item.quantity_per_order} รายการ
             </p>
           </div>

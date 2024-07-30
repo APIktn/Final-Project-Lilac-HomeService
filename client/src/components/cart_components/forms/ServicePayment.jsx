@@ -1,105 +1,235 @@
 // src/PaymentForm.js
-import React, { useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
+import React, { useContext, useState } from "react";
+import QrCode2OutlinedIcon from "@mui/icons-material/QrCode2Outlined";
+import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
 import {
-  Elements,
-  CardElement,
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
   useStripe,
-  useElements,
 } from "@stripe/react-stripe-js";
+import { CartContext } from "../../../contexts/cartContext";
+import PaymentRadio from "../utils/PaymentRadio";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
-const stripePromise = loadStripe(
-  "pk_test_51Pd5PtRuueEv9DGjDVcq53KQhCXnPthtn8Ua0El6SAkY3IecUvvETIuHa2O1QYBBKmK8jxbXKw2eqmnrmiokYgD000yWzkvOgY"
-);
-
-const PaymentForm = () => {
+const ServicePayment = () => {
+  const [selected, setSelected] = useState("credit-card");
+  const {
+    netPrice,
+    email,
+    setEmail,
+    setCardNumber,
+    setCardExpiry,
+    setCardCVC,
+    storeBillInfo,
+  } = useContext(CartContext);
+  const [qrSrc, setQrSrc] = useState("");
+  const isMdUp = useMediaQuery("(min-width: 768px)");
   const stripe = useStripe();
-  const elements = useElements();
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [amount, setAmount] = useState("");
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    const cardElement = elements.getElement(CardElement);
-
+  const genQR = async () => {
     try {
-      // Create Payment Intent on the server
       const response = await axios.post(
         "http://localhost:4000/api/payments/create-payment-intent",
         {
-          amount: amount * 100, //
+          amount: netPrice * 100,
           currency: "thb",
         }
       );
 
-      const { clientSecret } = response.data;
+      const { clientSecret, paymentIntentId } = response.data;
 
-      // Confirm the payment
-      const result = await stripe.confirmCardPayment(clientSecret, {
+      // Use stripe.confirmPromptPayPayment to get the payment intent response
+      const result = await stripe.confirmPromptPayPayment(clientSecret, {
         payment_method: {
-          card: cardElement,
+          promptpay: {},
           billing_details: {
-            email: email,
+            email: "dummy@example.com", // Provide a dummy email to satisfy Stripe's requirement
           },
         },
       });
 
       if (result.error) {
-        console.error(result.error.message);
+        console.error("Stripe error:", result.error.message);
       } else {
-        if (result.paymentIntent.status === "succeeded") {
-          console.log("Payment successful");
-          navigate("/success"); // Redirect to the success page
-        }
+        // Directly access QR code URL if available
+        const qrCodeUrl =
+          result.paymentIntent?.next_action?.promptpay_display_qr_code
+            ?.qr_code_url;
+
+        // setQrSrc(qrCodeUrl);
+
+        // Poll for payment status
+        checkPaymentStatus(paymentIntentId);
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  const checkPaymentStatus = async (paymentIntentId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/payments/payment-status/${paymentIntentId}`
+      );
+
+      if (response.data.status === "succeeded") {
+        // Navigate to the bill page
+        storeBillInfo();
+      } else {
+        // Retry after some time
+        setTimeout(() => checkPaymentStatus(paymentIntentId), 5000); // Check every 5 seconds
+      }
+    } catch (error) {
+      console.error("Error checking payment status:", error);
+    }
+  };
+
+  function handleQR() {
+    genQR();
+    setSelected("propmt-pay");
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Email
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Amount
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Card Details
-        <CardElement />
-      </label>
-      <button type="submit" disabled={!stripe}>
-        Pay
-      </button>
-    </form>
+    <div className="payment-background w-full min-h-full">
+      <div className="container w-full h-auto bg-white border-solid border-[1px] border-[#CCD0D7] rounded-[8px] flex flex-col p-4 md:px-6 md:pt-6 md:pb-11 gap-4 md:gap-5">
+        <p className="font-[500] text-[18px] text-[#646C80] md:font-400] md:text-[20px]">
+          ชำระเงิน
+        </p>
+
+        <div className="radio-tile-group flex gap-4">
+          <PaymentRadio
+            id="prompt-pay"
+            checked={selected === "propmt-pay"}
+            onChange={() => handleQR()}
+            icon={
+              <QrCode2OutlinedIcon
+                className={
+                  selected === "propmt-pay"
+                    ? "text-[#336DF2]"
+                    : "text-[#B3B8C4] group-hover:text-[#336DF2]"
+                }
+                sx={{ fontSize: isMdUp ? "35px" : "28px" }}
+              />
+            }
+            label="พร้อมเพย์"
+          />
+
+          <PaymentRadio
+            id="credit-card"
+            checked={selected === "credit-card"}
+            onChange={() => setSelected("credit-card")}
+            icon={
+              <PaymentOutlinedIcon
+                className={
+                  selected === "credit-card"
+                    ? "text-[#336DF2]"
+                    : "text-[#B3B8C4] group-hover:text-[#336DF2]"
+                }
+                sx={{ fontSize: isMdUp ? "35px" : "28px" }}
+              />
+            }
+            label="บัตรเครดิต"
+          />
+        </div>
+
+        {selected === "credit-card" && (
+          <form className="flex flex-col gap-6">
+            <label className="font-[500] text-[16px] text-[#323640]">
+              ที่อยู่อีเมล
+              <span className="text-red-600">*</span>
+              <input
+                className="w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] focus:border-[#336DF2] rounded-[8px] py-2.5 pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:text-[#646C80] placeholder:focus:text-[#232630]"
+                type="email"
+                placeholder="กรุณากรอกที่อยู่อีเมล"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </label>
+
+            <label className="font-[500] text-[16px] text-[#323640]">
+              ยอดชำระ
+              <input
+                className="w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] rounded-[8px] py-2.5 pl-4 text-gray-400 italic"
+                type="number"
+                value={netPrice}
+                disabled={true}
+              />
+            </label>
+
+            <label className="font-[500] text-[16px] text-[#323640]">
+              หมายเลขบัตรเครดิต
+              <span className="text-red-600">*</span>
+              <CardNumberElement
+                id="card-number"
+                className="font-prompt w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] rounded-[8px] pt-[11px] pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:font-prompt placeholder:text-[#646C80]"
+                onChange={(e) => {
+                  setCardNumber(e.complete);
+                }}
+              />
+            </label>
+
+            <div className="flex flex-col gap-6 md:flex-row">
+              <label className="font-[500] text-[16px] text-[#323640] md:basis-1/2">
+                วันหมดอายุ
+                <span className="text-red-600">*</span>
+                <CardExpiryElement
+                  id="card-expiry"
+                  className="font-prompt w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] rounded-[8px] pt-[11px] pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:font-prompt placeholder:text-[#646C80]"
+                  onChange={(e) => {
+                    setCardExpiry(e.complete);
+                  }}
+                />
+              </label>
+
+              <label className="font-[500] text-[16px] text-[#323640] md:basis-1/2">
+                CVC / CVV
+                <span className="text-red-600">*</span>
+                <CardCvcElement
+                  id="card-cvc"
+                  className="font-prompt w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] rounded-[8px] pt-[11px] pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:font-prompt placeholder:text-[#646C80]"
+                  onChange={(e) => {
+                    setCardCVC(e.complete);
+                  }}
+                />
+              </label>
+            </div>
+          </form>
+        )}
+
+        {/* {selected === "propmt-pay" && (
+          <div className="flex justify-center items-center">
+            <img
+              id="imgqr"
+              src={qrSrc}
+              alt="QR Code"
+              className="w-full md:w-96 object-contain"
+            />
+          </div>
+        )} */}
+
+        <hr className="border-solid border-[1px] border-[#CCD0D7] my-2 md:mt-6 md:mb-3" />
+
+        <label className="font-[500] text-[16px] text-[#323640]">
+          Promotion Code
+          <div className="flex gap-4 h-[64px] mt-1 md:h-[44px]">
+            <input
+              className="w-full h-full border border-solid border-[#CCD0D7] focus:border-[#336DF2] rounded-[8px] pb-6 md:py-0 px-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:focus:text-[#232630] placeholder:text-[#646C80] placeholder:text-wrap basis-2/3 md:basis-1/2 flex items-center"
+              type="text"
+              placeholder="กรุณากรอกโค้ดส่วนลด (ถ้ามี)"
+            />
+            <div className="basis-1/3 md:basis-1/2 flex items-center">
+              <button className="bg-[#336DF2] max-w-[90px] w-full h-[44px] rounded-lg text-white">
+                ใช้โค้ด
+              </button>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
   );
 };
 
-const WrappedPaymentForm = () => (
-  <Elements stripe={stripePromise}>
-    <PaymentForm />
-  </Elements>
-);
-
-export default WrappedPaymentForm;
+export default ServicePayment;
