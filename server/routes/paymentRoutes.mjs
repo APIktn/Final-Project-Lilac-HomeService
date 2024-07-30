@@ -25,11 +25,12 @@ router.post("/create-payment-intent", async (req, res) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency,
-      payment_method_types: ["card"], // Ensure this matches your payment method
+      payment_method_types: ["card", "promptpay"], // Ensure this matches your payment method
     });
 
     res.status(200).send({
       clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
     });
   } catch (error) {
     console.error("PaymentIntent creation error:", error); // Log error for debugging
@@ -39,29 +40,41 @@ router.post("/create-payment-intent", async (req, res) => {
   }
 });
 
-//---------------Promptpay Payment---------------/////
-router.post("/generateQR", (req, res) => {
-  const amount = parseFloat(_.get(req, ["body", "amount"]));
-  const mobileNumber = "0805406357";
-  const payload = generatePayload(mobileNumber, { amount });
-  const option = {
-    color: {
-      dark: "#000",
-      light: "#FFF",
-    },
-  };
-  QRcode.toDataURL(payload, option, (err, url) => {
-    if (err) {
-      return res.status(400).json({
-        message: "Error generating QR Code :",
-        err,
-      });
-    } else {
-      return res.status(200).json({
-        message: "Succeed",
-        url,
-      });
-    }
-  });
+router.get("/payment-status/:paymentIntentId", async (req, res) => {
+  const { paymentIntentId } = req.params;
+
+  try {
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    res.status(200).json({ status: paymentIntent.status });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
+
+//---------------Promptpay Payment---------------/////
+// router.post("/generateQR", (req, res) => {
+//   // const amount = parseFloat(_.get(req, ["body", "amount"]));
+//   const amount = 0.01;
+//   // const mobileNumber = "0805406357";
+//   const mobileNumber = "0620120860";
+//   const payload = generatePayload(mobileNumber, { amount });
+//   const option = {
+//     color: {
+//       dark: "#000",
+//       light: "#FFF",
+//     },
+//   };
+//   QRcode.toDataURL(payload, option, (err, url) => {
+//     if (err) {
+//       return res.status(400).json({
+//         message: "Error generating QR Code :",
+//         err,
+//       });
+//     } else {
+//       return res.status(200).json({
+//         url,
+//       });
+//     }
+//   });
+// });
 export default router;

@@ -1,8 +1,11 @@
 import { useState, createContext } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const CartContext = createContext();
 
 const CartContextProvider = (props) => {
+  const navigate = useNavigate();
   const [cartPath, setCartPath] = useState("");
   const [activeStep, setActiveStep] = useState(0);
   const [netPrice, setNetPrice] = useState(0);
@@ -39,6 +42,46 @@ const CartContextProvider = (props) => {
       ...prev,
       [id]: value,
     }));
+  };
+
+  const storeBillInfo = async () => {
+    const serviceId = services[0].service_id;
+    const detail = address;
+    const date = `${selectedDate.$y}-${String(selectedDate.$M + 1).padStart(
+      2,
+      "0"
+    )}-${String(selectedDate.$D).padStart(2, "0")}`;
+    const time = `${String(selectedTime.$H).padStart(2, "0")}:${String(
+      selectedTime.$m
+    ).padStart(2, "0")}:00`;
+    const subdistrict = selectedNames.tambon;
+    const district = selectedNames.amphure;
+    const province = selectedNames.province;
+    const billInfo = {
+      serviceId,
+      order,
+      date: date,
+      times: time,
+      detail,
+      subdistrict,
+      district,
+      province,
+      netPrice,
+      moredetail: logisticsInfo.moreInfos,
+    };
+
+    //-----Send Formatted Data to Server to Store in DB---/////
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/cart/${cartPath}/bill`,
+        billInfo
+      );
+      navigate("/payment-status", {
+        state: { orderId: response.data.order_id },
+      });
+    } catch (error) {
+      console.error("Error sending billInfo to server:", error);
+    }
   };
 
   const contextValue = {
@@ -86,6 +129,7 @@ const CartContextProvider = (props) => {
     setEmail,
     isDisabled,
     setIsDisabled,
+    storeBillInfo,
   };
 
   return (

@@ -6,6 +6,7 @@ import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement,
+  useStripe,
 } from "@stripe/react-stripe-js";
 import { CartContext } from "../../../contexts/cartContext";
 import PaymentRadio from "../utils/PaymentRadio";
@@ -21,21 +22,67 @@ const ServicePayment = () => {
     setCardNumber,
     setCardExpiry,
     setCardCVC,
+    storeBillInfo,
   } = useContext(CartContext);
   const [qrSrc, setQrSrc] = useState("");
   const isMdUp = useMediaQuery("(min-width: 768px)");
+  const stripe = useStripe();
 
   const genQR = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/payments/generateQR",
+        "http://localhost:4000/api/payments/create-payment-intent",
         {
-          amount: netPrice,
+          amount: netPrice * 100,
+          currency: "thb",
         }
       );
-      setQrSrc(response.data.url);
+
+      const { clientSecret, paymentIntentId } = response.data;
+
+      // Use stripe.confirmPromptPayPayment to get the payment intent response
+      const result = await stripe.confirmPromptPayPayment(clientSecret, {
+        payment_method: {
+          promptpay: {},
+          billing_details: {
+            email: "dummy@example.com", // Provide a dummy email to satisfy Stripe's requirement
+          },
+        },
+      });
+
+      if (result.error) {
+        console.error("Stripe error:", result.error.message);
+      } else {
+        // Directly access QR code URL if available
+        const qrCodeUrl =
+          result.paymentIntent?.next_action?.promptpay_display_qr_code
+            ?.qr_code_url;
+
+        // setQrSrc(qrCodeUrl);
+
+        // Poll for payment status
+        checkPaymentStatus(paymentIntentId);
+      }
     } catch (error) {
       console.error("Error:", error);
+    }
+  };
+
+  const checkPaymentStatus = async (paymentIntentId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/payments/payment-status/${paymentIntentId}`
+      );
+
+      if (response.data.status === "succeeded") {
+        // Navigate to the bill page
+        storeBillInfo();
+      } else {
+        // Retry after some time
+        setTimeout(() => checkPaymentStatus(paymentIntentId), 5000); // Check every 5 seconds
+      }
+    } catch (error) {
+      console.error("Error checking payment status:", error);
     }
   };
 
@@ -152,7 +199,7 @@ const ServicePayment = () => {
           </form>
         )}
 
-        {selected === "propmt-pay" && (
+        {/* {selected === "propmt-pay" && (
           <div className="flex justify-center items-center">
             <img
               id="imgqr"
@@ -161,7 +208,7 @@ const ServicePayment = () => {
               className="w-full md:w-96 object-contain"
             />
           </div>
-        )}
+        )} */}
 
         <hr className="border-solid border-[1px] border-[#CCD0D7] my-2 md:mt-6 md:mb-3" />
 
