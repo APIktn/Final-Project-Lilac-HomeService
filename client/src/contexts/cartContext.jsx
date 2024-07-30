@@ -36,6 +36,7 @@ const CartContextProvider = (props) => {
   const [cardNumber, setCardNumber] = useState(false);
   const [cardExpiry, setCardExpiry] = useState(false);
   const [cardCVC, setCardCVC] = useState(false);
+  const [cardName, setCardName] = useState("");
 
   const updateCounter = (id, value) => {
     setCounters((prev) => ({
@@ -130,6 +131,8 @@ const CartContextProvider = (props) => {
     isDisabled,
     setIsDisabled,
     storeBillInfo,
+    cardName,
+    setCardName,
   };
 
   return (

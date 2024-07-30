@@ -34,6 +34,7 @@ function StepButtons() {
     cardExpiry,
     cardCVC,
     storeBillInfo,
+    cardName,
   } = useContext(CartContext);
 
   const monthMap = {
@@ -117,7 +118,7 @@ function StepButtons() {
         payment_method: {
           card: cardNumberElement,
           billing_details: {
-            email: email,
+            name: cardName,
           },
         },
       });
@@ -166,7 +167,7 @@ function StepButtons() {
         return;
       }
     } else if (activeStep === 2) {
-      if (!email || !cardNumber || !cardExpiry || !cardCVC) {
+      if (!cardName || !cardNumber || !cardExpiry || !cardCVC) {
         setIsDisabled(true);
         return;
       }

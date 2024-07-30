@@ -22,11 +22,14 @@ const ServicePayment = () => {
     setCardNumber,
     setCardExpiry,
     setCardCVC,
+    setCardName,
+    cardName,
     storeBillInfo,
   } = useContext(CartContext);
   const [qrSrc, setQrSrc] = useState("");
   const isMdUp = useMediaQuery("(min-width: 768px)");
   const stripe = useStripe();
+  const [promoCode, setPromoCode] = useState("");
 
   const genQR = async () => {
     try {
@@ -91,6 +94,24 @@ const ServicePayment = () => {
     setSelected("propmt-pay");
   }
 
+  const handleInputChange = (event) => {
+    setPromoCode(event.target.value);
+  };
+
+  const handleApplyCode = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/apply-promo-code",
+        { promoCode, netPrice }
+      );
+      console.log("Response:", response.data);
+      // Handle the response as needed
+    } catch (error) {
+      console.error("Error applying promo code:", error);
+      // Handle the error as needed
+    }
+  };
+
   return (
     <div className="payment-background w-full min-h-full">
       <div className="container w-full h-auto bg-white border-solid border-[1px] border-[#CCD0D7] rounded-[8px] flex flex-col p-4 md:px-6 md:pt-6 md:pb-11 gap-4 md:gap-5">
@@ -137,29 +158,6 @@ const ServicePayment = () => {
         {selected === "credit-card" && (
           <form className="flex flex-col gap-6">
             <label className="font-[500] text-[16px] text-[#323640]">
-              ที่อยู่อีเมล
-              <span className="text-red-600">*</span>
-              <input
-                className="w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] focus:border-[#336DF2] rounded-[8px] py-2.5 pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:text-[#646C80] placeholder:focus:text-[#232630]"
-                type="email"
-                placeholder="กรุณากรอกที่อยู่อีเมล"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </label>
-
-            <label className="font-[500] text-[16px] text-[#323640]">
-              ยอดชำระ
-              <input
-                className="w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] rounded-[8px] py-2.5 pl-4 text-gray-400 italic"
-                type="number"
-                value={netPrice}
-                disabled={true}
-              />
-            </label>
-
-            <label className="font-[500] text-[16px] text-[#323640]">
               หมายเลขบัตรเครดิต
               <span className="text-red-600">*</span>
               <CardNumberElement
@@ -170,7 +168,18 @@ const ServicePayment = () => {
                 }}
               />
             </label>
-
+            <label className="font-[500] text-[16px] text-[#323640]">
+              ชื่อบนบัตร
+              <span className="text-red-600">*</span>
+              <input
+                className="w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] focus:border-[#336DF2] rounded-[8px] py-2.5 pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:text-[#646C80] placeholder:focus:text-[#232630]"
+                type="name"
+                placeholder="กรุณากรอกชื่อบนบัตร"
+                value={cardName}
+                onChange={(e) => setCardName(e.target.value)}
+                required
+              />
+            </label>
             <div className="flex flex-col gap-6 md:flex-row">
               <label className="font-[500] text-[16px] text-[#323640] md:basis-1/2">
                 วันหมดอายุ
@@ -219,9 +228,14 @@ const ServicePayment = () => {
               className="w-full h-full border border-solid border-[#CCD0D7] focus:border-[#336DF2] rounded-[8px] pb-6 md:py-0 px-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:focus:text-[#232630] placeholder:text-[#646C80] placeholder:text-wrap basis-2/3 md:basis-1/2 flex items-center"
               type="text"
               placeholder="กรุณากรอกโค้ดส่วนลด (ถ้ามี)"
+              value={promoCode}
+              onChange={handleInputChange}
             />
             <div className="basis-1/3 md:basis-1/2 flex items-center">
-              <button className="bg-[#336DF2] max-w-[90px] w-full h-[44px] rounded-lg text-white">
+              <button
+                className="bg-[#336DF2] max-w-[90px] w-full h-[44px] rounded-lg text-white"
+                onClick={handleApplyCode}
+              >
                 ใช้โค้ด
               </button>
             </div>
