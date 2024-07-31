@@ -12,8 +12,19 @@ import axios from "axios";
 function OrderSummary({ summaryOrder, service_name }) {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
-  const { activeStep, netPrice, setNetPrice, logisticsInfo, setOrder, order } =
-    useContext(CartContext);
+  const {
+    activeStep,
+    netPrice,
+    setNetPrice,
+    logisticsInfo,
+    setOrder,
+    order,
+    discountPrice,
+    setDiscountPrice,
+    promoCode,
+  } = useContext(CartContext);
+
+  const showPromoCode = (netPrice - discountPrice).toFixed(2);
 
   const countProducts = (servicesArray) => {
     const counts = servicesArray.reduce((acc, service) => {
@@ -48,6 +59,7 @@ function OrderSummary({ summaryOrder, service_name }) {
         { summaryData }
       );
       await setNetPrice(response.data.netPrice);
+      setDiscountPrice(response.data.netPrice);
     } catch (error) {
       console.error("Error fetching net price from server", error);
     }
@@ -197,13 +209,23 @@ function OrderSummary({ summaryOrder, service_name }) {
             <hr className="mt-6 mb-[8px] border-solid border-[1px] border-[#CCD0D7]" />
           </AccordionDetails>
         </Accordion>
-        <div className="px-[16px] pb-[16px] items-start">
+        <div className="px-[16px] pb-[16px] items-start gap-1">
+          {showPromoCode > 0 && (
+            <div className="more-info-container flex flex-row justify-between">
+              <p className="font-prompt font-[400] md:font-[300] text-[14px] text-gray-700 basis-1/2">
+                Promotion Code
+              </p>
+              <p className="font-prompt font-[400] md:font-[300] text-[14px] text-[#C82438] basis-1/2 text-end">
+                {`-${showPromoCode} ฿`}
+              </p>
+            </div>
+          )}
           <div className="net-value-section flex flex-row justify-between">
             <p className="text-[16px] font-[400] font-prompt text-gray-700">
               รวม
             </p>
             <p className="text-[16px] font-prompt font-[500] md:font-[600] text-black">
-              {netPrice} ฿
+              {discountPrice} ฿
             </p>
           </div>
         </div>

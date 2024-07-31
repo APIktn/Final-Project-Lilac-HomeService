@@ -14,6 +14,7 @@ import adminserviceslistRouter from "./routes/admin-serviceslist.mjs";
 import promotionRouter from "./routes/admin-promotion.mjs";
 import categoriesRouter from "./routes/admin-categories.mjs";
 import adminserviceRouter from "./routes/adminhandleservices.mjs";
+import promotionsRouter from "./routes/promotion-code.mjs";
 import {
   authenticateToken,
   authorizeAdmin,
@@ -56,6 +57,7 @@ app.use(
 
 app.use("/api/payments", paymentRoutes);
 app.use("/", orderRouter);
+app.use("/", promotionsRouter);
 
 app.use("/user", userRouter);
 
