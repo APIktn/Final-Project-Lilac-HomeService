@@ -191,7 +191,7 @@ function AdminDashboard() {
               />
               <input
                 type="text"
-                placeholder="ค้นหาหมวดหมู่"
+                placeholder="ค้นหาหมวดหมู่..."
                 value={searchTerm}
                 onChange={handleSearch}
                 className="outline-none text-[16px] font-light"

@@ -570,7 +570,7 @@ function AdminServiceList() {
               />
               <input
                 type="text"
-                placeholder="ค้นหาหมวดหมู่"
+                placeholder="ค้นหาชื่อบริการ..."
                 value={searchTerm}
                 onChange={handleSearch}
                 className="outline-none text-[16px] font-light"

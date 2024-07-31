@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAdminAuth } from "../contexts/adminAuthentication";
 import ExclamationIcon from "../assets/icons/exclamation-icon.svg";
 import { checkLoginErrors, updateErrors } from "../utils/errors";
+import vectorHouse from "../assets/icons/Vector-house.svg";
 
 function AdminLoginPage() {
   const [email, setEmail] = useState("");
@@ -39,18 +40,26 @@ function AdminLoginPage() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="w-full max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md">
-          <h2 className="text-2xl font-medium mb-6 text-center text-blue-900">
+      <div className="min-h-screen flex items-center justify-center bg-[#F3F4F6] flex-col">
+      <div
+            className="p-2 flex items-center justify-center mb-[25px] -ml-3"
+            
+          >
+            <img src={vectorHouse} alt="House" className="w-[69.33px] h-[69.33px]" />
+            <span className="text-[#336DF2] text-[45px] font-medium ">HomeServices</span>
+          </div>
+        <div className="w-[614px] h-[420px] max-w-md p-8 bg-white rounded-lg border border-gray-300 ">
+          <h2 className="text-[24px] font-medium mb-4 text-center text-blue-950 mt-2">
             เข้าสู่ระบบแอดมิน
           </h2>
+          <div className="mx-6">
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-base font-medium text-[#323640]"
               >
-                อีเมล
+                Email
                 <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -62,7 +71,7 @@ function AdminLoginPage() {
                   className={`mt-1 block w-full px-3 py-2 border ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                  placeholder="กรุณากรอกอีเมล"
+                  
                 />
                 {errors.email && (
                   <img
@@ -79,9 +88,9 @@ function AdminLoginPage() {
             <div className="mb-4">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-base font-medium text-[#323640]"
               >
-                รหัสผ่าน
+                Password
                 <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -93,7 +102,7 @@ function AdminLoginPage() {
                   className={`mt-1 block w-full px-3 py-2 border ${
                     errors.password ? "border-red-500" : "border-gray-300"
                   } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                  placeholder="กรุณากรอกรหัสผ่าน"
+                  
                 />
                 {errors.password && (
                   <img
@@ -110,15 +119,16 @@ function AdminLoginPage() {
             {state.error && (
               <div className="mb-4 text-red-600">{state.error}</div>
             )}
-            <div className="mb-4">
+            <div className="">
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-800"
+                className="w-full text-base font-medium bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-800 mt-[20px] mb-[132px]"
               >
                 เข้าสู่ระบบ
               </button>
             </div>
           </form>
+          </div>
         </div>
       </div>
     </>

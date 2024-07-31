@@ -221,7 +221,7 @@ function AdminServiceCreate() {
         setCategoryName("");
         setSubServiceItems([{ name: "", price: "", unit: "" }]);
         setUploadedImage(null);
-        window.location.href = "/admin/service/create";  
+        window.location.href = "/admin/service";  
       }
     } catch (error) {
       console.error("Error uploading data", error);
@@ -301,7 +301,7 @@ function AdminServiceCreate() {
                 className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11"
                 disabled={uploading}
               >
-                {uploading ? "กำลังอัพโหลด..." : "สร้าง"}
+                {uploading ? "อัพโหลด.." : "สร้าง"}
               </button>
             </div>
           </div>

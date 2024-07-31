@@ -73,7 +73,7 @@ function AdminCategoryCreate() {
 
   const categoryPost = async (data) => {
     try {
-      await axios.post("http://localhost:4000/categories/create", data);
+      await axios.post(`http://localhost:4000/categories/create`, data);
 
       console.log(data);
       setMessage(response.data.message);
@@ -164,23 +164,23 @@ function AdminCategoryCreate() {
             <div className="text-lg">
               {createCategory ? (
                 <div className="ml-5">
-                  <h1 className="text-xs text-[#646C80]">หมวดหมู่</h1>
+                  <h1 className="text-[16px] font-medium text-[#646C80]">หมวดหมู่</h1>
                   <p>{categoryName}</p>
                 </div>
               ) : (
-                <div className="ml-5">เพิ่มหมวดหมู่</div>
+                <div className="ml-5 font-medium text-[20px]">เพิ่มหมวดหมู่</div>
               )}
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 mr-6">
               <div
                 onClick={handleCancel}
-                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-40 h-11 text-center cursor-pointer"
+                className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-11 text-center cursor-pointer"
               >
                 ยกเลิก
               </div>
               {createCategory ? (
                 <button
-                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
+                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11"
                   type="submit"
                   onClick={handleSubmit}
                 >
@@ -190,7 +190,7 @@ function AdminCategoryCreate() {
 
               {!createCategory ? (
                 <button
-                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11 justify-center"
+                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11 justify-center"
                   onClick={handleCreate}
                 >
                   สร้าง
@@ -217,7 +217,7 @@ function AdminCategoryCreate() {
               </div>
               
               {validationMessage && (
-                <div className="text-red-600 mt-2 ml-52">{validationMessage}</div>
+                <div className="text-red-600 mt-2 ml-72">{validationMessage}</div>
               )}
               {createCategory && (
                 <div className="flex flex-col gap-7 -mx-4 rounded-t-none mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">

@@ -50,8 +50,8 @@ const CategoryFilter = ({
             {category
               ? getAbbreviatedLabel(category)
               : getAbbreviatedLabel(categories[0].label)}
-          </button>
           <ArrowDropDownIcon />
+          </button>
         </span>
         {openDropdown === "category" && (
           <div

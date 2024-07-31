@@ -262,7 +262,7 @@ function AdminCreatePromotion() {
           {/* Admin Topbar */}
           <div className="bg-white p-4 flex justify-between items-center ">
             <div className="text-lg mx-4">
-              <div className="text-lg">
+              <div className="text-[20px] font-medium">
                 {createCode ? (
                   <div>
                     <h1 className="text-xs">Promotion Code</h1>
