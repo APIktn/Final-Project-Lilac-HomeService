@@ -177,7 +177,7 @@ function CustomerInfoBody() {
                           <img
                             src={cameraIcon}
                             alt="Upload"
-                            className="h-8 w-8 icon-camera p-1 bg-white rounded-full"
+                            className="h-8 w-8 icon-camera p-1 bg-white rounded-lg"
                           />
                         </label>
                       )}
@@ -321,10 +321,16 @@ function CustomerInfoBody() {
                           onChange={handleInputChange}
                           className="w-full p-2 border border-gray-300 rounded-md"
                         >
-                          <option value="profile_image">
+                          <option
+                            value="profile_image"
+                            className="option-custom"
+                          >
                             รูปโปรไฟล์เริ่มต้น
                           </option>
-                          <option value="upload_image">
+                          <option
+                            value="upload_image"
+                            className="option-custom"
+                          >
                             รูปโปรไฟล์ที่อัปโหลด
                           </option>
                         </select>
