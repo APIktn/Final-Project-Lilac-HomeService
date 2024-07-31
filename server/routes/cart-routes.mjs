@@ -123,7 +123,7 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
       // Fetch current total_code
       const { data: promoData, error: promoFetchError } = await supabase
         .from("promotioncodes")
-        .select("total_code")
+        .select("count")
         .eq("code", promoCode)
         .single();
 
@@ -135,12 +135,12 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
         });
       }
 
-      const newTotalCode = promoData.total_code - 1;
+      const newTotalCode = promoData.count + 1;
 
       // Update total_code
       const { data: promoUpdateData, error: promoUpdateError } = await supabase
         .from("promotioncodes")
-        .update({ total_code: newTotalCode })
+        .update({ count: newTotalCode })
         .eq("code", promoCode);
 
       if (promoUpdateError) {
