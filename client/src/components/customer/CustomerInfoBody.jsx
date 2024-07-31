@@ -184,7 +184,7 @@ function CustomerInfoBody() {
                     </div>
                   </div>
                 </div>
-                <div className="p-8 pt-4 lg:pt-8 mt-16 lg:mt-4">
+                <div className="p-8 pt-4 lg:pt-8 mt-16 lg:mt-8">
                   {isEditing ? (
                     <form>
                       <div className="mb-4 lg:mt-12">
@@ -353,7 +353,7 @@ function CustomerInfoBody() {
                         {userData.firstname} {userData.lastname}
                       </h2>
                       <div className="flex flex-col lg:flex-row justify-around gap-8 lg:gap-16">
-                        <div className="bg-white p-4 shadow-md rounded-lg lg:border-r lg:pr-8 relative lg:flex-1">
+                        <div className="bg-white p-4  relative lg:flex-1">
                           <h1 className="text-lg font-semibold mb-4">
                             ข้อมูลส่วนตัว
                           </h1>
@@ -372,18 +372,17 @@ function CustomerInfoBody() {
                             </p>
                             <p className="text-sm text-gray-700">
                               <span className="text-black font-medium">
-                                Email:
+                                อีเมล:
                               </span>{" "}
                               {userData.email}
                             </p>
                             <p className="text-sm text-gray-700">
                               <span className="text-black font-medium">
-                                Tel:
+                                เบอร์โทรศัพท์:
                               </span>{" "}
                               {userData.tel_num}
                             </p>
                           </div>
-                          <div className="hidden lg:block absolute top-0 right-0 h-full border-r-2 border-gray-300"></div>
                         </div>
                       </div>
                     </>
