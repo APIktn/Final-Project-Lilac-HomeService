@@ -16,7 +16,7 @@ const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
   fontFamily: "Prompt",
 }));
 
-const Navbar_user = () => {
+const Navbar_tech = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [userData, setUserData] = useState(null);
@@ -51,6 +51,17 @@ const Navbar_user = () => {
 
   const { logout } = useTechnicianAuth();
 
+  const getAvatarSrc = () => {
+    if (userData) {
+      if (userData.select_image === "upload_image") {
+        return userData.upload_image || avatar;
+      } else if (userData.select_image === "profile_image") {
+        return userData.profile_image || avatar;
+      }
+    }
+    return avatar;
+  };
+
   return (
     <nav className="bg-white shadow-md w-full sticky top-0 z-50">
       <div className="container mx-auto px-4 md:px-20 py-2 flex justify-between items-center">
@@ -64,7 +75,7 @@ const Navbar_user = () => {
           </a>
           <a
             href="/technician"
-            className="text-blue-600  text-sm sm:text-2xl  font-medium"
+            className="text-blue-600 text-sm sm:text-2xl font-medium"
           >
             HomeServices
           </a>
@@ -79,11 +90,11 @@ const Navbar_user = () => {
               </span>
               <button className="mr-2" onClick={handleAvatarClick}>
                 <img
-                  src={
-                    userData.select_image === "upload_image"
-                      ? userData.upload_image
-                      : userData.profile_image || avatar
-                  }
+                  src={getAvatarSrc()}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = avatar;
+                  }}
                   alt="avatar"
                   className="h-8 sm:h-6 rounded-full"
                 />
@@ -138,4 +149,4 @@ const Navbar_user = () => {
   );
 };
 
-export default Navbar_user;
+export default Navbar_tech;

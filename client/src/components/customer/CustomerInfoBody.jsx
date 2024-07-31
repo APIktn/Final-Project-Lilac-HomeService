@@ -7,6 +7,7 @@ import { ClipLoader } from "react-spinners";
 import PasswordChangePopup from "../../components/popup/PasswordChangePopup";
 import { validateUpdateProfile } from "../../utils/validators";
 import ExclamationIcon from "../../assets/icons/exclamation-icon.svg";
+import avatar from "../../assets/images/avatar.webp"; // Import default avatar
 
 function CustomerInfoBody() {
   const [userData, setUserData] = useState(null);
@@ -158,11 +159,11 @@ function CustomerInfoBody() {
                       style={{ top: "50%", transform: "translateY(-50%)" }}
                     >
                       <img
-                        className="h-32 w-32 rounded-full lg:ml-10 object-cover border-4 border-white"
+                        className="h-32 w-32 rounded-full lg:ml-10 object-cover border-4 border-white bg-white"
                         src={
                           formData.select_image === "profile_image"
-                            ? userData.profile_image
-                            : userData.upload_image
+                            ? userData.profile_image || avatar
+                            : userData.upload_image || avatar
                         }
                         alt="Profile"
                       />
