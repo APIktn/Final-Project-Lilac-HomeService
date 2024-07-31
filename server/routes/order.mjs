@@ -75,8 +75,8 @@ orderRouter.get("/completeorder", authenticateToken, async (req, res) => {
 
     const { data: technicianData, error: techError } = await supabase
       .from("users")
-      .select("firstname, lastname, user_id")
-      .in("user_id", technicianIds);
+      .select("firstname, lastname, user_id");
+    // .in("user_id", technicianIds);
 
     if (techError) {
       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลพนักงานได้" });
@@ -165,8 +165,8 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
 
     const { data: technicianData, error: techError } = await supabase
       .from("users")
-      .select("firstname, lastname, user_id")
-      .in("user_id", technicianIds);
+      .select("firstname, lastname, user_id");
+    // .in("user_id", technicianIds);
 
     if (techError) {
       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลพนักงานได้" });

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import supabase from "../utils/db.mjs";
 import { authenticateToken } from "../middlewares/authVerify.mjs";
+import { v4 as uuidv4 } from "uuid";
 
 const cartsRouter = Router();
 
@@ -55,7 +56,7 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
 
     const billInfo = req.body;
 
-    const {
+    let {
       serviceId,
       order,
       date,
@@ -71,7 +72,7 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
 
     const { data: orderData, error: orderError } = await supabase
       .from("orders")
-      .insert([{ user_id, promotion_code: promoCode }])
+      .insert([{ user_id }])
       .select();
 
     if (orderError) {
@@ -90,6 +91,14 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
 
     const order_id = orderData[0].order_id;
 
+    if (!promoCode) {
+      promoCode = null;
+    }
+
+    discountPrice = Number(discountPrice);
+    const order_code = `HS${user_id + order_id}`;
+    // const order_code = `HS${uuidv4().slice(0, 4)}`;
+
     const orderDetails = order.serviceInfo.map((item) => ({
       order_id,
       service_id: serviceId,
@@ -103,6 +112,8 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
       ad_province: province,
       ad_moredetail: moredetail,
       total_amount: discountPrice,
+      order_code,
+      promotion_code: promoCode,
     }));
 
     const { data: orderDetailData, error: orderDetailError } = await supabase
