@@ -599,9 +599,9 @@ function AdminServiceList() {
 
         {/* Admin Service List */}
         {loading ? (
-          <div className="flex flex-1 justify-center items-center">
-            <ClipLoader color="#336DF2" />
-          </div>
+          <div className="flex justify-center items-center w-full h-[500px]">
+          <ClipLoader size={200} color={"#123abc"} loading={loading} />
+        </div>
         ) : (
           <div className="p-4 overflow-y-auto">
             {searchTerm ? (
