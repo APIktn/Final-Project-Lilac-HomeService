@@ -62,9 +62,6 @@ const ServicePayment = () => {
           result.paymentIntent?.next_action?.promptpay_display_qr_code
             ?.qr_code_url;
 
-        // setQrSrc(qrCodeUrl);
-
-        // Poll for payment status
         checkPaymentStatus(paymentIntentId);
       }
     } catch (error) {
@@ -212,17 +209,6 @@ const ServicePayment = () => {
             </div>
           </form>
         )}
-
-        {/* {selected === "propmt-pay" && (
-          <div className="flex justify-center items-center">
-            <img
-              id="imgqr"
-              src={qrSrc}
-              alt="QR Code"
-              className="w-full md:w-96 object-contain"
-            />
-          </div>
-        )} */}
 
         <hr className="border-solid border-[1px] border-[#CCD0D7] my-2 md:mt-6 md:mb-3" />
 

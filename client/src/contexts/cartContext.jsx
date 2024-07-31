@@ -39,6 +39,7 @@ const CartContextProvider = (props) => {
   const [cardName, setCardName] = useState("");
   const [discountPrice, setDiscountPrice] = useState(0);
   const [promoCode, setPromoCode] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const updateCounter = (id, value) => {
     setCounters((prev) => ({
@@ -140,6 +141,8 @@ const CartContextProvider = (props) => {
     setDiscountPrice,
     promoCode,
     setPromoCode,
+    loading,
+    setLoading,
   };
 
   return (

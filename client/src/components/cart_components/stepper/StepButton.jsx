@@ -36,6 +36,8 @@ function StepButtons() {
     storeBillInfo,
     cardName,
     discountPrice,
+    setLoading,
+    loading,
   } = useContext(CartContext);
 
   const monthMap = {
@@ -95,6 +97,8 @@ function StepButtons() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    setLoading(true);
 
     if (!stripe || !elements) {
       return;
@@ -168,7 +172,7 @@ function StepButtons() {
         return;
       }
     } else if (activeStep === 2) {
-      if (!cardName || !cardNumber || !cardExpiry || !cardCVC) {
+      if (!cardName || !cardNumber || !cardExpiry || !cardCVC || loading) {
         setIsDisabled(true);
         return;
       }
@@ -192,6 +196,7 @@ function StepButtons() {
     cardNumber,
     cardExpiry,
     cardCVC,
+    loading,
   ]);
 
   return (
