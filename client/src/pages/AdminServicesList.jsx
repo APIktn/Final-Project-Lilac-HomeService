@@ -14,14 +14,13 @@
 //   const [groupedServices, setGroupedServices] = useState({});
 //   const [loading, setLoading] = useState(true);
 //   const [draggedService, setDraggedService] = useState(null);
-//   const [itemToDelete, setItemToDelete] = useState(null); 
-//   const [showDeleteModal, setShowDeleteModal] = useState(false); 
+//   const [itemToDelete, setItemToDelete] = useState(null);
+//   const [showDeleteModal, setShowDeleteModal] = useState(false);
 //   const { state, logout } = useAdminAuth();
 //   const { admin } = state;
 //   const [filteredServices, setFilteredServices] = useState([]);
 //   const [searchTerm, setSearchTerm] = useState("");
 
-  
 //   const navigate = useNavigate();
 
 //   const getServices = async () => {
@@ -163,7 +162,7 @@
 //     return (
 //     <div className="flex h-screen">
 //       {/* Sidebar */}
-//       <div className="bg-[#001C59] w-[240px]  flex flex-col justify-between">                    
+//       <div className="bg-[#001C59] w-[240px]  flex flex-col justify-between">
 //         <div>
 //           <div
 //             className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
@@ -173,20 +172,20 @@
 //             <span className="text-[#336DF2] text-[20px] font-medium mt-1">Homeservice</span>
 //           </div>
 //           <div>
-//             <div className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer" 
+//             <div className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer"
 //               onClick={() => navigate("/admin/category")}>
 //               <img src={vectorCategory} alt="Category" className="mr-2 ml-2" />
 //               <span className="text-[#F1F1F1] text-base ml-3">หมวดหมู่</span>
 //             </div>
 //             <div
-//               className="flex items-center  p-4  hover:bg-[#022B87] cursor-pointer"              
+//               className="flex items-center  p-4  hover:bg-[#022B87] cursor-pointer"
 //             >
 //               <img src={vectorService} alt="Service" className="mr-2 ml-2" />
 //               <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
 //             </div>
 //             <div
 //               className="flex items-center  p-4  bg-[#022B87] cursor-pointer"
-//               onClick={() => navigate("/admin/promotion")}            
+//               onClick={() => navigate("/admin/promotion")}
 //             >
 //               <img
 //                 src={vectorPromotionCode}
@@ -290,7 +289,6 @@
 //             ))}
 //           </div>
 //         )}
-        
 
 //         {/* Delete Confirmation Modal */}
 //         {showDeleteModal && (
@@ -340,26 +338,24 @@ import vectorEdit from "../assets/icons/Vector-edit.svg";
 import vectorAlert from "../assets/icons/Vector-alert.svg";
 import vectorClose from "../assets/icons/Vector-close.svg";
 
-
 function AdminServiceList() {
   const [groupedServices, setGroupedServices] = useState({});
   const [loading, setLoading] = useState(true);
   const [draggedService, setDraggedService] = useState(null);
-  const [itemToDelete, setItemToDelete] = useState(null); 
-  const [showDeleteModal, setShowDeleteModal] = useState(false); 
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { state, logout } = useAdminAuth();
   const { admin } = state;
   const [filteredServices, setFilteredServices] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const { service_name } = useParams();
-  
-  
+
   const navigate = useNavigate();
 
   const getServices = async () => {
     try {
       const result = await axios.get("http://localhost:4000/adminserviceslist");
-      console.log(result.data.data)
+      console.log(result.data.data);
       const sortedGroupedServices = result.data.data;
 
       // Ensure categories are sorted by position_id
@@ -387,14 +383,15 @@ function AdminServiceList() {
   const handleSearch = (e) => {
     const searchValue = e.target.value.toLowerCase();
     setSearchTerm(searchValue);
-    const filtered = groupedServices.map(group => ({
-      ...group,
-      services: group.services.filter(service =>
-        service.service_name.toLowerCase().includes(searchValue)
-      )
-    })).filter(group => group.services.length > 0);
+    const filtered = groupedServices
+      .map((group) => ({
+        ...group,
+        services: group.services.filter((service) =>
+          service.service_name.toLowerCase().includes(searchValue)
+        ),
+      }))
+      .filter((group) => group.services.length > 0);
     setFilteredServices(filtered);
-
   };
   const handleDragStart = (e, service, categoryId) => {
     setDraggedService({ service, categoryId });
@@ -483,7 +480,7 @@ function AdminServiceList() {
       setFilteredServices(updatedGroupedServices);
       setShowDeleteModal(false);
       setItemToDelete(null);
-      window.location.href = "/admin/service";  
+      window.location.href = "/admin/service";
     } catch (error) {
       console.error("Error deleting service:", error);
     }
@@ -492,67 +489,79 @@ function AdminServiceList() {
   const handleDeleteCancel = () => {
     setShowDeleteModal(false);
     setItemToDelete(null);
-  };  
- 
+  };
+
   const categoryStyles = {
-    "บริการทั่วไป": {
+    บริการทั่วไป: {
       backgroundColor: "#E7EEFF",
       color: "#0E3FB0",
     },
-    "บริการห้องครัว": {
+    บริการห้องครัว: {
       backgroundColor: "#ECE6FF",
       color: "#4512B4",
     },
-    "บริการห้องน้ำ": {
+    บริการห้องน้ำ: {
       backgroundColor: "#DFF9F6",
       color: "#00596C",
     },
   };
-  
-    return (
+
+  return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="bg-[#001C59] w-[240px]  flex flex-col justify-between">                    
+      <div className="bg-[#001C59] w-[240px]  flex flex-col justify-between">
         <div>
           <div
             className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
             onClick={() => navigate("/")}
           >
-            <img src={vectorHouse} alt="House" className="w-[26.06px] h-[26.06px] mr-2" />
-            <span className="text-[#336DF2] text-[20px] font-medium mt-1">HomeServices</span>
+            <img
+              src={vectorHouse}
+              alt="House"
+              className="w-[26.06px] h-[26.06px] mr-2"
+            />
+            <span className="text-[#336DF2] text-[20px] font-medium mt-1">
+              HomeServices
+            </span>
           </div>
           <div>
-            <div className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer" 
-              onClick={() => navigate("/admin/category")}>
+            <div
+              className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer"
+              onClick={() => navigate("/admin/category")}
+            >
               <img src={vectorCategory} alt="Category" className="mr-2 ml-2" />
               <span className="text-[#F1F1F1] text-base ml-3">หมวดหมู่</span>
             </div>
-            <div
-              className="flex items-center  p-4  bg-[#022B87] cursor-pointer"              
-            >
+            <div className="flex items-center  p-4  bg-[#022B87] cursor-pointer">
               <img src={vectorService} alt="Service" className="mr-2 ml-2" />
               <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
             </div>
             <div
               className="flex items-center  p-4  hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/promotion")}            
+              onClick={() => navigate("/admin/promotion")}
             >
               <img
                 src={vectorPromotionCode}
                 alt="Promotion Code"
                 className="mr-2 ml-2"
               />
-              <span className="text-[#F1F1F1] text-base ml-3">Promotion Code</span>
+              <span className="text-[#F1F1F1] text-base ml-3">
+                Promotion Code
+              </span>
             </div>
           </div>
         </div>
         <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer  ml-5 mb-16">
-        <img src={vectorLogout} alt="Logout" className="mr-2" />
-          <span className="text-[#F1F1F1] text-base ml-2"
-                  onClick={() => {
-                  logout();
-                  navigate("/admin")}}
-          >ออกจากระบบ</span>
+          <img src={vectorLogout} alt="Logout" className="mr-2" />
+          <span
+            className="text-[#F1F1F1] text-base ml-2"
+            onClick={() => {
+              logout();
+              navigate("/admin");
+            }}
+          >
+            ออกจากระบบ
+          </span>
         </div>
       </div>
 
@@ -560,9 +569,11 @@ function AdminServiceList() {
       <div className="flex-1 flex flex-col bg-[#EFEFF2]">
         {/* Admin Topbar */}
         <div className="bg-white p-4 flex  items-center">
-          <div className="text-[20px] font-medium ml-5 mr-[725px] w-[76px]">บริการ</div>
+          <div className="text-[20px] font-medium ml-5 mr-[580px] w-[76px]">
+            บริการ
+          </div>
           <div className="flex items-center ">
-          <div className="flex w-72 h-11 border rounded-md p-2 items-center ">
+            <div className="flex w-72 h-11 border rounded-md p-2 items-center ">
               <img
                 src={vectorSearch}
                 alt="search-icon"
@@ -580,10 +591,11 @@ function AdminServiceList() {
               onClick={() => navigate("/admin/service/create")}
               className="bg-[#336DF2] text-white -pt-[6px] px-4 rounded-md w-40 h-11 font-medium text-[16px] flex items-center justify-center ml-6"
             >
-              <span>เพิ่มบริการ</span><span className="text-[25px] ml-3" >+</span>
+              <span>เพิ่มบริการ</span>
+              <span className="text-[25px] ml-3">+</span>
             </button>
           </div>
-         </div>
+        </div>
 
         {/* Admin Service List */}
         {loading ? (
@@ -592,67 +604,84 @@ function AdminServiceList() {
           </div>
         ) : (
           <div className="p-4 overflow-y-auto">
-           {searchTerm ? (
-            
-            <div className="bg-white rounded-lg shadow-md  mx-4 my-4">
-            <div className="flex flex-col">
-              {/* Header Row */}
-              <div className="grid grid-cols-6 gap-3 items-center bg-[#E6E7EB] rounded-md p-2 border border-[#EFEFF2] text-[14px] font-normal text-[#646C80] h-[41px] ">
-                {/* <div className="col-span-1 "></div> */}
-                <div className="col-span-1 ml-[75px]">ลำดับ</div>
-                <div className="col-span-1 -ml-9">ชื่อบริการ</div>
-                <div className="col-span-1 -ml-8">หมวดหมู่</div>
-                <div className="col-span-1 -ml-8">สร้างเมื่อ</div>
-                <div className="col-span-1 -ml-1">แก้ไขล่าสุด</div>
-                <div className="col-span-1 ml-[104px]">Action</div>
-              </div>
-          
-              {/* Service Rows */}
-              <div className="flex flex-col">
-            {filteredServices.flatMap(({ category, services }) =>
-              services.map((service, index) => {
-                // Determine the style for the current category
-                const categoryStyle = categoryStyles[category.category_name] || {
-                  backgroundColor: "#fde68a",
-                  color: "#f97316",
-                };
-          
-                return (
-                  <div
-                    key={service.service_id}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, service, category.category_id)}
-                    onDrop={(e) => handleDrop(e, index, category.category_id)}
-                    onDragOver={handleDragOver}
-                    className="grid grid-cols-9 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
-                  >
-                    <div className="flex-1 ml-[99px]">
-                      {groupedServices.flatMap(({ services }) => services).findIndex(s => s.service_id === service.service_id) + 1}
-                    </div>
-                    <div className="col-span-1  -ml-[108px]">
-                              <img src={vectorDragDrop} alt="DragDrop" />                    
+            {searchTerm ? (
+              <div className="bg-white rounded-lg shadow-md  mx-4 my-4">
+                <div className="flex flex-col">
+                  {/* Header Row */}
+                  <div className="grid grid-cols-6 gap-3 items-center bg-[#E6E7EB] rounded-md p-2 border border-[#EFEFF2] text-[14px] font-normal text-[#646C80] h-[41px] ">
+                    {/* <div className="col-span-1 "></div> */}
+                    <div className="col-span-1 ml-[75px]">ลำดับ</div>
+                    <div className="col-span-1 -ml-9">ชื่อบริการ</div>
+                    <div className="col-span-1 -ml-8">หมวดหมู่</div>
+                    <div className="col-span-1 -ml-8">สร้างเมื่อ</div>
+                    <div className="col-span-1 -ml-1">แก้ไขล่าสุด</div>
+                    <div className="col-span-1 ml-[104px]">Action</div>
+                  </div>
+
+                  {/* Service Rows */}
+                  <div className="flex flex-col">
+                    {filteredServices.flatMap(({ category, services }) =>
+                      services.map((service, index) => {
+                        // Determine the style for the current category
+                        const categoryStyle = categoryStyles[
+                          category.category_name
+                        ] || {
+                          backgroundColor: "#fde68a",
+                          color: "#f97316",
+                        };
+
+                        return (
+                          <div
+                            key={service.service_id}
+                            draggable
+                            onDragStart={(e) =>
+                              handleDragStart(e, service, category.category_id)
+                            }
+                            onDrop={(e) =>
+                              handleDrop(e, index, category.category_id)
+                            }
+                            onDragOver={handleDragOver}
+                            className="grid grid-cols-9 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
+                          >
+                            <div className="flex-1 ml-[99px]">
+                              {groupedServices
+                                .flatMap(({ services }) => services)
+                                .findIndex(
+                                  (s) => s.service_id === service.service_id
+                                ) + 1}
+                            </div>
+                            <div className="col-span-1  -ml-[108px]">
+                              <img src={vectorDragDrop} alt="DragDrop" />
                             </div>
                             <div className="col-span-1 -ml-[260px]">
-                              <img src={vectorDragDrop} alt="DragDrop" />                    
+                              <img src={vectorDragDrop} alt="DragDrop" />
                             </div>
-                    <div className="flex-2 p-2 -ml-[250px]">{service.service_name}</div>
-                    <div
-                      className="col-span-2 w-fit -ml-[170px] "
-                      style={{
-                        backgroundColor: categoryStyle.backgroundColor,
-                        color: categoryStyle.color,
-                        padding: "4px 10px",
-                        borderRadius: "8px",
-                        margin:"px",
-                        fontweight:"400",
-                        fontSize:"12px",
-                      }}
-                    >
-                      <p className="text-xs ">{category.category_name}</p>
-                    </div>
-                    <div className="flex-1 p-2 -ml-[250px]">{formatDateTime(service.created_at)}</div>
-                    <div className="flex-1 p-2 -ml-[155px]">{formatDateTime(service.updated_at)}</div>
-                    <div className="col-span-1 flex flex-row gap-4  mt-20 -ml-24">
+                            <div className="flex-2 p-2 -ml-[250px]">
+                              {service.service_name}
+                            </div>
+                            <div
+                              className="col-span-2 w-fit -ml-[170px] "
+                              style={{
+                                backgroundColor: categoryStyle.backgroundColor,
+                                color: categoryStyle.color,
+                                padding: "4px 10px",
+                                borderRadius: "8px",
+                                margin: "px",
+                                fontweight: "400",
+                                fontSize: "12px",
+                              }}
+                            >
+                              <p className="text-xs ">
+                                {category.category_name}
+                              </p>
+                            </div>
+                            <div className="flex-1 p-2 -ml-[250px]">
+                              {formatDateTime(service.created_at)}
+                            </div>
+                            <div className="flex-1 p-2 -ml-[155px]">
+                              {formatDateTime(service.updated_at)}
+                            </div>
+                            <div className="col-span-1 flex flex-row gap-4  mt-20 -ml-24">
                               <img
                                 src={vectorBin}
                                 alt="Delete"
@@ -664,143 +693,162 @@ function AdminServiceList() {
                                 alt="Edit"
                                 className="cursor-pointer -mt-20 ml-5"
                                 onClick={() =>
-                                  navigate(`/admin/service/view/${service.service_name}`)
+                                  navigate(
+                                    `/admin/service/view/${service.service_name}`
+                                  )
                                 }
                               />
                             </div>
-                           </div>
-                );
-              })
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-white rounded-lg shadow-md  mx-4 my-4">
+                <div className="flex flex-col">
+                  {/* Header Row */}
+                  <div className="grid grid-cols-6 gap-3 items-center bg-[#E6E7EB] rounded-md p-2 border border-[#EFEFF2] text-[14px] font-normal text-[#646C80] h-[41px] ">
+                    {/* <div className="col-span-1 "></div> */}
+                    <div className="col-span-1 ml-[75px]">ลำดับ</div>
+                    <div className="col-span-1 -ml-8">ชื่อบริการ</div>
+                    <div className="col-span-1 -ml-6">หมวดหมู่</div>
+                    <div className="col-span-1 ">สร้างเมื่อ</div>
+                    <div className="col-span-1 ml-8">แก้ไขล่าสุด</div>
+                    <div className="col-span-1 ml-[104px]">Action</div>
+                  </div>
+
+                  {/* Service Rows */}
+                  <div className="flex flex-col">
+                    {groupedServices.flatMap(({ category, services }) =>
+                      services.map((service, index) => {
+                        // Determine the style for the current category
+                        const categoryStyle = categoryStyles[
+                          category.category_name
+                        ] || {
+                          backgroundColor: "#fde68a",
+                          color: "#f97316",
+                        };
+
+                        return (
+                          <div
+                            key={service.service_id}
+                            draggable
+                            onDragStart={(e) =>
+                              handleDragStart(e, service, category.category_id)
+                            }
+                            onDrop={(e) =>
+                              handleDrop(e, index, category.category_id)
+                            }
+                            onDragOver={handleDragOver}
+                            className="grid grid-cols-9 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
+                          >
+                            <div className="flex-1 ml-[93px]">
+                              {groupedServices
+                                .flatMap(({ services }) => services)
+                                .findIndex(
+                                  (s) => s.service_id === service.service_id
+                                ) + 1}
+                            </div>
+                            <div className="col-span-1  -ml-[90px]">
+                              <img src={vectorDragDrop} alt="DragDrop" />
+                            </div>
+                            <div className="col-span-1 -ml-[210px]">
+                              <img src={vectorDragDrop} alt="DragDrop" />
+                            </div>
+                            <div className="flex-2 p-2 -ml-[220px]">
+                              {service.service_name}
+                            </div>
+                            <div
+                              className="col-span-2 w-fit -ml-[150px] "
+                              style={{
+                                backgroundColor: categoryStyle.backgroundColor,
+                                color: categoryStyle.color,
+                                padding: "4px 10px",
+                                borderRadius: "8px",
+                                margin: "px",
+                                fontweight: "400",
+                                fontSize: "12px",
+                              }}
+                            >
+                              <p className="text-xs ">
+                                {category.category_name}
+                              </p>
+                            </div>
+                            <div className="flex-1 p-2 -ml-[200px]">
+                              {formatDateTime(service.created_at)}
+                            </div>
+                            <div className="flex-1 p-2 -ml-[105px]">
+                              {formatDateTime(service.updated_at)}
+                            </div>
+                            <div className="col-span-1 flex flex-row gap-4  mt-20 -ml-24">
+                              <img
+                                src={vectorBin}
+                                alt="Delete"
+                                className="cursor-pointer ml-[117px] -mt-20"
+                                onClick={() => handleDeleteClick(service)}
+                              />
+                              <img
+                                src={vectorEdit}
+                                alt="Edit"
+                                className="cursor-pointer -mt-20 ml-5"
+                                onClick={() =>
+                                  navigate(
+                                    `/admin/service/view/${service.service_name}`
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+              </div>
             )}
           </div>
+        )}
+        {/* Delete Confirmation Modal */}
+        {/* Modal Content */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+            <div className="bg-white p-8 rounded-2xl shadow-md">
+              <div className="flex justify-between items-center mb-4 flex-col relative w-[300px] h-[30px] ">
+                <img src={vectorAlert} alt="Alert" />
+                <img
+                  src={vectorClose}
+                  alt="Close"
+                  className="cursor-pointer absolute -right-2 -top-2"
+                  onClick={handleDeleteCancel}
+                />
+              </div>
+              <p className="text-center  text-[20px]">ยืนยันการลบรายการ?</p>
+              <p className="text-center mb-4 text-[16px] text-[#636678]">
+                คุณต้องการลบรายการ ' {itemToDelete?.service_name} '
+              </p>
+              <p className="text-center mb-4 text-[16px] text-[#636678] -mt-4">
+                ใช่หรือไม่
+              </p>
+              <div className="flex justify-center">
+                <button
+                  onClick={handleDeleteConfirm}
+                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md mr-2 w-[112px] h-[44px]"
+                >
+                  ลบรายการ
+                </button>
+                <button
+                  onClick={handleDeleteCancel}
+                  className="bg-white text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-[44px] border-[#336DF2] border-2"
+                >
+                  ยกเลิก
+                </button>
+              </div>
             </div>
-          </div>
-) : (
-  <div className="bg-white rounded-lg shadow-md  mx-4 my-4">
-  <div className="flex flex-col">
-    {/* Header Row */}
-    <div className="grid grid-cols-6 gap-3 items-center bg-[#E6E7EB] rounded-md p-2 border border-[#EFEFF2] text-[14px] font-normal text-[#646C80] h-[41px] ">
-      {/* <div className="col-span-1 "></div> */}
-      <div className="col-span-1 ml-[75px]">ลำดับ</div>
-      <div className="col-span-1 -ml-9">ชื่อบริการ</div>
-      <div className="col-span-1 -ml-8">หมวดหมู่</div>
-      <div className="col-span-1 -ml-8">สร้างเมื่อ</div>
-      <div className="col-span-1 -ml-1">แก้ไขล่าสุด</div>
-      <div className="col-span-1 ml-[104px]">Action</div>
-    </div>
-
-    {/* Service Rows */}
-    <div className="flex flex-col">
-  {groupedServices.flatMap(({ category, services }) =>
-    services.map((service, index) => {
-      // Determine the style for the current category
-      const categoryStyle = categoryStyles[category.category_name] || {
-        backgroundColor: "#fde68a",
-        color: "#f97316",
-      };
-
-      return (
-        <div
-          key={service.service_id}
-          draggable
-          onDragStart={(e) => handleDragStart(e, service, category.category_id)}
-          onDrop={(e) => handleDrop(e, index, category.category_id)}
-          onDragOver={handleDragOver}
-          className="grid grid-cols-9 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
-        >
-          <div className="flex-1 ml-[99px]">
-            {groupedServices.flatMap(({ services }) => services).findIndex(s => s.service_id === service.service_id) + 1}
-          </div>
-          <div className="col-span-1  -ml-[111px]">
-                    <img src={vectorDragDrop} alt="DragDrop" />                    
-                  </div>
-                  <div className="col-span-1 -ml-[260px]">
-                    <img src={vectorDragDrop} alt="DragDrop" />                    
-                  </div>
-          <div className="flex-2 p-2 -ml-[250px]">{service.service_name}</div>
-          <div
-            className="col-span-2 w-fit -ml-[170px] "
-            style={{
-              backgroundColor: categoryStyle.backgroundColor,
-              color: categoryStyle.color,
-              padding: "4px 10px",
-              borderRadius: "8px",
-              margin:"px",
-              fontweight:"400",
-              fontSize:"12px",
-            }}
-          >
-            <p className="text-xs ">{category.category_name}</p>
-          </div>
-          <div className="flex-1 p-2 -ml-[250px]">{formatDateTime(service.created_at)}</div>
-          <div className="flex-1 p-2 -ml-[155px]">{formatDateTime(service.updated_at)}</div>
-          <div className="col-span-1 flex flex-row gap-4  mt-20 -ml-24">
-                    <img
-                      src={vectorBin}
-                      alt="Delete"
-                      className="cursor-pointer ml-[117px] -mt-20"
-                      onClick={() => handleDeleteClick(service)}
-                    />
-                    <img
-                      src={vectorEdit}
-                      alt="Edit"
-                      className="cursor-pointer -mt-20 ml-5"
-                      onClick={() =>
-                        navigate(`/admin/service/view/${service.service_name}`)
-                      }
-                    />
-                  </div>
-                 </div>
-      );
-    })
-  )}
-</div>
-  </div>
-</div>
-    )}
           </div>
         )}
-         {/* Delete Confirmation Modal */}
-         {/* Modal Content */}
-         {showDeleteModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-2xl shadow-md">
-            <div className="flex justify-between items-center mb-4 flex-col relative w-[300px] h-[30px] ">
-              <img src={vectorAlert} alt="Alert" />
-              <img
-                src={vectorClose}
-                alt="Close"
-                className="cursor-pointer absolute -right-2 -top-2"
-                onClick={handleDeleteCancel}
-              />
-            </div>            
-            <p className="text-center  text-[20px]">
-              ยืนยันการลบรายการ?
-            </p>
-            <p className="text-center mb-4 text-[16px] text-[#636678]">
-              คุณต้องการลบรายการ ' {itemToDelete?.service_name} '
-            </p>
-            <p className="text-center mb-4 text-[16px] text-[#636678] -mt-4">              
-              ใช่หรือไม่
-            </p>
-            <div className="flex justify-center">
-              <button
-                onClick={handleDeleteConfirm}
-                className="bg-[#336DF2] text-white py-2 px-4 rounded-md mr-2 w-[112px] h-[44px]"
-              >
-                ลบรายการ
-              </button>
-              <button
-                onClick={handleDeleteCancel}               
-                className="bg-white text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-[44px] border-[#336DF2] border-2"
-              >
-                ยกเลิก
-              </button>
-            </div>
-          </div>
-        </div>
-      )}             
-       
       </div>
     </div>
   );

@@ -75,7 +75,7 @@ function AdminPromotion() {
       );
       setShowDeleteModal(false);
       setItemToDelete(null);
-      window.location.href = "/admin/promotion";          
+      window.location.href = "/admin/promotion";
     } catch (error) {
       console.error("Error deleting promotion code:", error);
       // Handle error state or notification to the user
@@ -121,8 +121,9 @@ function AdminPromotion() {
         code.code.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-
-    // Additional filters can be added here if needed
+    filteredPromotionCodes = filteredPromotionCodes.sort((a, b) => {
+      return b.is_active - a.is_active;
+    });
 
     return filteredPromotionCodes;
   };
@@ -142,9 +143,14 @@ function AdminPromotion() {
             className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
             onClick={() => navigate("/")}
           >
-            <img src={vectorHouse} alt="House" className="w-[26.06px] h-[26.06px] mr-2" />
-            <span className="text-[#336DF2] text-[20px] font-medium mt-1">HomeServices</span>
-
+            <img
+              src={vectorHouse}
+              alt="House"
+              className="w-[26.06px] h-[26.06px] mr-2"
+            />
+            <span className="text-[#336DF2] text-[20px] font-medium mt-1">
+              HomeServices
+            </span>
           </div>
           <div
             className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer"
@@ -172,12 +178,16 @@ function AdminPromotion() {
           </div>
         </div>
         <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
-          <img src={vectorLogout} alt="Logout" className="mr-2" />    
-          <span className="text-[#F1F1F1] text-base ml-2"  
-                onClick={() => {
-                logout();
-                navigate("/admin");
-              }}>ออกจากระบบ</span>
+          <img src={vectorLogout} alt="Logout" className="mr-2" />
+          <span
+            className="text-[#F1F1F1] text-base ml-2"
+            onClick={() => {
+              logout();
+              navigate("/admin");
+            }}
+          >
+            ออกจากระบบ
+          </span>
         </div>
       </div>
 
@@ -185,7 +195,9 @@ function AdminPromotion() {
       <div className="flex-1 flex flex-col bg-[#EFEFF2] ">
         {/* Admin Topbar */}
         <div className="bg-white p-4 flex items-center">
-          <div className="text-[20px] font-medium ml-4 mr-[465px] w-[200px]">Promotion Code</div>
+          <div className="text-[20px] font-medium ml-4 mr-[320px] w-[200px]">
+            Promotion Code
+          </div>
           <div className="flex items-center w-[612px]">
             <div className="flex w-[350px] h-11 border rounded-md p-2 items-center">
               <img
@@ -223,12 +235,12 @@ function AdminPromotion() {
                 style={{ fontWeight: 400 }}
                 className="grid grid-cols-12 gap-1 items-center bg-[#E6E7EB] rounded-md p-2  border border-[#EFEFF2] text-[14px] text-[#646C80] h-[41px]  "
               >
-                <div className="col-span-2 ml-3">Promotion Code</div>
-                <div className="col-span-1 -ml-4">ประเภท</div>
-                <div className="col-span-2 ml-3">โควต้าการใช้(ครั้ง)</div>
-                <div className="col-span-2 -ml-6">ราคาที่ลด</div>
-                <div className="col-span-2 -ml-20">สร้างเมื่อ</div>
-                <div className="col-span-2 -ml-16">วันหมดอายุ</div>
+                <div className="col-span-3 ml-6">Promotion Code</div>
+                <div className="col-span-1 -ml-[44px]">ประเภท</div>
+                <div className="col-span-2 -ml-10">โควต้าการใช้(ครั้ง)</div>
+                <div className="col-span-1 -ml-[90px]">ราคาที่ลด</div>
+                <div className="col-span-2 -ml-14">สร้างเมื่อ</div>
+                <div className="col-span-2 -ml-[44px]">วันหมดอายุ</div>
                 <div className="col-span-1">Action</div>
               </div>
             </div>
@@ -242,27 +254,43 @@ function AdminPromotion() {
                   onDrop={(e) => handleDrop(e, index)}
                   className="grid grid-cols-12 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]  font-light"
                 >
-                  <div className="col-span-2 ml-6">{item.code}</div>
-                  <div className="col-span-1 -ml-2">
+                  <div className="flex col-span-3 ml-8 items-center gap-2">
+                    <span>{item.code}</span>
+                    {item.is_active === false && item.limitation === true ? (
+                      <span className="text-[10px] text-yellow-500 bg-yellow-100 p-1 rounded-md ">
+                        🎉 โค้ดหมดแล้ว
+                      </span>
+                    ) : item.is_active === true ? (
+                      <span className="text-[10px] text-green-500 bg-green-100 p-1 rounded-md ">
+                        ✅ โค้ดใช้งานได้
+                      </span>
+                    ) : (
+                      <span className="text-[10px] text-red-600 bg-red-100 p-1 rounded-md">
+                        ❌ โค้ดหมดอายุ
+                      </span>
+                    )}{" "}
+                  </div>
+
+                  <div className="col-span-1 -ml-10">
                     {item.baht_discount ? "Fixed" : "Percent"}
                   </div>
                   {item.count === null ? (
-                    <div className="col-span-2 ml-5">0/{item.total_code}</div>
+                    <div className="col-span-1 -ml-8">0/{item.total_code}</div>
                   ) : (
-                    <div className="col-span-2 ">
+                    <div className="col-span-1 -ml-8">
                       {item.count}/{item.total_code}
                     </div>
                   )}
-                  <div className="col-span-2 text-red-600 -ml-7">
+                  <div className="col-span-2 text-red-600 ">
                     {item.baht_discount
                       ? `-${item.baht_discount} ฿`
                       : `-${item.percent_discount} %`}
                   </div>
 
-                  <div className="col-span-2 -ml-20">
+                  <div className="col-span-2 -ml-14">
                     {formatDateTime(item.created_at)}
                   </div>
-                  <div className="col-span-2 -ml-[68px]">
+                  <div className="col-span-2 -ml-[48px]">
                     {formatDateTime(item.expired_date)}
                   </div>
                   <div className="col-span-1 flex  ">
@@ -278,7 +306,7 @@ function AdminPromotion() {
                       className="cursor-pointer ml-9"
                       onClick={() =>
                         navigate(`/admin/promotion/edit/${item.promo_id}`)
-                      }                
+                      }
                     />
                   </div>
                 </div>
@@ -317,7 +345,7 @@ function AdminPromotion() {
                 ลบรายการ
               </button>
               <button
-                onClick={handleDeleteCancel}               
+                onClick={handleDeleteCancel}
                 className="bg-white text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-[44px] border-[#336DF2] border-2"
               >
                 ยกเลิก
