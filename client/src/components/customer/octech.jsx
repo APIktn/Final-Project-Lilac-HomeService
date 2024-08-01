@@ -259,7 +259,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
         className="w-fit p-2 mt-2 bg-blue-600 px-6 rounded-[10px] text-white md:ml-auto md:mt-[-40px]"
         onClick={handleAcceptJob}
       >
-        รับงาน
+        เริ่มงาน
       </button>
     </div>
   );
