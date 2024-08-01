@@ -20,6 +20,7 @@ const Navbar_user = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -52,11 +53,17 @@ const Navbar_user = () => {
   const { logout } = useAuth();
 
   const getAvatarSrc = () => {
+    if (profileImagePreview) {
+      return profileImagePreview;
+    }
+
     if (userData) {
-      if (userData.select_image === "upload_image") {
-        return userData.upload_image || avatar;
-      } else if (userData.select_image === "profile_image") {
-        return userData.profile_image || avatar;
+      if (userData.select_image === "upload_image" && userData.upload_image) {
+        return userData.upload_image;
+      }
+
+      if (userData.profile_image) {
+        return userData.profile_image;
       }
     }
     return avatar;

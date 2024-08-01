@@ -195,7 +195,7 @@ function CustomerInfoBody() {
                     >
                       <img
                         className="h-32 w-32 rounded-full lg:ml-10 object-cover border-4 border-white bg-white"
-                        src={getProfileImageSrc()} // Use the function to get the profile image source
+                        src={getProfileImageSrc()}
                         alt="Profile"
                       />
                       {isEditing && (

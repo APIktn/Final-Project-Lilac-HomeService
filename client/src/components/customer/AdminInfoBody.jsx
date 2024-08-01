@@ -23,7 +23,7 @@ function AdminInfoBody() {
     select_image: "profile_image",
   });
   const [profileImage, setProfileImage] = useState(null);
-  const [profileImagePreview, setProfileImagePreview] = useState(null); // For preview
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [isPasswordPopupOpen, setIsPasswordPopupOpen] = useState(false);
 
