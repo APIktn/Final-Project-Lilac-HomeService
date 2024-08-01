@@ -221,7 +221,72 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
       .json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลคำสั่งซื้อและพนักงาน" });
   }
 });
+//ออเดอร์รอดำเนินการ
 
+orderRouter.get("/pending", authenticateToken, async (req, res) => {
+  try {
+    const { user_id } = req.user;
+
+    const { data: orderdetailData, error } = await supabase
+      .from("orderdetails")
+      .select(
+        `
+          order_detail_id,
+          orders (
+            order_id,
+            user_id
+          ),
+          *
+        `
+      )
+
+      .in("status", ["รอดำเนินการ"]);
+
+    if (error || !orderdetailData) {
+      return res.status(404).json({ error: "ไม่พบข้อมูลผู้ใช้งาน" });
+    }
+
+    const userIds = [
+      ...new Set(orderdetailData.map((order) => order.orders.user_id)),
+    ];
+
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("firstname, lastname, user_id, tel_num")
+      .in("user_id", userIds);
+
+    if (userError) {
+      return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลผู้ใช้งานได้" });
+    }
+
+    // Map user details to include both full name and phone number
+    const usersMap = userData.reduce((acc, user) => {
+      acc[user.user_id] = {
+        fullname: `${user.firstname} ${user.lastname}`,
+        tel: user.tel_num,
+      };
+      return acc;
+    }, {});
+
+    // Enrich order details with both full name and phone number
+    const enrichedOrderDetails = orderdetailData.map((order) => {
+      const user = usersMap[order.orders.user_id] || {
+        fullname: "ไม่พบชื่อผู้ใช้งาน",
+        tel: "ไม่พบหมายเลขโทรศัพท์",
+      };
+      return {
+        ...order,
+        userfullname: user.fullname,
+        usertel: user.tel,
+      };
+    });
+
+    res.json({ data: enrichedOrderDetails });
+  } catch (error) {
+    console.error("Error in GET /customer:", error);
+    res.status(500).json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน" });
+  }
+});
 //ออเดอร์กำลังดำเนินการ
 orderRouter.get("/inProgress", authenticateToken, async (req, res) => {
   try {
