@@ -40,26 +40,28 @@ function AdminLoginPage() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-[#F3F4F6] flex-col">
-      <div
-            className="p-2 flex items-center justify-center mb-[25px] -ml-3"
-            
-          >
-            <img src={vectorHouse} alt="House" className="w-[69.33px] h-[69.33px]" />
-            <span className="text-[#336DF2] text-[45px] font-medium ">HomeServices</span>
-          </div>
-        <div className="w-[614px] h-[420px] max-w-md p-8 bg-white rounded-lg border border-gray-300 ">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 flex-col px-4">
+        <div className="p-2 flex items-center justify-center mb-[25px] mx-5 -mt-20 ">
+          <img
+            src={vectorHouse}
+            alt="House"
+            className="w-[69.33px] h-[69.33px]"
+          />
+          <span className="text-[#336DF2] text-[45px] font-medium ">
+            HomeServices
+          </span>
+        </div>
+        <div className="w-full max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md">
           <h2 className="text-[24px] font-medium mb-4 text-center text-blue-950 mt-2">
             เข้าสู่ระบบแอดมิน
           </h2>
-          <div className="mx-6">
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label
                 htmlFor="email"
-                className="block text-base font-medium text-[#323640]"
+                className="block text-sm font-medium text-gray-700"
               >
-                Email
+                อีเมล
                 <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -71,7 +73,7 @@ function AdminLoginPage() {
                   className={`mt-1 block w-full px-3 py-2 border ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                  
+                  placeholder="กรุณากรอกอีเมล"
                 />
                 {errors.email && (
                   <img
@@ -88,9 +90,9 @@ function AdminLoginPage() {
             <div className="mb-4">
               <label
                 htmlFor="password"
-                className="block text-base font-medium text-[#323640]"
+                className="block text-sm font-medium text-gray-700"
               >
-                Password
+                รหัสผ่าน
                 <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -102,7 +104,7 @@ function AdminLoginPage() {
                   className={`mt-1 block w-full px-3 py-2 border ${
                     errors.password ? "border-red-500" : "border-gray-300"
                   } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                  
+                  placeholder="กรุณากรอกรหัสผ่าน"
                 />
                 {errors.password && (
                   <img
@@ -119,16 +121,15 @@ function AdminLoginPage() {
             {state.error && (
               <div className="mb-4 text-red-600">{state.error}</div>
             )}
-            <div className="">
+            <div className="mb-4">
               <button
                 type="submit"
-                className="w-full text-base font-medium bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-800 mt-[20px] mb-[132px]"
+                className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-800"
               >
                 เข้าสู่ระบบ
               </button>
             </div>
           </form>
-          </div>
         </div>
       </div>
     </>
