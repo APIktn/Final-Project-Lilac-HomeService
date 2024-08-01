@@ -96,7 +96,9 @@ const Navbar_admin = () => {
             />
           </button>
           <button>
-            <img src={bell} alt="bell" className="h-8 sm:h-6" />
+            <a href="http://localhost:5173/admin/promotion">
+              <img src={bell} alt="bell" className="h-8 sm:h-6" />{" "}
+            </a>
           </button>
           <Menu
             anchorEl={anchorEl}
