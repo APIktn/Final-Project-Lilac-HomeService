@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import CustomerAccount from "./CustomerAccount";
+import TechAccount from "./TechAccount";
 import editIcon from "../../assets/icons/edit-icon.png";
 import cameraIcon from "../../assets/icons/camera-icon.png";
 import { ClipLoader } from "react-spinners";
@@ -130,7 +130,7 @@ function CustomerInfoBody() {
     <div className="bg-[#F3F4F6] px-4 pb-2">
       <div className="md:flex container md:mx-auto md:px-20 md:py-2 justify-between items-start">
         <div className="sticky top-[45px] md:top-[75px] z-40 md:basis-1/4">
-          <CustomerAccount />
+          <TechAccount />
         </div>
         <div className="md:basis-3/4 md:ml-[32px]">
           <div>

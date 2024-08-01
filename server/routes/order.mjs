@@ -10,7 +10,7 @@ import cloudinary from "../utils/cloudinary.mjs";
 import upload from "../middlewares/upload.mjs";
 import bcrypt from "bcrypt";
 
-// const orderRouter = Router();
+const orderRouter = Router();
 
 // //ทดสอบดึง user ที่ตรงกับ order id
 // orderRouter.get("/testorder", authenticateToken, async (req, res) => {

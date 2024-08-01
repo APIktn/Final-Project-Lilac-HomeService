@@ -20,6 +20,19 @@ function CustomerAccount() {
           <div className="flex flex-col ">
             <div className="pt-[16px]">
               <div className="flex items-center mb-2">
+                <img src={person} alt="order" className="mr-1 h-8 sm:h-6 " />
+                <a
+                  href="/techinfo"
+                  className={`text-[16px] p-[12px] ${
+                    currentPath === "/techinfo"
+                      ? "text-[#1852D6]"
+                      : "hover:text-[#9AA1B0]"
+                  }`}
+                >
+                  ข้อมูลผู้ใช้งาน
+                </a>
+              </div>
+              <div className="flex items-center mb-2">
                 <img src={order} alt="order" className="mr-1 h-8 sm:h-6 " />
                 <a
                   href="/technician"
@@ -71,51 +84,84 @@ function CustomerAccount() {
           <p className="p-[8px] border-solid border-[#CCD0D7] border-b-[1px] text-[20px] text-[#646C80]">
             บัญชี Technician
           </p>
-          <div className="flex flex-row items-center  justify-between px-[16px]">
-            <div className="flex items-center mb-2">
-              <img src={order} alt="order" className="h-[24px]" />
-              <a
-                href="/technician"
-                className={`text-[12px] p-[5px] ${
-                  currentPath === "/technician"
-                    ? "text-[#1852D6]"
-                    : "hover:text-[#9AA1B0]"
-                }`}
-              >
-                รอ
-                <br />
-                ดำเนินการ
-              </a>
+          <div className="flex flex-row items-center  justify-between px-[16px] pt-2">
+            <div className="flex flex-col items-center mb-2">
+              <div>
+                <img src={person} alt="order" className="h-[24px]" />
+              </div>
+              <div className="text-center">
+                <a
+                  href="/techinfo"
+                  className={`text-[12px] p-[5px] ${
+                    currentPath === "/techinfo"
+                      ? "text-[#1852D6]"
+                      : "hover:text-[#9AA1B0]"
+                  }`}
+                >
+                  ข้อมูล
+                  <br />
+                  ผู้ใช้งาน
+                </a>
+              </div>
             </div>
-            <div className="flex items-center mb-2">
-              <img src={order} alt="order" className="h-[24px]" />
-              <a
-                href="/techinprogress"
-                className={`text-[12px] p-[5px] ${
-                  currentPath === "/techinprogress"
-                    ? "text-[#1852D6]"
-                    : "hover:text-[#9AA1B0]"
-                }`}
-              >
-                กำลัง
-                <br />
-                ดำเนินการ
-              </a>
+            <div className="flex flex-col items-center mb-2">
+              <div>
+                <img src={order} alt="order" className="h-[24px]" />
+              </div>
+              <div className="text-center">
+                <a
+                  href="/technician"
+                  className={`text-[12px] p-[5px] ${
+                    currentPath === "/technician"
+                      ? "text-[#1852D6]"
+                      : "hover:text-[#9AA1B0]"
+                  }`}
+                >
+                  รอ
+                  <br />
+                  ดำเนินการ
+                </a>
+              </div>
             </div>
-            <div className="flex items-center mb-2">
-              <img src={history} alt="history" className="h-[24px]" />
-              <a
-                href="/techcompleted"
-                className={`text-[12px] p-[5px] ${
-                  currentPath === "/techcompleted"
-                    ? "text-[#1852D6]"
-                    : "hover:text-[#9AA1B0]"
-                }`}
-              >
-                ดำเนินการ
-                <br />
-                สำเร็จ
-              </a>
+            <div className="flex flex-col items-center mb-2">
+              {" "}
+              <div>
+                <img src={order} alt="order" className="h-[24px]" />
+              </div>
+              <div className="text-center">
+                <a
+                  href="/techinprogress"
+                  className={`text-[12px] p-[5px] ${
+                    currentPath === "/techinprogress"
+                      ? "text-[#1852D6]"
+                      : "hover:text-[#9AA1B0]"
+                  }`}
+                >
+                  กำลัง
+                  <br />
+                  ดำเนินการ
+                </a>
+              </div>
+            </div>
+            <div className="flex flex-col items-center mb-2">
+              <div>
+                {" "}
+                <img src={history} alt="history" className="h-[24px]" />
+              </div>
+              <div className="text-center">
+                <a
+                  href="/techcompleted"
+                  className={`text-[12px] p-[5px]  ${
+                    currentPath === "/techcompleted"
+                      ? "text-[#1852D6]"
+                      : "hover:text-[#9AA1B0]"
+                  }`}
+                >
+                  ดำเนินการ
+                  <br />
+                  สำเร็จ
+                </a>
+              </div>
             </div>
           </div>
         </div>
