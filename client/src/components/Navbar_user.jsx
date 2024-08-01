@@ -11,7 +11,7 @@ import history from "../assets/icons/history-icon.png";
 import logout1 from "../assets/icons/logout-icon.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authentication";
-
+import vectorClose from "../assets/icons/Vector-close.svg";
 const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
   fontFamily: "Prompt",
 }));
@@ -20,6 +20,8 @@ const Navbar_user = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [originalPromotionCode, setOriginalPromotionCode] = useState([]);
+  const [showPromotionCode, setShowPromotionCode] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -34,7 +36,34 @@ const Navbar_user = () => {
     };
 
     fetchUserData();
+    getPromotionCode();
   }, []);
+
+  const getPromotionCode = async () => {
+    try {
+      const result = await axios.get(`http://localhost:4000/promotion/active`);
+      console.log("Fetched promotion codes:", result.data.data);
+      setOriginalPromotionCode(result.data.data);
+    } catch (error) {
+      console.error("Error fetching promotion codes:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCodeClick = () => {
+    setShowPromotionCode(true);
+  };
+
+  const handleCodeCancel = () => {
+    setShowPromotionCode(false);
+  };
+
+  const handleCopy = (item) => {
+    navigator.clipboard.writeText(item.code).then(() => {
+      alert("คัดลอก Promotion code ✅ เลือกบริการจาก HomeServices ได้เลย🧑🏻‍🔧");
+    });
+  };
 
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -97,7 +126,7 @@ const Navbar_user = () => {
               </button>
             </>
           )}
-          <button>
+          <button onClick={handleCodeClick}>
             <img src={bell} alt="bell" className="h-8 sm:h-6" />
           </button>
           <Menu
@@ -148,6 +177,75 @@ const Navbar_user = () => {
           </Menu>
         </div>
       </div>
+      {/* Get Code */}
+      {showPromotionCode && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-8 pt-4 rounded-2xl shadow-md">
+            <div className="flex justify-between items-center mb-4 flex-col relative w-[300px] h-[30px] ">
+              <img
+                src={vectorClose}
+                alt="Close"
+                className="cursor-pointer absolute -right-2 -top-2"
+                onClick={handleCodeCancel}
+              />
+            </div>
+            <p className="text-center  text-[20px]">Promotion Code 🎉</p>
+            <p className="text-center mb-4 text-[16px] text-[#636678]">
+              คลิกและเก็บโค้ดส่วนลดได้เลย
+            </p>
+
+            {originalPromotionCode.map((item, index) => (
+              <div
+                key={item.promo_id}
+                className="flex justify-center gap-5 items-center border-b-2  text-[16px] text-[#000000] h-[88px]  font-light"
+              >
+                <div className="flex  col-span-1 items-center justify-center  bg-blue-500 p-1 pl-2 rounded-lg border border-dashed border-blue-600 shadow-md">
+                  <div className="relative flex flex-col col-span-1 items-center justify-center  bg-blue-500 p-1 pl-2 rounded-lg border border-dashed border-blue-600 shadow-md">
+                    <span className="text-white font-bold">{item.code}</span>
+                    <p>
+                      {item.count === null ? (
+                        <div className="col-span-1 ">0/{item.total_code}</div>
+                      ) : (
+                        <div className="col-span-1 text-[8px] text-blue-950">
+                          ใช้สิทธิแล้ว {item.count}/{item.total_code}
+                        </div>
+                      )}
+                    </p>
+
+                    {/* Left Circular Decoration */}
+                    <div className="absolute -left-[7px] top-3 h-5 w-5 bg-white rounded-full transform -translate-x-1/2 z-10"></div>
+                  </div>
+                  <svg
+                    onClick={() => handleCopy(item)}
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="0"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="cursor-pointer ml-2 text-white hover:text-blue-800"
+                  >
+                    <path
+                      fill=""
+                      d="M6 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h1v1a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3h-1V5a3 3 0 0 0-3-3H6Zm9 4h-5a3 3 0 0 0-3 3v7H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v1ZM9 19V9a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-8a1 1 0 0 1-1-1Z"
+                    ></path>
+                  </svg>
+                </div>
+
+                <div className="col-span-1  text-red-600 ">
+                  <p className="text-blue-950">รับส่วนลดทันที</p>
+                  {item.baht_discount
+                    ? `${item.baht_discount} ฿`
+                    : `${item.percent_discount} %`}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

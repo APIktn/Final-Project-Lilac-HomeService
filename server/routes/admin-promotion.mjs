@@ -35,6 +35,42 @@ promotionRouter.get("/", async (req, res) => {
   }
 });
 
+//only active
+promotionRouter.get("/active", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("promotioncodes")
+      .select("*")
+      .eq("is_active", true);
+
+    if (error) {
+      throw error;
+    }
+
+    const formattedData = data.map((discount) => {
+      if (discount.baht_discount !== null) {
+        discount.baht_discount = discount.baht_discount.toFixed(2);
+      }
+      if (discount.percent_discount !== null) {
+        discount.percent_discount = discount.percent_discount.toFixed(2);
+      }
+      return discount;
+    });
+
+    return res.status(200).json({
+      message:
+        "Successfully retrieved and formatted the list of active promotion codes.",
+      data: formattedData,
+    });
+  } catch (error) {
+    console.error("Error retrieving promotion codes:", error.message);
+    return res.status(500).json({
+      message:
+        "Server could not retrieve promotion codes due to a database error.",
+    });
+  }
+});
+
 // Fetch a single promotion code by ID
 promotionRouter.get("/:promo_id", async (req, res) => {
   const promoId = req.params.promo_id;
@@ -78,10 +114,10 @@ promotionRouter.post("/", async (req, res) => {
     expired_date,
   } = req.body;
 
-  console.log(req.body)
+  console.log(req.body);
   if (baht_discount === null && !percent_discount) {
     return res.status(400).json({
-      message: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+      message: "กรุณากรอกข้อมูลให้ครบถ้วน",
     });
   }
 
@@ -143,7 +179,6 @@ promotionRouter.post("/", async (req, res) => {
   }
 });
 
-
 // delete promotion
 promotionRouter.delete("/:promo_id", async (req, res) => {
   const { promo_id } = req.params;
@@ -188,10 +223,10 @@ promotionRouter.patch("/edit/:promo_id", async (req, res) => {
     expired_date,
   } = req.body;
 
-  console.log(req.body)
-  if (baht_discount ===null && !percent_discount) {
+  console.log(req.body);
+  if (baht_discount === null && !percent_discount) {
     return res.status(400).json({
-      message: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+      message: "กรุณากรอกข้อมูลให้ครบถ้วน",
     });
   }
 

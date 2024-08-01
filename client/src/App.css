@@ -27,6 +27,25 @@
   }
 }
 
+/* Add this to your global CSS file or Tailwind configuration */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.bg-animated {
+  background: linear-gradient(45deg, #f0f4f8, #ffffff, #f0f4f8);
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
