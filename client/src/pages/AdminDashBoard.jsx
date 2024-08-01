@@ -191,9 +191,7 @@ function AdminDashboard() {
       <div className="flex-1 flex flex-col bg-[#EFEFF2]">
         {/* Admin Topbar */}
         <div className="bg-white p-4 flex items-center justify-between">
-          <div className="text-[20px] font-medium ml-4  w-[76px]">
-            หมวดหมู่
-          </div>
+          <div className="text-[20px] font-medium ml-4  w-[76px]">หมวดหมู่</div>
           <div className="flex items-center ">
             <div className="flex w-72 h-11 border rounded-md p-2 items-center ">
               <img
@@ -250,19 +248,15 @@ function AdminDashboard() {
                   onDrop={(e) => handleDrop(e, index)}
                 >
                   <div className="col-span-1 ml-7">
-                  <div>
-                    <img src={vectorDragDrop} alt="DragDrop" />
+                    <div>
+                      <img src={vectorDragDrop} alt="DragDrop" />
+                    </div>
+                    <div className="ml-2 -mt-[18px]">
+                      <img src={vectorDragDrop} alt="DragDrop" />
+                    </div>
                   </div>
-                  <div className="ml-2 -mt-[18px]">
-                    <img src={vectorDragDrop} alt="DragDrop" />
-                  </div>
-                  </div>
-                  <div className="col-span-1 ">
-                    {item.position_id}
-                  </div>
-                  <div className="col-span-3 ">
-                    {item.category_name}
-                  </div>
+                  <div className="col-span-1 ">{item.position_id}</div>
+                  <div className="col-span-3 ">{item.category_name}</div>
                   <div className="col-span-3 ">
                     {formatDateTime(item.created_at)}
                   </div>
