@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Menu, MenuItem } from "@mui/material";
 import { styled } from "@mui/system";
 import HouseLogo from "../assets/images/HouseLogo.png";
@@ -9,7 +10,6 @@ import order from "../assets/icons/order-icon.png";
 import history from "../assets/icons/history-icon.png";
 import logout1 from "../assets/icons/logout-icon.png";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/authentication";
 import { useAdminAuth } from "../contexts/adminAuthentication";
 
 const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
@@ -19,6 +19,24 @@ const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
 const Navbar_admin = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/user/profile", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("technician-token")}`,
+          },
+        });
+        setUserData(response.data.user);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,22 +51,21 @@ const Navbar_admin = () => {
     handleMenuClose();
   };
 
-  const { state, logout } = useAdminAuth();
-  const { admin } = state;
+  const { logout } = useAdminAuth();
 
   const getAvatarSrc = () => {
-    if (admin) {
-      if (admin.select_image === "upload_image") {
-        return admin.upload_image || avatar;
-      } else if (admin.select_image === "profile_image") {
-        return admin.profile_image || avatar;
+    if (userData) {
+      if (userData.select_image === "upload_image") {
+        return userData.upload_image || avatar;
+      } else if (userData.select_image === "profile_image") {
+        return userData.profile_image || avatar;
       }
     }
     return avatar;
   };
 
   return (
-    <nav className="bg-white shadow-md w-full sticky top-0 z-50 ">
+    <nav className="bg-white shadow-md w-full sticky top-0 z-50">
       <div className="container mx-auto px-4 md:px-20 py-2 flex justify-between items-center">
         <div className="flex items-center space-x-2 sm:space-x-4">
           <a href="/">
@@ -58,10 +75,7 @@ const Navbar_admin = () => {
               className="h-6 sm:h-8"
             />
           </a>
-          <a
-            href="/"
-            className="text-blue-600 pt-1 sm:pt-0 text-sm sm:text-2xl  font-medium"
-          >
+          <a href="/" className="text-blue-600 text-sm sm:text-2xl font-medium">
             HomeServices
           </a>
 
@@ -73,28 +87,26 @@ const Navbar_admin = () => {
           </a>
         </div>
         <div className="flex items-center ml-2 sm:ml-4">
-          <a
-            href="/servicelist"
-            className="md:hidden pr-[10px] text-black font-normal sm:font-medium text-sm sm:text-base pt-1"
-          >
-            บริการของเรา
-          </a>
-          <span className="text-gray-700 text-sm font-normal mt-1 hidden sm:block">
-            {admin?.role === "admin" && "Admin : "}
-            {admin?.firstname} {admin?.lastname}
-            <span style={{ marginLeft: "5px" }}></span>
-          </span>
-          <button className="mr-2" onClick={handleAvatarClick}>
-            <img
-              src={getAvatarSrc()}
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = avatar;
-              }}
-              alt="avatar"
-              className="h-8 sm:h-6 rounded-full"
-            />
-          </button>
+          {userData && (
+            <>
+              <span className="text-gray-700 text-sm font-normal mt-1 hidden sm:block">
+                <span className="font-bold">Admin :</span> {userData.firstname}{" "}
+                {userData.lastname}
+                <span style={{ marginLeft: "5px" }}></span>
+              </span>
+              <button className="mr-2" onClick={handleAvatarClick}>
+                <img
+                  src={getAvatarSrc()}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = avatar;
+                  }}
+                  alt="avatar"
+                  className="h-8 sm:h-6 rounded-full"
+                />
+              </button>
+            </>
+          )}
           <button>
             <img src={bell} alt="bell" className="h-8 sm:h-6" />
           </button>
