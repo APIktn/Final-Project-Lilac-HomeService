@@ -25,7 +25,9 @@ const Navbar_tech = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get("http://localhost:4000/user/profile", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("technician-token")}`,
+          },
         });
         setUserData(response.data.user);
       } catch (error) {
