@@ -12,6 +12,63 @@ import bcrypt from "bcrypt";
 
 const orderRouter = Router();
 
+// //ทดสอบดึง user ที่ตรงกับ order id
+// orderRouter.get("/testorder", authenticateToken, async (req, res) => {
+//   try {
+//     const { user_id } = req.user;
+
+//     const { data: orderdetailData, error: orderError } = await supabase
+//       .from("orderdetails")
+//       .select(
+//         `
+//           order_detail_id,
+//           order_id,
+//           orders!inner (
+//             order_id
+//           ),
+//           *
+//         `
+//       )
+//       .eq("orders.user_id", user_id)
+//       .in("status", ["ดำเนินการสำเร็จ"]);
+
+//     if (orderError || !orderdetailData) {
+//       return res.status(404).json({ error: "ไม่พบข้อมูลคำสั่งซื้อ" });
+//     }
+
+//     const technicianIds = [
+//       ...new Set(orderdetailData.map((order) => order.technician_id)),
+//     ];
+
+//     const { data: technicianData, error: techError } = await supabase
+//       .from("users")
+//       .select("firstname, lastname, user_id")
+//       .in("user_id", technicianIds);
+
+//     if (techError) {
+//       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลพนักงานได้" });
+//     }
+
+//     const techniciansMap = technicianData.reduce((acc, tech) => {
+//       acc[tech.user_id] = `${tech.firstname} ${tech.lastname}`;
+//       return acc;
+//     }, {});
+
+//     const enrichedOrderDetails = orderdetailData.map((order) => ({
+//       ...order,
+//       technician_name:
+//         techniciansMap[order.technician_id] || "ไม่พบชื่อพนักงาน",
+//     }));
+
+//     res.json({ data: enrichedOrderDetails });
+//   } catch (error) {
+//     console.error("Error in GET /completeorder", error);
+//     res
+//       .status(500)
+//       .json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลคำสั่งซื้อและพนักงาน" });
+//   }
+// });
+
 // ออเดอร์ที่เสร็จแล้ว
 orderRouter.get("/completeorder", authenticateToken, async (req, res) => {
   try {
