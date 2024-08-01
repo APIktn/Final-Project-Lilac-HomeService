@@ -28,6 +28,7 @@ function Bill({ billInfo }) {
   }
 
   const place = `${billInfo[0].ad_detail} ${billInfo[0].ad_subdistrict} ${billInfo[0].ad_district} ${billInfo[0].ad_province}`;
+  const price = billInfo[0].total_amount.toFixed(2);
 
   return (
     <>
@@ -95,7 +96,7 @@ function Bill({ billInfo }) {
               รวม
             </p>
             <p className="text-[16px] font-prompt font-[500] md:font-[600] text-black">
-              {billInfo[0].total_amount} ฿
+              {price} ฿
             </p>
           </div>
         </div>

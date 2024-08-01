@@ -137,18 +137,7 @@ export const validateUpdatePassword = async (req, res, next) => {
 };
 
 export const validateUpdateProfile = async (req, res, next) => {
-  const {
-    firstname,
-    lastname,
-    email,
-    tel_num,
-    select_image,
-    ad_detail,
-    ad_subdistrict,
-    ad_district,
-    ad_province,
-    ad_moredetail,
-  } = req.body;
+  const { firstname, lastname, email, tel_num, select_image } = req.body;
   const errors = [];
 
   if (!firstname) {
@@ -179,26 +168,6 @@ export const validateUpdateProfile = async (req, res, next) => {
 
   if (select_image !== "profile_image" && select_image !== "upload_image") {
     errors.push({ message: "กรุณาเลือกรูปโปรไฟล์ที่ถูกต้อง" });
-  }
-
-  const addressFields = [ad_detail, ad_subdistrict, ad_district, ad_province];
-  const isAddressProvided = addressFields.some(
-    (field) => field !== undefined && field !== ""
-  );
-
-  if (isAddressProvided) {
-    if (!ad_detail) {
-      errors.push({ message: "กรุณากรอกที่อยู่" });
-    }
-    if (!ad_subdistrict) {
-      errors.push({ message: "กรุณากรอกแขวง / ตำบล" });
-    }
-    if (!ad_district) {
-      errors.push({ message: "กรุณากรอกเขต / อำเภอ" });
-    }
-    if (!ad_province) {
-      errors.push({ message: "กรุณากรอกจังหวัด" });
-    }
   }
 
   if (errors.length > 0) {

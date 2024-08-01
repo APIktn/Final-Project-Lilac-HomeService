@@ -329,13 +329,13 @@ function AdminPromotionEdit() {
               <div className="flex items-center space-x-4">
                 <div
                   onClick={handleCancel}
-                  className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-40 h-11 text-center cursor-pointer"
+                  className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-11 text-center cursor-pointer"
                 >
                   ยกเลิก
                 </div>
                 {createCode ? (
                   <button
-                    className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
+                    className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11"
                     type="submit"
                     onClick={handleSubmit}
                   >
@@ -345,7 +345,7 @@ function AdminPromotionEdit() {
 
                 {!createCode ? (
                   <button
-                    className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11 justify-center"
+                    className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11 justify-center"
                     onClick={handleCreatePromotion}
                   >
                     สร้าง
@@ -356,7 +356,7 @@ function AdminPromotionEdit() {
             {!isEdit ? (
               <div className="flex items-center space-x-4">
                 <button
-                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11 justify-center"
+                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11 justify-center"
                   onClick={handleEdit}
                 >
                   แก้ไข

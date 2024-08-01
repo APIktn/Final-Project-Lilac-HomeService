@@ -102,3 +102,40 @@ export const checkUpdatePasswordErrors = (passwordData) => {
 
   return errors;
 };
+
+export const validateUpdateProfile = (formData) => {
+  const { firstname, lastname, email, tel_num, select_image } = formData;
+  const errors = {};
+
+  if (!firstname) {
+    errors.firstname = "กรุณากรอกชื่อ";
+  } else if (!isValidName(firstname)) {
+    errors.firstname =
+      "ชื่อไม่ถูกต้อง ต้องประกอบด้วยตัวอักษรภาษาอังกฤษเท่านั้น";
+  }
+
+  if (!lastname) {
+    errors.lastname = "กรุณากรอกนามสกุล";
+  } else if (!isValidName(lastname)) {
+    errors.lastname =
+      "นามสกุลไม่ถูกต้อง ต้องประกอบด้วยตัวอักษรภาษาอังกฤษเท่านั้น";
+  }
+
+  if (!tel_num) {
+    errors.tel_num = "กรุณากรอกหมายเลขโทรศัพท์";
+  } else if (!isValidPhoneNumber(tel_num)) {
+    errors.tel_num = "กรุณากรอกหมายเลขโทรศัพท์ (10 หลัก)";
+  }
+
+  if (!email) {
+    errors.email = "กรุณากรอกกรอกอีเมล";
+  } else if (!isValidEmail(email)) {
+    errors.email = "กรุณากรอกกรอกอีเมลให้ถูกต้อง";
+  }
+
+  if (select_image !== "profile_image" && select_image !== "upload_image") {
+    errors.select_image = "กรุณาเลือกรูปโปรไฟล์ที่ถูกต้อง";
+  }
+
+  return errors;
+};

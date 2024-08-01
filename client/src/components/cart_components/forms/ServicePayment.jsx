@@ -17,12 +17,16 @@ const ServicePayment = () => {
   const [selected, setSelected] = useState("credit-card");
   const {
     netPrice,
-    email,
-    setEmail,
+    discountPrice,
+    setDiscountPrice,
     setCardNumber,
     setCardExpiry,
     setCardCVC,
+    setCardName,
+    cardName,
     storeBillInfo,
+    promoCode,
+    setPromoCode,
   } = useContext(CartContext);
   const [qrSrc, setQrSrc] = useState("");
   const isMdUp = useMediaQuery("(min-width: 768px)");
@@ -33,7 +37,7 @@ const ServicePayment = () => {
       const response = await axios.post(
         "http://localhost:4000/api/payments/create-payment-intent",
         {
-          amount: netPrice * 100,
+          amount: discountPrice * 100,
           currency: "thb",
         }
       );
@@ -58,9 +62,6 @@ const ServicePayment = () => {
           result.paymentIntent?.next_action?.promptpay_display_qr_code
             ?.qr_code_url;
 
-        // setQrSrc(qrCodeUrl);
-
-        // Poll for payment status
         checkPaymentStatus(paymentIntentId);
       }
     } catch (error) {
@@ -90,6 +91,28 @@ const ServicePayment = () => {
     genQR();
     setSelected("propmt-pay");
   }
+
+  const handleInputChange = (event) => {
+    setPromoCode(event.target.value.toUpperCase());
+  };
+
+  const handleApplyCode = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/apply-promo-code",
+        { promoCode, netPrice }
+      );
+      const { newNetPrice, message } = response.data;
+      console.log("Response:", response.data);
+      setDiscountPrice(newNetPrice);
+      // Handle the response as needed
+    } catch (error) {
+      console.error("Error applying promo code:", error);
+      setDiscountPrice(netPrice);
+      alert("ไม่สามารถใช้โค้ดนี้ได้ กรุณาลองใหม่อีกครั้ง");
+      // Handle the error as needed
+    }
+  };
 
   return (
     <div className="payment-background w-full min-h-full">
@@ -137,29 +160,6 @@ const ServicePayment = () => {
         {selected === "credit-card" && (
           <form className="flex flex-col gap-6">
             <label className="font-[500] text-[16px] text-[#323640]">
-              ที่อยู่อีเมล
-              <span className="text-red-600">*</span>
-              <input
-                className="w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] focus:border-[#336DF2] rounded-[8px] py-2.5 pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:text-[#646C80] placeholder:focus:text-[#232630]"
-                type="email"
-                placeholder="กรุณากรอกที่อยู่อีเมล"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </label>
-
-            <label className="font-[500] text-[16px] text-[#323640]">
-              ยอดชำระ
-              <input
-                className="w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] rounded-[8px] py-2.5 pl-4 text-gray-400 italic"
-                type="number"
-                value={netPrice}
-                disabled={true}
-              />
-            </label>
-
-            <label className="font-[500] text-[16px] text-[#323640]">
               หมายเลขบัตรเครดิต
               <span className="text-red-600">*</span>
               <CardNumberElement
@@ -170,7 +170,18 @@ const ServicePayment = () => {
                 }}
               />
             </label>
-
+            <label className="font-[500] text-[16px] text-[#323640]">
+              ชื่อบนบัตร
+              <span className="text-red-600">*</span>
+              <input
+                className="w-full h-[44px] mt-1 border border-solid border-[#CCD0D7] focus:border-[#336DF2] rounded-[8px] py-2.5 pl-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:text-[#646C80] placeholder:focus:text-[#232630]"
+                type="name"
+                placeholder="กรุณากรอกชื่อบนบัตร"
+                value={cardName}
+                onChange={(e) => setCardName(e.target.value)}
+                required
+              />
+            </label>
             <div className="flex flex-col gap-6 md:flex-row">
               <label className="font-[500] text-[16px] text-[#323640] md:basis-1/2">
                 วันหมดอายุ
@@ -199,17 +210,6 @@ const ServicePayment = () => {
           </form>
         )}
 
-        {/* {selected === "propmt-pay" && (
-          <div className="flex justify-center items-center">
-            <img
-              id="imgqr"
-              src={qrSrc}
-              alt="QR Code"
-              className="w-full md:w-96 object-contain"
-            />
-          </div>
-        )} */}
-
         <hr className="border-solid border-[1px] border-[#CCD0D7] my-2 md:mt-6 md:mb-3" />
 
         <label className="font-[500] text-[16px] text-[#323640]">
@@ -219,9 +219,14 @@ const ServicePayment = () => {
               className="w-full h-full border border-solid border-[#CCD0D7] focus:border-[#336DF2] rounded-[8px] pb-6 md:py-0 px-4 text-[#232630] placeholder:font-[400] placeholder:text-[16px] placeholder:focus:text-[#232630] placeholder:text-[#646C80] placeholder:text-wrap basis-2/3 md:basis-1/2 flex items-center"
               type="text"
               placeholder="กรุณากรอกโค้ดส่วนลด (ถ้ามี)"
+              value={promoCode}
+              onChange={handleInputChange}
             />
             <div className="basis-1/3 md:basis-1/2 flex items-center">
-              <button className="bg-[#336DF2] max-w-[90px] w-full h-[44px] rounded-lg text-white">
+              <button
+                className="bg-[#336DF2] max-w-[90px] w-full h-[44px] rounded-lg text-white"
+                onClick={handleApplyCode}
+              >
                 ใช้โค้ด
               </button>
             </div>

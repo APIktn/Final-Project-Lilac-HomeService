@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import AdminAccount from "./AdminAccount";
+import CustomerAccount from "./CustomerAccount";
 import editIcon from "../../assets/icons/edit-icon.png";
+import cameraIcon from "../../assets/icons/camera-icon.png";
 import { ClipLoader } from "react-spinners";
 import PasswordChangePopup from "../../components/popup/PasswordChangePopup";
+import { validateUpdateProfile } from "../../utils/validators";
+import ExclamationIcon from "../../assets/icons/exclamation-icon.svg";
+import avatar from "../../assets/images/avatar.webp"; // Import default avatar
 
 function CustomerInfoBody() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [formError, setFormError] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     firstname: "",
@@ -16,11 +21,6 @@ function CustomerInfoBody() {
     email: "",
     tel_num: "",
     select_image: "profile_image",
-    ad_detail: "",
-    ad_subdistrict: "",
-    ad_district: "",
-    ad_province: "",
-    ad_moredetail: "",
   });
   const [profileImage, setProfileImage] = useState(null);
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -41,11 +41,6 @@ function CustomerInfoBody() {
           email: response.data.user.email,
           tel_num: response.data.user.tel_num,
           select_image: response.data.user.select_image || "profile_image",
-          ad_detail: response.data.user.ad_detail || "",
-          ad_subdistrict: response.data.user.ad_subdistrict || "",
-          ad_district: response.data.user.ad_district || "",
-          ad_province: response.data.user.ad_province || "",
-          ad_moredetail: response.data.user.ad_moredetail || "",
         });
         setLoading(false);
       } else {
@@ -67,6 +62,9 @@ function CustomerInfoBody() {
       ...formData,
       [name]: value,
     });
+
+    const errors = validateUpdateProfile({ ...formData, [name]: value });
+    setFormError(errors);
   };
 
   const handleImageChange = (e) => {
@@ -74,7 +72,15 @@ function CustomerInfoBody() {
   };
 
   const handleSave = async () => {
+    const errors = validateUpdateProfile(formData);
+    if (Object.keys(errors).length > 0) {
+      setFormError(errors);
+      setSubmitLoading(false);
+      return;
+    }
+    setFormError({});
     setSubmitLoading(true);
+
     try {
       const response = await axios.put(
         "http://localhost:4000/user/profile",
@@ -121,274 +127,285 @@ function CustomerInfoBody() {
   };
 
   return (
-    <body className="bg-[#F3F4F6] px-4 pb-2">
-      <div className="md:flex container md:mx-auto md:px-20 md:py-2 justify-between items-start  ">
-        <div className="sticky top-[45px] md:top-[75px] z-40 md:basis-1/4  ">
-          <AdminAccount />
+    <div className="bg-[#F3F4F6] px-4 pb-2">
+      <div className="md:flex container md:mx-auto md:px-20 md:py-2 justify-between items-start">
+        <div className="sticky top-[45px] md:top-[75px] z-40 md:basis-1/4">
+          <CustomerAccount />
         </div>
         <div className="md:basis-3/4 md:ml-[32px]">
-          {/* show on mobile */}
           <div>
-            <div>
-              <div>
-                {/* เริ่มต้นcard */}
-                <div className="">
-                  <div>
-                    {loading ? (
-                      <div className="flex justify-center items-center w-full h-[500px] p-4 ">
-                        <ClipLoader
-                          size={200}
-                          color={"#123abc"}
-                          loading={loading}
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-full max-w-4xl   bg-white rounded-lg mx-0 lg:mx-0 border border-gray-300 shadow-md relative">
-                        <div className="relative">
-                          <div className="bg-blue-600 h-20 rounded-t-lg"></div>
-                          <button
-                            className="absolute top-0 right-0 p-1 m-2"
-                            onClick={() => setIsEditing(!isEditing)}
-                          >
-                            <img
-                              src={editIcon}
-                              alt="Edit"
-                              className="h-8 w-8 icon-edit p-1"
-                            />
-                          </button>
+            {loading ? (
+              <div className="flex justify-center items-center w-full h-[500px] p-4">
+                <ClipLoader size={200} color={"#123abc"} loading={loading} />
+              </div>
+            ) : (
+              <div className="w-full max-w-4xl bg-white rounded-lg mx-0 lg:mx-0 border border-gray-300 shadow-md relative">
+                <div className="relative">
+                  <div className="bg-blue-600 h-20 rounded-t-lg"></div>
+                  <button
+                    className="absolute top-0 right-0 p-1 m-2"
+                    onClick={() => setIsEditing(!isEditing)}
+                  >
+                    <img
+                      src={editIcon}
+                      alt="Edit"
+                      className="h-8 w-8 icon-edit p-1"
+                    />
+                  </button>
 
-                          <div className="flex justify-center lg:justify-start relative">
-                            <img
-                              className="h-32 w-32 rounded-full lg:ml-10 object-cover absolute -bottom-16 border-4 border-white"
-                              src={
-                                formData.select_image === "profile_image"
-                                  ? userData.profile_image
-                                  : userData.upload_image
-                              }
-                              alt="Profile"
-                            />
-                          </div>
-                        </div>
-                        <div className="p-8 pt-0 mt-16 lg:mt-0 ">
-                          {isEditing ? (
-                            <form>
-                              <div className="mb-4 mt-20">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  ชื่อ
-                                </label>
-                                <input
-                                  type="text"
-                                  name="firstname"
-                                  value={formData.firstname}
-                                  onChange={handleInputChange}
-                                  placeholder="กรุณากรอกชื่อ"
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  นามสกุล
-                                </label>
-                                <input
-                                  type="text"
-                                  name="lastname"
-                                  value={formData.lastname}
-                                  onChange={handleInputChange}
-                                  placeholder="กรุณากรอกนามสกุล"
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  อีเมล
-                                </label>
-                                <input
-                                  type="email"
-                                  name="email"
-                                  value={formData.email}
-                                  onChange={handleInputChange}
-                                  placeholder="กรุณากรอกอีเมล"
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  เบอร์โทรศัพท์
-                                </label>
-                                <input
-                                  type="text"
-                                  name="tel_num"
-                                  value={formData.tel_num}
-                                  onChange={handleInputChange}
-                                  placeholder="กรุณากรอกเบอร์โทรศัพท์"
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  เลือกรูปโปรไฟล์
-                                </label>
-                                <select
-                                  name="select_image"
-                                  value={formData.select_image}
-                                  onChange={handleInputChange}
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                >
-                                  <option value="profile_image">
-                                    รูปโปรไฟล์เริ่มต้น
-                                  </option>
-                                  <option value="upload_image">
-                                    รูปโปรไฟล์ที่อัปโหลด
-                                  </option>
-                                </select>
-                              </div>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  อัปโหลดรูปโปรไฟล์ใหม่
-                                </label>
-                                <input
-                                  type="file"
-                                  name="profile_image"
-                                  onChange={handleImageChange}
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  ที่อยู่
-                                </label>
-                                <input
-                                  type="text"
-                                  name="ad_detail"
-                                  value={formData.ad_detail}
-                                  onChange={handleInputChange}
-                                  placeholder="กรุณากรอกที่อยู่"
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  แขวง / ตำบล
-                                </label>
-                                <input
-                                  type="text"
-                                  name="ad_subdistrict"
-                                  value={formData.ad_subdistrict}
-                                  onChange={handleInputChange}
-                                  placeholder="กรุณากรอก แขวง / ตำบล"
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  เขต / อำเภอ
-                                </label>
-                                <input
-                                  type="text"
-                                  name="ad_district"
-                                  value={formData.ad_district}
-                                  onChange={handleInputChange}
-                                  placeholder="กรุณากรอก เขต / อำเภอ"
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  จังหวัด
-                                </label>
-                                <input
-                                  type="text"
-                                  name="ad_province"
-                                  value={formData.ad_province}
-                                  onChange={handleInputChange}
-                                  placeholder="กรุณากรอกจังหวัด"
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                  ระบุข้อมูลเพิ่มเติม
-                                </label>
-                                <input
-                                  type="text"
-                                  name="ad_moredetail"
-                                  value={formData.ad_moredetail}
-                                  onChange={handleInputChange}
-                                  placeholder=""
-                                  className="w-full p-2 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <div className="flex justify-end space-x-4">
-                                <button
-                                  type="button"
-                                  onClick={() => setIsPasswordPopupOpen(true)}
-                                  className="bg-blue-500 text-white px-4 py-2 rounded"
-                                >
-                                  เปลี่ยนรหัสผ่าน
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={handleSave}
-                                  className="bg-blue-500 text-white px-4 py-2 rounded"
-                                  disabled={submitLoading}
-                                >
-                                  {submitLoading ? "กำลังบันทึก..." : "บันทึก"}
-                                </button>
-                              </div>
-                            </form>
-                          ) : (
-                            <>
-                              <h2 className="text-2xl font-medium mb-8 mt-1 lg:text-left text-center text-blue-950 lg:pl-36">
-                                {userData.firstname} {userData.lastname}
-                              </h2>
-                              <div className="flex lg:flex-row flex-col justify-evenly ">
-                                <div>
-                                  <h3>ข้อมูลส่วนตัว</h3>
-                                  <p className="text-sm text-gray-700">
-                                    {userData.email}
-                                  </p>
-                                  <p className="text-sm text-gray-700">
-                                    {userData.tel_num}
-                                  </p>
-                                </div>
-                                <div>
-                                  <h3>ที่อยู่</h3>
-                                  <p className="text-sm text-gray-700">
-                                    {userData.ad_detail}
-                                  </p>
-                                  <p className="text-sm text-gray-700">
-                                    {userData.ad_subdistrict}
-                                  </p>
-                                  <p className="text-sm text-gray-700">
-                                    {userData.ad_district}
-                                  </p>
-                                  <p className="text-sm text-gray-700">
-                                    {userData.ad_province}
-                                  </p>
-                                  <p className="text-sm text-gray-700">
-                                    {userData.ad_moredetail}
-                                  </p>
-                                </div>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    {isPasswordPopupOpen && (
-                      <PasswordChangePopup
-                        onClose={() => setIsPasswordPopupOpen(false)}
+                  <div className="relative flex justify-center lg:justify-start lg:-mb-44 -mb-36">
+                    <div
+                      className="relative"
+                      style={{ top: "50%", transform: "translateY(-50%)" }}
+                    >
+                      <img
+                        className="h-32 w-32 rounded-full lg:ml-10 object-cover border-4 border-white bg-white"
+                        src={
+                          formData.select_image === "profile_image"
+                            ? userData.profile_image || avatar
+                            : userData.upload_image || avatar
+                        }
+                        alt="Profile"
                       />
-                    )}
+                      {isEditing && (
+                        <label className="absolute bottom-0 right-0 mb-2 mr-2 cursor-pointer">
+                          <input
+                            type="file"
+                            name="profile_image"
+                            onChange={handleImageChange}
+                            className="hidden"
+                          />
+                          <img
+                            src={cameraIcon}
+                            alt="Upload"
+                            className="h-8 w-8 icon-camera p-1 bg-white rounded-lg"
+                          />
+                        </label>
+                      )}
+                    </div>
                   </div>
                 </div>
-                {/* สิ้นสุด card */}
+                <div className="p-8 pt-4 lg:pt-8 mt-16 lg:mt-8">
+                  {isEditing ? (
+                    <form>
+                      <div className="mb-4 lg:mt-12">
+                        <label className="block text-sm font-medium text-gray-700">
+                          ชื่อ
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="firstname"
+                            value={formData.firstname}
+                            onChange={handleInputChange}
+                            placeholder="กรุณากรอกชื่อ"
+                            className={`w-full p-2 border ${
+                              formError.firstname
+                                ? "border-red-500"
+                                : "border-gray-300"
+                            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                          />
+                          {formError.firstname && (
+                            <img
+                              src={ExclamationIcon}
+                              alt="error"
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                            />
+                          )}
+                        </div>
+                        {formError.firstname && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {formError.firstname}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          นามสกุล
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="lastname"
+                            value={formData.lastname}
+                            onChange={handleInputChange}
+                            placeholder="กรุณากรอกนามสกุล"
+                            className={`w-full p-2 border ${
+                              formError.lastname
+                                ? "border-red-500"
+                                : "border-gray-300"
+                            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                          />
+                          {formError.lastname && (
+                            <img
+                              src={ExclamationIcon}
+                              alt="error"
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                            />
+                          )}
+                        </div>
+                        {formError.lastname && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {formError.lastname}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          อีเมล
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            placeholder="กรุณากรอกอีเมล"
+                            className={`w-full p-2 border ${
+                              formError.email
+                                ? "border-red-500"
+                                : "border-gray-300"
+                            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                          />
+                          {formError.email && (
+                            <img
+                              src={ExclamationIcon}
+                              alt="error"
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                            />
+                          )}
+                        </div>
+                        {formError.email && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {formError.email}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          เบอร์โทรศัพท์
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="tel_num"
+                            value={formData.tel_num}
+                            onChange={handleInputChange}
+                            placeholder="กรุณากรอกเบอร์โทรศัพท์"
+                            className={`w-full p-2 border ${
+                              formError.tel_num
+                                ? "border-red-500"
+                                : "border-gray-300"
+                            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                          />
+                          {formError.tel_num && (
+                            <img
+                              src={ExclamationIcon}
+                              alt="error"
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                            />
+                          )}
+                        </div>
+                        {formError.tel_num && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {formError.tel_num}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                          เลือกรูปโปรไฟล์
+                        </label>
+                        <select
+                          name="select_image"
+                          value={formData.select_image}
+                          onChange={handleInputChange}
+                          className="w-full p-2 border border-gray-300 rounded-md"
+                        >
+                          <option
+                            value="profile_image"
+                            className="option-custom"
+                          >
+                            รูปโปรไฟล์เริ่มต้น
+                          </option>
+                          <option
+                            value="upload_image"
+                            className="option-custom"
+                          >
+                            รูปโปรไฟล์ที่อัปโหลด
+                          </option>
+                        </select>
+                      </div>
+                      <div className="flex justify-end space-x-4">
+                        <button
+                          type="button"
+                          onClick={() => setIsPasswordPopupOpen(true)}
+                          className="bg-blue-500 text-white px-4 py-2 rounded"
+                        >
+                          เปลี่ยนรหัสผ่าน
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleSave}
+                          className="bg-blue-500 text-white px-4 py-2 rounded"
+                          disabled={submitLoading}
+                        >
+                          {submitLoading ? "กำลังบันทึก..." : "บันทึก"}
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <>
+                      <h2 className="text-2xl font-medium mb-8 mt-1 lg:text-left text-center text-blue-950 lg:pl-36">
+                        {userData.firstname} {userData.lastname}
+                      </h2>
+                      <div className="flex flex-col lg:flex-row justify-around gap-8 lg:gap-16">
+                        <div className="bg-white p-4  relative lg:flex-1">
+                          <h1 className="text-lg font-semibold mb-4">
+                            ข้อมูลส่วนตัว
+                          </h1>
+                          <div className="space-y-2">
+                            <p className="text-sm text-gray-700">
+                              <span className="text-black font-medium">
+                                ชื่อ:
+                              </span>{" "}
+                              {userData.firstname}
+                            </p>
+                            <p className="text-sm text-gray-700">
+                              <span className="text-black font-medium">
+                                นามสกุล:
+                              </span>{" "}
+                              {userData.lastname}
+                            </p>
+                            <p className="text-sm text-gray-700">
+                              <span className="text-black font-medium">
+                                อีเมล:
+                              </span>{" "}
+                              {userData.email}
+                            </p>
+                            <p className="text-sm text-gray-700">
+                              <span className="text-black font-medium">
+                                เบอร์โทรศัพท์:
+                              </span>{" "}
+                              {userData.tel_num}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
+            {isPasswordPopupOpen && (
+              <PasswordChangePopup
+                onClose={() => setIsPasswordPopupOpen(false)}
+              />
+            )}
           </div>
         </div>
       </div>
-    </body>
+    </div>
   );
 }
 

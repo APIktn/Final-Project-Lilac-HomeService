@@ -34,6 +34,10 @@ function StepButtons() {
     cardExpiry,
     cardCVC,
     storeBillInfo,
+    cardName,
+    discountPrice,
+    setLoading,
+    loading,
   } = useContext(CartContext);
 
   const monthMap = {
@@ -94,6 +98,8 @@ function StepButtons() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    setLoading(true);
+
     if (!stripe || !elements) {
       return;
     }
@@ -105,7 +111,7 @@ function StepButtons() {
       const response = await axios.post(
         "http://localhost:4000/api/payments/create-payment-intent",
         {
-          amount: netPrice * 100, //
+          amount: discountPrice * 100, //
           currency: "thb",
         }
       );
@@ -117,7 +123,7 @@ function StepButtons() {
         payment_method: {
           card: cardNumberElement,
           billing_details: {
-            email: email,
+            name: cardName,
           },
         },
       });
@@ -166,7 +172,7 @@ function StepButtons() {
         return;
       }
     } else if (activeStep === 2) {
-      if (!email || !cardNumber || !cardExpiry || !cardCVC) {
+      if (!cardName || !cardNumber || !cardExpiry || !cardCVC || loading) {
         setIsDisabled(true);
         return;
       }
@@ -190,6 +196,7 @@ function StepButtons() {
     cardNumber,
     cardExpiry,
     cardCVC,
+    loading,
   ]);
 
   return (

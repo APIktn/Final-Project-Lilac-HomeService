@@ -323,7 +323,7 @@ function UserProfilePage() {
                   <h2 className="text-2xl font-medium mb-8 mt-1 lg:text-left text-center text-blue-950 lg:pl-36">
                     {userData.firstname} {userData.lastname}
                   </h2>
-                  <div className="flex lg:flex-row flex-col justify-evenly ">
+                  <div className="lg:flex lg:flex-row flex-col gap-5">
                     <div>
                       <h3>ข้อมูลส่วนตัว</h3>
                       <p className="text-sm text-gray-700">{userData.email}</p>

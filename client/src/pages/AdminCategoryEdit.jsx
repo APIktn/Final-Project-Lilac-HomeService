@@ -211,16 +211,16 @@ function AdminCategoryEdit() {
             </div>
 
             {isEdit ? (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 mr-5">
                 <div
                   onClick={handleCancel}
-                  className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-40 h-11 text-center cursor-pointer"
+                  className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-11 text-center cursor-pointer"
                 >
                   ยกเลิก
                 </div>
                 {createCategory ? (
                   <button
-                    className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11"
+                    className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11 "
                     type="submit"
                     onClick={handleSubmit}
                   >
@@ -230,7 +230,7 @@ function AdminCategoryEdit() {
 
                 {!createCategory ? (
                   <button
-                    className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11 justify-center"
+                    className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11 justify-center"
                     onClick={handleCreate}
                   >
                     สร้าง
@@ -239,9 +239,9 @@ function AdminCategoryEdit() {
               </div>
             ) : null}
             {!isEdit ? (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 ">
                 <button
-                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-40 h-11 justify-center"
+                  className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11 justify-center mr-5"
                   onClick={handleEdit}
                 >
                   แก้ไข
@@ -269,7 +269,7 @@ function AdminCategoryEdit() {
                   />
                 </div>
                 {validationMessage && (
-                  <div className="text-red-600 mt-2 ml-52">{validationMessage}</div>
+                  <div className="text-red-600 mt-2 ml-72">{validationMessage}</div>
                 )}
                 {createCategory && (
                  <div className="flex flex-col gap-7 -mx-4 rounded-t-none mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">

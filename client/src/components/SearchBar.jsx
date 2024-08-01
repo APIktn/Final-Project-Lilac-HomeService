@@ -111,14 +111,17 @@ const SearchBar = () => {
             <div className="p-2 xl:w-[200px]">
               <SearchIcon />
             </div>
-            <input
-              type="text"
-              placeholder="ค้นหาบริการ..."
-              className="flex-grow p-2 outline-none"
-              style={{ height: "44px" }}
-              value={searchQuery}
-              onChange={handleSearchInputChange}
-            />
+            <div className="p-2 xl:w-[300px]">
+              <input
+                type="text"
+                placeholder="ค้นหาบริการ..."
+                className="flex-grow p-2 outline-none w-[120px] h-[20px] xl:h-[30px]"
+                // style={{ height: "44px" }}
+
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+              />
+            </div>
           </div>
           <button
             className="bg-blue-500 text-white px-4 xl:px-6 py-2 rounded-md"

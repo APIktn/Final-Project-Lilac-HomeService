@@ -36,6 +36,17 @@ const Navbar_admin = () => {
   const { state, logout } = useAdminAuth();
   const { admin } = state;
 
+  const getAvatarSrc = () => {
+    if (admin) {
+      if (admin.select_image === "upload_image") {
+        return admin.upload_image || avatar;
+      } else if (admin.select_image === "profile_image") {
+        return admin.profile_image || avatar;
+      }
+    }
+    return avatar;
+  };
+
   return (
     <nav className="bg-white shadow-md w-full sticky top-0 z-50 ">
       <div className="container mx-auto px-4 md:px-20 py-2 flex justify-between items-center">
@@ -68,14 +79,18 @@ const Navbar_admin = () => {
           >
             บริการของเรา
           </a>
-          <span className="text-gray-700 text-sm font-normal mt-1  hidden sm:block">
+          <span className="text-gray-700 text-sm font-normal mt-1 hidden sm:block">
             {admin?.role === "admin" && "Admin : "}
             {admin?.firstname} {admin?.lastname}
             <span style={{ marginLeft: "5px" }}></span>
           </span>
           <button className="mr-2" onClick={handleAvatarClick}>
             <img
-              src={admin?.profile_image || avatar}
+              src={getAvatarSrc()}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = avatar;
+              }}
               alt="avatar"
               className="h-8 sm:h-6 rounded-full"
             />
@@ -98,15 +113,6 @@ const Navbar_admin = () => {
               <img src={order} alt="order" className="mr-1 h-8 sm:h-6" />
               รายการคำสั่งซ่อม
             </CustomMenuItem>
-            {/* <CustomMenuItem
-              className="border-b-[1px]"
-              onClick={() => handleMenuItemClick("/CustomerServiceHistory")}
-            >
-              <img src={history} alt="history" className=" mr-1 h-8 sm:h-6" />
-              ประวัติการซ่อม
-            </CustomMenuItem> */}
-            {/* แสดงเฉพาะ admin */}
-            {/* {user?.role === "admin" && ( */}
             <CustomMenuItem
               className="border-b-[1px]"
               onClick={() => handleMenuItemClick("/admin/category")}
@@ -114,7 +120,6 @@ const Navbar_admin = () => {
               <img src={history} alt="admin" className="mr-1 h-8 sm:h-6" />
               Admin Dashboard
             </CustomMenuItem>
-            {/* )} */}
             <hr className="border-t-2 border-gray-300" />
             <CustomMenuItem
               onClick={() => {

@@ -78,7 +78,13 @@ promotionRouter.post("/", async (req, res) => {
     expired_date,
   } = req.body;
 
-  // Validate percent_discount is between 1 and 100 or null
+  console.log(req.body)
+  if (baht_discount === null && !percent_discount) {
+    return res.status(400).json({
+      message: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+    });
+  }
+
   if (
     percent_discount !== null &&
     (percent_discount < 1 || percent_discount > 100)
@@ -88,7 +94,6 @@ promotionRouter.post("/", async (req, res) => {
     });
   }
 
-  // Ensure expired_date is not set to a time in the past
   const currentTime = new Date().toLocaleString("en-US", {
     timeZone: "Asia/Bangkok",
   });
@@ -96,14 +101,13 @@ promotionRouter.post("/", async (req, res) => {
     timeZone: "Asia/Bangkok",
   });
 
-  if (new Date(expirationTime) < new Date(currentTime)) {
+  if (new Date(expired_date) < new Date()) {
     return res.status(400).json({
       message: "Expired date cannot be set in the past",
     });
   }
 
   try {
-    // Check if the code already exists in the database
     const { data: existingCode, error: codeError } = await supabase
       .from("promotioncodes")
       .select("promo_id")
@@ -117,7 +121,6 @@ promotionRouter.post("/", async (req, res) => {
       });
     }
 
-    // Insert the new promotion code
     const { data, error } = await supabase.from("promotioncodes").insert([
       {
         code,
@@ -139,6 +142,7 @@ promotionRouter.post("/", async (req, res) => {
     res.status(500).json({ message: "Error inserting promotion code", error });
   }
 });
+
 
 // delete promotion
 promotionRouter.delete("/:promo_id", async (req, res) => {
@@ -183,6 +187,13 @@ promotionRouter.patch("/edit/:promo_id", async (req, res) => {
     created_at,
     expired_date,
   } = req.body;
+
+  console.log(req.body)
+  if (baht_discount ===null && !percent_discount) {
+    return res.status(400).json({
+      message: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+    });
+  }
 
   // Validate percent_discount is between 1 and 100 or null
   if (

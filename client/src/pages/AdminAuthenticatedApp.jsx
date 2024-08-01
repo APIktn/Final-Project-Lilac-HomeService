@@ -19,6 +19,12 @@ import AdminServiceCreate from "./AdminServicesCreated";
 import DashBoardService from "./AdminServicesList";
 import Payment_status_page from "./Payment_status_page";
 import Payment_status_page_admin from "./Payment_status_page_admin";
+import AdminCategoryCreate from "./AdminCategoyryCreate";
+import AdminCategoryEdit from "./AdminCategoryEdit";
+import AdminServiceEdit from "./AdminserviceEdit";
+import AdminPromotionEdit from "./AdminPromotionEdit";
+import AdminServiceView from "./AdminserviceView";
+
 
 function AdminAuthenticatedApp() {
   return (
@@ -42,9 +48,30 @@ function AdminAuthenticatedApp() {
           path="/admin/promotion/create"
           element={<AdminCreatePromotion />}
         />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+         <Route path="/admin/category" element={<AdminDashboard />} />
         <Route path="/admin/service/create" element={<AdminServiceCreate />} />
-        <Route path="/admin/servicelist" element={<DashBoardService />} />
+        <Route path="/admin/service" element={<DashBoardService />} />
+        <Route
+          path="/admin/service/view/:service_name"
+          element={<AdminServiceView />}
+        />
+        <Route
+          path="/admin/service/edit/:service_name"
+          element={<AdminServiceEdit />}
+        />
+        <Route
+          path="/admin/category/create"
+          element={<AdminCategoryCreate />}
+        />
+        <Route
+          path="/admin/category/edit/:category_id"
+          element={<AdminCategoryEdit />}
+        />
+
+        <Route
+          path="/admin/promotion/edit/:promo_id"
+          element={<AdminPromotionEdit />}
+        />
         <Route path="/payment-status" element={<Payment_status_page_admin />} />
       </Routes>
     </div>

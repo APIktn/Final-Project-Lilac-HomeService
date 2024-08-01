@@ -92,18 +92,7 @@ userRouter.put(
   async (req, res) => {
     try {
       const { user_id } = req.user;
-      const {
-        firstname,
-        lastname,
-        email,
-        tel_num,
-        select_image,
-        ad_detail,
-        ad_subdistrict,
-        ad_district,
-        ad_province,
-        ad_moredetail,
-      } = req.body;
+      const { firstname, lastname, email, tel_num, select_image } = req.body;
 
       const { data: user, error } = await supabase
         .from("users")
@@ -128,11 +117,6 @@ userRouter.put(
         tel_num,
         profile_image: profileImage,
         select_image,
-        ad_detail,
-        ad_subdistrict,
-        ad_district,
-        ad_province,
-        ad_moredetail,
       };
 
       const { data, error: updateError } = await supabase
