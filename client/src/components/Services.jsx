@@ -90,7 +90,7 @@ const Services = () => {
       {/* Video Background */}
       <video
         className="absolute top-0 left-0 w-full h-full object-cover z-0 hidden md:block" // Hide on mobile
-        src={homeServiceVideo}
+        src="https://res.cloudinary.com/dikwoz5gt/video/upload/f_auto:video,q_auto/j6p2j1reqkdcqdaemxmc"
         autoPlay
         loop
         muted
@@ -101,11 +101,11 @@ const Services = () => {
       <div className="absolute top-0 left-0 w-full h-full md:bg-blue-300 opacity-50 z-0"></div>
 
       {/* White Upper Background */}
-      <div className="absolute top-0 left-0 w-full h-1/6 bg-white z-0"></div>
+      <div className="absolute top-0 left-0 w-full h-[8%] bg-white z-0"></div>
 
       <div className="relative z-10">
         <div className="container mx-auto px-6 lg:px-8">
-          <h2 className="text-3xl lg:text-4xl font-semibold text-center text-blue-900 mb-12">
+          <h2 className="text-3xl lg:text-4xl font-semibold text-center text-blue-950 mb-12">
             บริการยอดฮิตของเรา
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-12">
@@ -157,10 +157,10 @@ const Services = () => {
                   alt={testimonials[currentTestimonialIndex].name}
                   className="w-32 h-48 rounded-lg mb-4 object-cover"
                 />
-                <p className="text-lg italic">
+                <p className="text-[12px] lg:text-[16px] italic">
                   "{testimonials[currentTestimonialIndex].message}"
                 </p>
-                <p className="mt-4 text-sm font-medium text-blue-900">
+                <p className="mt-4 text-[10px] lg:text-sm font-medium text-blue-900">
                   - {testimonials[currentTestimonialIndex].name}{" "}
                   {testimonials[currentTestimonialIndex].detail}
                 </p>
