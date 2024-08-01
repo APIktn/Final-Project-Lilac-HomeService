@@ -7,7 +7,7 @@ const Body = () => {
     <>
       {/* PC Version */}
 
-      <header className="hidden md:block mt-[147px] bg-blue-600 overflow-hidden relative ">
+      <header className="hidden md:block mt-[30px] bg-blue-600 overflow-hidden relative ">
         <div className="flex flex-row">
           <div>
             <img src={home_body} alt="Handy Guy" className="h-[400px] " />
