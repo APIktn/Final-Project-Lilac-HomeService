@@ -7,7 +7,7 @@ import { ClipLoader } from "react-spinners";
 import PasswordChangePopup from "../../components/popup/PasswordChangePopup";
 import { validateUpdateProfile } from "../../utils/validators";
 import ExclamationIcon from "../../assets/icons/exclamation-icon.svg";
-import avatar from "../../assets/images/avatar.webp"; // Import default avatar
+import avatar from "../../assets/images/avatar.webp";
 
 function CustomerInfoBody() {
   const [userData, setUserData] = useState(null);
