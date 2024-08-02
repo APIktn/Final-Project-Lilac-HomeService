@@ -130,6 +130,7 @@ function StepButtons() {
 
       if (result.error) {
         alert(`Payment failed: ${result.error.message}. Please try again.`);
+        setLoading(false);
       } else {
         //--------Payment with Stripe is Succeeded-----/////
         if (result.paymentIntent.status === "succeeded") {
