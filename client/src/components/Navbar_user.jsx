@@ -23,6 +23,7 @@ const Navbar_user = () => {
   const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [originalPromotionCode, setOriginalPromotionCode] = useState([]);
   const [showPromotionCode, setShowPromotionCode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -220,7 +221,7 @@ const Navbar_user = () => {
                 <div className="flex  col-span-1 items-center justify-center  bg-blue-500 p-1 pl-2 rounded-lg border border-dashed border-blue-600 shadow-md">
                   <div className="relative flex flex-col col-span-1 items-center justify-center  bg-blue-500 p-1 pl-2 rounded-lg border border-dashed border-blue-600 shadow-md">
                     <span className="text-white font-bold">{item.code}</span>
-                    <p>
+                    <div>
                       {item.count === null ? (
                         <div className="col-span-1 ">0/{item.total_code}</div>
                       ) : (
@@ -228,7 +229,7 @@ const Navbar_user = () => {
                           ใช้สิทธิแล้ว {item.count}/{item.total_code}
                         </div>
                       )}
-                    </p>
+                    </div>
 
                     {/* Left Circular Decoration */}
                     <div className="absolute -left-[7px] top-3 h-5 w-5 bg-white rounded-full transform -translate-x-1/2 z-10"></div>

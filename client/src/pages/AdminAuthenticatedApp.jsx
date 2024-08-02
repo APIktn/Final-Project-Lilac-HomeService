@@ -25,12 +25,11 @@ import AdminServiceEdit from "./AdminserviceEdit";
 import AdminPromotionEdit from "./AdminPromotionEdit";
 import AdminServiceView from "./AdminserviceView";
 
-
 function AdminAuthenticatedApp() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin" element={<HomePage_admin />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/" element={<HomePage_admin />} />
         <Route path="/servicelist" element={<ServiceList_admin />} />
@@ -48,7 +47,7 @@ function AdminAuthenticatedApp() {
           path="/admin/promotion/create"
           element={<AdminCreatePromotion />}
         />
-         <Route path="/admin/category" element={<AdminDashboard />} />
+        <Route path="/admin/category" element={<AdminDashboard />} />
         <Route path="/admin/service/create" element={<AdminServiceCreate />} />
         <Route path="/admin/service" element={<DashBoardService />} />
         <Route
