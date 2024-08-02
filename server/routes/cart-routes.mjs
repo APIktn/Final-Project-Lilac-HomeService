@@ -96,7 +96,7 @@ cartsRouter.post("/:service_name/bill", authenticateToken, async (req, res) => {
     }
 
     discountPrice = Number(discountPrice);
-    const order_code = `HS${user_id + order_id}`;
+    const order_code = `HS${user_id + order_id + uuidv4().slice(0, 2)}`;
     // const order_code = `HS${uuidv4().slice(0, 4)}`;
 
     const orderDetails = order.serviceInfo.map((item) => ({
