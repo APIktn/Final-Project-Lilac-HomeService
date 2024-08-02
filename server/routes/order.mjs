@@ -85,8 +85,8 @@ orderRouter.get("/completeorder", authenticateToken, async (req, res) => {
 
     const { data: technicianData, error: techError } = await supabase
       .from("users")
-      .select("firstname, lastname, user_id")
-      .in("user_id", technicianIds); // Fetch technicians using IDs
+      .select("firstname, lastname, user_id");
+    // .in("user_id", technicianIds); // Fetch technicians using IDs
 
     if (techError) {
       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลพนักงานได้" });
@@ -184,8 +184,8 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
 
     const { data: technicianData, error: techError } = await supabase
       .from("users")
-      .select("firstname, lastname, user_id")
-      .in("user_id", technicianIds); // Fetch technicians using IDs
+      .select("firstname, lastname, user_id");
+    // .in("user_id", technicianIds); // Fetch technicians using IDs
 
     if (techError) {
       return res.status(500).json({ error: "ไม่สามารถดึงข้อมูลพนักงานได้" });
@@ -222,7 +222,6 @@ orderRouter.get("/incompleteorder", authenticateToken, async (req, res) => {
   }
 });
 //ออเดอร์รอดำเนินการ
-
 orderRouter.get("/pending", authenticateToken, async (req, res) => {
   try {
     const { user_id } = req.user;
@@ -280,6 +279,8 @@ orderRouter.get("/pending", authenticateToken, async (req, res) => {
         usertel: user.tel,
       };
     });
+
+    enrichedOrderDetails.sort((a, b) => b.order_id - a.order_id);
 
     res.json({ data: enrichedOrderDetails });
   } catch (error) {
