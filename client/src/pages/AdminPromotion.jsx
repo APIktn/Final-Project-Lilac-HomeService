@@ -194,8 +194,8 @@ function AdminPromotion() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-[#EFEFF2] ">
         {/* Admin Topbar */}
-        <div className="bg-white p-4 flex items-center">
-          <div className="text-[20px] font-medium ml-4 mr-[320px] w-[200px]">
+        <div className="bg-white p-4 flex items-center justify-between">
+          <div className="text-[20px] font-medium ml-4 w-[200px]">
             Promotion Code
           </div>
           <div className="flex items-center w-[612px]">
@@ -215,7 +215,7 @@ function AdminPromotion() {
             </div>
             <button
               onClick={() => navigate("/admin/promotion/create")}
-              className="bg-[#336DF2] text-white -pt-[6px] px-4 rounded-md w-[238px] h-11 font-medium text-[16px] flex items-center justify-center ml-6 "
+              className="bg-[#336DF2] text-white -pt-[6px] px-4 rounded-md w-[238px] h-11 font-medium text-[16px] flex items-center justify-center ml-6 mr-9"
             >
               <span>เพิ่ม Promotion Code</span>
               <span className="text-[25px] ml-3">+</span>
@@ -238,7 +238,7 @@ function AdminPromotion() {
                 <div className="col-span-3 ml-6">Promotion Code</div>
                 <div className="col-span-1 -ml-[44px]">ประเภท</div>
                 <div className="col-span-2 -ml-10">โควต้าการใช้(ครั้ง)</div>
-                <div className="col-span-1 -ml-[90px]">ราคาที่ลด</div>
+                <div className="col-span-1 -ml-[110px]">ราคาที่ลด</div>
                 <div className="col-span-2 -ml-14">สร้างเมื่อ</div>
                 <div className="col-span-2 -ml-[44px]">วันหมดอายุ</div>
                 <div className="col-span-1">Action</div>

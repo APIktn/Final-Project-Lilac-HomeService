@@ -158,7 +158,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
             <div className="flex flex-row">
               <img src={event} alt="event" className="mr-1 h-5" />
               <p className="text-[14px] text-gray-700">
-                วันเวลาดำเนินการ: {orderDetail.order_date} เวลา{" "}
+                วันที่ดำเนินการ: {orderDetail.order_date} เวลา{" "}
                 {orderDetail.time.slice(0, 5)} น.
               </p>
             </div>
@@ -214,10 +214,10 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
               รหัสโปรโมชั่น{" "}
               {orderDetail.promotion_code ? orderDetail.promotion_code : "-"}
             </div>
-            <div>
+            <div className="text-green-500">
               วันที่ดำเนินการสำเร็จ{" "}
-              {orderDetail.Finish_date
-                ? orderDetail.Finish_date + " เวลา "
+              {orderDetail.finish_date
+                ? orderDetail.finish_date + " เวลา "
                 : " "}
               {orderDetail.finish_time
                 ? orderDetail.finish_time.slice(0, 5) + " น."

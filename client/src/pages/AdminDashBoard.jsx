@@ -190,10 +190,8 @@ function AdminDashboard() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-[#EFEFF2]">
         {/* Admin Topbar */}
-        <div className="bg-white p-4 flex items-center">
-          <div className="text-[20px] font-medium ml-4 mr-[585px] w-[76px]">
-            หมวดหมู่
-          </div>
+        <div className="bg-white p-4 flex items-center justify-between">
+          <div className="text-[20px] font-medium ml-4  w-[76px]">หมวดหมู่</div>
           <div className="flex items-center ">
             <div className="flex w-72 h-11 border rounded-md p-2 items-center ">
               <img
@@ -211,7 +209,7 @@ function AdminDashboard() {
             </div>
             <button
               onClick={() => navigate("/admin/category/create")}
-              className="bg-[#336DF2] text-white -pt-[6px] px-4 rounded-md w-40 h-11 font-medium text-[16px] flex items-center justify-center ml-6"
+              className="bg-[#336DF2] text-white -pt-[6px] px-4 rounded-md w-40 h-11 font-medium text-[16px] flex items-center justify-center ml-6 mr-5"
             >
               <span>เพิ่มหมวดหมู่</span>
               <span className="text-[25px] ml-3">+</span>
@@ -234,50 +232,48 @@ function AdminDashboard() {
                 <div className="col-span-1"></div>
                 <div className="col-span-1 -ml-6">ลำดับ</div>
                 <div className="col-span-3 -ml-3">ชื่อหมวดหมู่</div>
-                <div className="col-span-3 -ml-3">สร้างเมื่อ</div>
-                <div className="col-span-3 -ml-1">แก้ไขล่าสุด</div>
-                <div className="col-span-1 -ml-">Action</div>
+                <div className="col-span-3 ">สร้างเมื่อ</div>
+                <div className="col-span-3 ">แก้ไขล่าสุด</div>
+                <div className="col-span-1 ml-4">Action</div>
               </div>
             </div>
             <div className="bg-white  rounded-md  rounded-t-none">
               {filteredItems.map((item, index) => (
                 <div
                   key={item.id}
-                  className="grid grid-cols-12 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px] pt-5  font-light"
+                  className="grid grid-cols-12 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]  font-light"
                   draggable
                   onDragStart={(e) => handleDragStart(e, index)}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, index)}
                 >
-                  <div className="col-span-1  ml-[37px]">
-                    <img src={vectorDragDrop} alt="DragDrop" />
+                  <div className="col-span-1 ml-7">
+                    <div>
+                      <img src={vectorDragDrop} alt="DragDrop" />
+                    </div>
+                    <div className="ml-2 -mt-[18px]">
+                      <img src={vectorDragDrop} alt="DragDrop" />
+                    </div>
                   </div>
-                  <div className="col-span-1 -ml-[65px]">
-                    <img src={vectorDragDrop} alt="DragDrop" />
-                  </div>
-                  <div className="col-span-1 -ml-[100px]">
-                    {item.position_id}
-                  </div>
-                  <div className="col-span-3 -ml-[100px]">
-                    {item.category_name}
-                  </div>
-                  <div className="col-span-3 -ml-[110px]">
+                  <div className="col-span-1 ">{item.position_id}</div>
+                  <div className="col-span-3 ">{item.category_name}</div>
+                  <div className="col-span-3 ">
                     {formatDateTime(item.created_at)}
                   </div>
-                  <div className="col-span-3 -ml-[100px]">
+                  <div className="col-span-3 ">
                     {formatDateTime(item.updated_at)}
                   </div>
                   <div className="col-span-1 flex flex-row gap-4  ">
                     <img
                       src={vectorBin}
                       alt="Delete"
-                      className="cursor-pointer ml-[1025px] -mt-20"
+                      className="cursor-pointer "
                       onClick={() => handleDeleteClick(item)}
                     />
                     <img
                       src={vectorEdit}
                       alt="Edit"
-                      className="cursor-pointer -mt-20 ml-4"
+                      className="cursor-pointer  ml-4"
                       onClick={() =>
                         navigate(`/admin/category/edit/${item.category_id}`)
                       }

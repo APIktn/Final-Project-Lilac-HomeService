@@ -110,9 +110,9 @@ const Navbar_tech = () => {
               </button>
             </>
           )}
-          <button>
+          {/* <button>
             <img src={bell} alt="bell" className="h-8 sm:h-6" />
-          </button>
+          </button> */}
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}

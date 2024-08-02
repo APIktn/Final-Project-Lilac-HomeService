@@ -251,8 +251,8 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
             </div>
             <div>
               วันที่ดำเนินการสำเร็จ{" "}
-              {orderDetail.Finish_date
-                ? orderDetail.Finish_date + " เวลา "
+              {orderDetail.finish_date
+                ? orderDetail.finish_date + " เวลา "
                 : " "}
               {orderDetail.finish_time
                 ? orderDetail.finish_time.slice(0, 5) + " น."

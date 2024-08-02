@@ -217,7 +217,9 @@ function StepButtons() {
           onClick={handleClick}
           disabled={isDisabled}
         >
-          {activeStep >= steps.length - 1
+          {loading
+            ? "กำลังชำระเงิน.."
+            : activeStep >= steps.length - 1
             ? "ยืนยันการชำระเงิน"
             : "ดำเนินการต่อ >"}
         </button>
