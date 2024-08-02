@@ -19,7 +19,7 @@ function PaymentSuccess({ billInfo }) {
           <Bill billInfo={billInfo} />
           <button
             className="h-[44px] bg-[#336DF2] rounded-lg px-6 py-[10px] font-prompt font-[500] text-white text-[16px]"
-            onClick={() => navigate("/CustomerServiceHistory")}
+            onClick={() => navigate("/CustomerServiceList")}
           >
             เช็ครายการซ่อม
           </button>
