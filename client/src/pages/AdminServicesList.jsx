@@ -608,14 +608,14 @@ function AdminServiceList() {
               <div className="bg-white rounded-lg shadow-md  mx-4 my-4">
                 <div className="flex flex-col">
                   {/* Header Row */}
-                  <div className="grid grid-cols-6 gap-3 items-center bg-[#E6E7EB] rounded-md p-2 border border-[#EFEFF2] text-[14px] font-normal text-[#646C80] h-[41px] ">
-                    <div className="col-span-2 ">&nbsp;&nbsp;&nbsp;&nbsp;</div> 
-                    <div className="col-span-1 ml-[75px]">ลำดับ</div>
-                    <div className="col-span-1 -ml-9">ชื่อบริการ</div>
-                    <div className="col-span-1 -ml-8">หมวดหมู่</div>
-                    <div className="col-span-1 -ml-8">สร้างเมื่อ</div>
-                    <div className="col-span-1 -ml-1">แก้ไขล่าสุด</div>
-                    <div className="col-span-1 ml-[104px]">Action</div>
+                  <div className="grid grid-cols-12 gap-1 items-center bg-[#E6E7EB] rounded-md p-2 border border-[#EFEFF2] text-[14px] font-normal text-[#646C80] h-[41px] ">
+                  <div className="col-span-1 ">&nbsp;</div>
+                    <div className="col-span-1 -ml-6">ลำดับ</div>
+                    <div className="col-span-2 ">ชื่อบริการ</div>
+                    <div className="col-span-2 ">หมวดหมู่</div>
+                    <div className="col-span-2 ">สร้างเมื่อ</div>
+                    <div className="col-span-3 ml-2">แก้ไขล่าสุด</div>
+                    <div className="col-span-1 ">Action</div>
                   </div>
 
                   {/* Service Rows */}
@@ -641,26 +641,28 @@ function AdminServiceList() {
                               handleDrop(e, index, category.category_id)
                             }
                             onDragOver={handleDragOver}
-                            className="grid grid-cols-9 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
+                            className="grid grid-cols-12 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
                           >
-                            <div className="flex-1 ml-[99px]">
+                            <div className="col-span-1 ml-7">
+                            <div>
+                              <img src={vectorDragDrop} alt="DragDrop" />
+                            </div>
+                            <div className="ml-2 -mt-[18px]">
+                              <img src={vectorDragDrop} alt="DragDrop" />
+                            </div>
+                            </div>
+                            <div className="flex-1 col-span-1">
                               {groupedServices
                                 .flatMap(({ services }) => services)
                                 .findIndex(
                                   (s) => s.service_id === service.service_id
                                 ) + 1}
                             </div>
-                            <div className="col-span-1  -ml-[108px]">
-                              <img src={vectorDragDrop} alt="DragDrop" />
-                            </div>
-                            <div className="col-span-1 -ml-[260px]">
-                              <img src={vectorDragDrop} alt="DragDrop" />
-                            </div>
-                            <div className="flex-2 p-2 -ml-[250px]">
+                            <div className="flex-2 p-2 col-span-2">
                               {service.service_name}
                             </div>
                             <div
-                              className="col-span-2 w-fit -ml-[170px] "
+                              className="col-span-2 w-fit "
                               style={{
                                 backgroundColor: categoryStyle.backgroundColor,
                                 color: categoryStyle.color,
@@ -675,13 +677,13 @@ function AdminServiceList() {
                                 {category.category_name}
                               </p>
                             </div>
-                            <div className="flex-1 p-2 -ml-[250px]">
+                            <div className="flex-1 p-2 col-span-2">
                               {formatDateTime(service.created_at)}
                             </div>
-                            <div className="flex-1 p-2 -ml-[155px]">
+                            <div className="flex-1 p-2 col-span-2">
                               {formatDateTime(service.updated_at)}
                             </div>
-                            <div className="col-span-1 flex flex-row gap-4  mt-20 -ml-24">
+                            <div className="col-span-1 flex flex-row gap-4  mt-20 -ml-6">
                               <img
                                 src={vectorBin}
                                 alt="Delete"
