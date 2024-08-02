@@ -133,11 +133,11 @@ const Navbar_user = () => {
               </span>
               <button className="mr-2" onClick={handleAvatarClick}>
                 <img
-                  src={
-                    userData.select_image === "upload_image"
-                      ? userData.upload_image
-                      : userData.profile_image || avatar
-                  }
+                  src={getAvatarSrc()}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = avatar;
+                  }}
                   alt="avatar"
                   className="h-8 sm:h-6 rounded-full"
                 />

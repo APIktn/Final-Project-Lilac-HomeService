@@ -63,7 +63,7 @@ const PolicyPopup = ({ onClose }) => {
           หากคุณมีคำถามหรือข้อสงสัยเกี่ยวกับนโยบายความเป็นส่วนตัวนี้
           กรุณาติดต่อเราได้ที่{" "}
           <span className="font-medium text-blue-900">
-            home_service@gmail.com
+            contact@homeservices.co
           </span>
         </p>
         <button

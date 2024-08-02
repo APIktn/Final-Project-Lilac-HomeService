@@ -51,7 +51,7 @@ const TermsPopup = ({ onClose }) => {
           หากคุณมีคำถามหรือข้อสงสัยเกี่ยวกับข้อกำหนดและเงื่อนไขนี้
           กรุณาติดต่อเราได้ที่{" "}
           <span className="font-medium text-blue-900">
-            home_service@gmail.com
+            contact@homeservices.co
           </span>
         </p>
         <button
