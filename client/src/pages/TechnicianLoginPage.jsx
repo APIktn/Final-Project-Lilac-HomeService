@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTechnicianAuth } from "../contexts/technicianAuthentication";
 import ExclamationIcon from "../assets/icons/exclamation-icon.svg";
 import { checkLoginErrors, updateErrors } from "../utils/errors";
-
+import vectorHouse from "../assets/icons/Vector-house.svg";
 function TechnicianLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,9 +41,19 @@ function TechnicianLoginPage() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 flex-col px-4">
+        <div className="p-2 flex items-center justify-center mb-[25px] mx-5 -mt-20">
+          <img
+            src={vectorHouse}
+            alt="House"
+            className="w-[69.33px] h-[69.33px]"
+          />
+          <span className="text-[#336DF2] text-[45px] font-medium ">
+            HomeServices
+          </span>
+        </div>
         <div className="w-full max-w-md p-8 bg-white rounded-lg border border-gray-300 shadow-md">
-          <h2 className="text-2xl font-medium mb-6 text-center text-blue-950">
+          <h2 className="text-[24px] font-medium mb-4 text-center text-blue-950 mt-2">
             เข้าสู่ระบบช่างเทคนิค
           </h2>
           <form onSubmit={handleSubmit}>

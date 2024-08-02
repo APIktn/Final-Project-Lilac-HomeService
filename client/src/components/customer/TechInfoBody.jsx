@@ -7,9 +7,9 @@ import { ClipLoader } from "react-spinners";
 import PasswordChangePopup from "../../components/popup/PasswordChangePopup";
 import { validateUpdateProfile } from "../../utils/validators";
 import ExclamationIcon from "../../assets/icons/exclamation-icon.svg";
-import avatar from "../../assets/images/avatar.webp"; // Import default avatar
+import avatar from "../../assets/images/avatar.webp";
 
-function CustomerInfoBody() {
+function TechInfoBody() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,6 +23,7 @@ function CustomerInfoBody() {
     select_image: "profile_image",
   });
   const [profileImage, setProfileImage] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [isPasswordPopupOpen, setIsPasswordPopupOpen] = useState(false);
 
@@ -32,7 +33,11 @@ function CustomerInfoBody() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/user/profile");
+      const response = await axios.get("http://localhost:4000/user/profile", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("technician-token")}`,
+        },
+      });
       if (response.data.user) {
         setUserData(response.data.user);
         setFormData({
@@ -68,7 +73,19 @@ function CustomerInfoBody() {
   };
 
   const handleImageChange = (e) => {
-    setProfileImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setProfileImage(file);
+      setFormData({
+        ...formData,
+        select_image: "upload_image",
+      });
+    }
   };
 
   const handleSave = async () => {
@@ -84,7 +101,12 @@ function CustomerInfoBody() {
     try {
       const response = await axios.put(
         "http://localhost:4000/user/profile",
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("technician-token")}`,
+          },
+        }
       );
       console.log("Response from server:", response.data);
       if (
@@ -94,15 +116,18 @@ function CustomerInfoBody() {
         setUserData(response.data.data);
 
         if (profileImage) {
-          const formData = new FormData();
-          formData.append("profile_image", profileImage);
+          const uploadData = new FormData();
+          uploadData.append("profile_image", profileImage);
 
           const uploadResponse = await axios.post(
             "http://localhost:4000/user/upload-profile-image",
-            formData,
+            uploadData,
             {
               headers: {
                 "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${localStorage.getItem(
+                  "technician-token"
+                )}`,
               },
             }
           );
@@ -124,6 +149,22 @@ function CustomerInfoBody() {
       );
       setSubmitLoading(false);
     }
+  };
+
+  const getProfileImageSrc = () => {
+    if (profileImagePreview) {
+      return profileImagePreview;
+    }
+
+    if (formData.select_image === "upload_image" && userData.upload_image) {
+      return userData.upload_image;
+    }
+
+    if (userData.profile_image) {
+      return userData.profile_image;
+    }
+
+    return avatar;
   };
 
   return (
@@ -160,11 +201,7 @@ function CustomerInfoBody() {
                     >
                       <img
                         className="h-32 w-32 rounded-full lg:ml-10 object-cover border-4 border-white bg-white"
-                        src={
-                          formData.select_image === "profile_image"
-                            ? userData.profile_image || avatar
-                            : userData.upload_image || avatar
-                        }
+                        src={getProfileImageSrc()}
                         alt="Profile"
                       />
                       {isEditing && (
@@ -312,30 +349,6 @@ function CustomerInfoBody() {
                           </p>
                         )}
                       </div>
-                      <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                          เลือกรูปโปรไฟล์
-                        </label>
-                        <select
-                          name="select_image"
-                          value={formData.select_image}
-                          onChange={handleInputChange}
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                        >
-                          <option
-                            value="profile_image"
-                            className="option-custom"
-                          >
-                            รูปโปรไฟล์เริ่มต้น
-                          </option>
-                          <option
-                            value="upload_image"
-                            className="option-custom"
-                          >
-                            รูปโปรไฟล์ที่อัปโหลด
-                          </option>
-                        </select>
-                      </div>
                       <div className="flex justify-end space-x-4">
                         <button
                           type="button"
@@ -409,4 +422,4 @@ function CustomerInfoBody() {
   );
 }
 
-export default CustomerInfoBody;
+export default TechInfoBody;

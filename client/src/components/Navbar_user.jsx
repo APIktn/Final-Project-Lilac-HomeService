@@ -20,6 +20,7 @@ const Navbar_user = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState(null);
   const [originalPromotionCode, setOriginalPromotionCode] = useState([]);
   const [showPromotionCode, setShowPromotionCode] = useState(false);
 
@@ -79,6 +80,23 @@ const Navbar_user = () => {
   };
 
   const { logout } = useAuth();
+
+  const getAvatarSrc = () => {
+    if (profileImagePreview) {
+      return profileImagePreview;
+    }
+
+    if (userData) {
+      if (userData.select_image === "upload_image" && userData.upload_image) {
+        return userData.upload_image;
+      }
+
+      if (userData.profile_image) {
+        return userData.profile_image;
+      }
+    }
+    return avatar;
+  };
 
   return (
     <nav className="bg-white shadow-md w-full sticky top-0 z-50">
