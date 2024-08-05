@@ -114,10 +114,8 @@ const Navbar_admin = () => {
               </button>
             </>
           )}
-          <button>
-            <a href="http://localhost:5173/admin/promotion">
-              <img src={bell} alt="bell" className="h-8 sm:h-6" />{" "}
-            </a>
+          <button onClick={() => navigate("/admin/promotion")}>            
+              <img src={bell} alt="bell" className="h-8 sm:h-6" />{" "}           
           </button>
           <Menu
             anchorEl={anchorEl}

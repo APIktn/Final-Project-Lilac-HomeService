@@ -297,7 +297,7 @@ function AdminServiceEdit() {
         setCategoryName("");
         setSubServiceItems([{ service_lists: "", price: "", units: "" }]);
         setUploadedImage(null);
-        window.location.href = `/admin/service/view/${service_name}`;
+        window.location.href = `/admin/service`;
       }
     } catch (error) {
       console.error("Error updating data", error);
