@@ -64,7 +64,7 @@ const Service_user = () => {
       id: 2,
       name: "คุณแอมแปร์ วิศารุธ",
       message:
-        "ใช้บริการ HomService ติดแอร์ที่คาเฟ่ตลอดเพราะช่างเก็บงานละเอียดมาก ทำให้ Mode&Tone ของร้านไม่เสีย มืออาชีพมาก ๆ ครับ",
+        "ใช้บริการ HomeServices ติดแอร์ที่คาเฟ่ตลอดเพราะช่างเก็บงานละเอียดมาก ทำให้ Mode&Tone ของร้านไม่เสีย มืออาชีพมาก ๆ ครับ",
       detail: "(เจ้าของกิจการ Ampere Cafe)",
       image: Review2,
     },
@@ -78,9 +78,9 @@ const Service_user = () => {
     },
     {
       id: 4,
-      name: "เซฟ Riccardo Bonucci",
+      name: "เชฟ Riccardo Bonucci",
       message:
-        "I always rely on HomeService for installations. Technician was incredibly friendly, and thanks to their expertise. ชอบ มาก ครับ",
+        "I always rely on HomeServices for installations. Technician was incredibly friendly, and thanks to their expertise. ชอบ มาก ครับ",
       detail: "(เจ้าของร้าน Made in Italian)",
       image: Review4,
     },
