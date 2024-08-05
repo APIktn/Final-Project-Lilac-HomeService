@@ -73,7 +73,10 @@ function AdminCategoryCreate() {
 
   const categoryPost = async (data) => {
     try {
-      await axios.post(`http://localhost:4000/categories/create`, data);
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/categories/create`,
+        data
+      );
 
       console.log(data);
       setMessage(response.data.message);
@@ -148,13 +151,17 @@ function AdminCategoryCreate() {
             </div>
           </div>
           <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
-          <img src={vectorLogout} alt="Logout" className="mr-2" />
-          <span className="text-[#F1F1F1] text-base ml-2"  
-                onClick={() => {
+            <img src={vectorLogout} alt="Logout" className="mr-2" />
+            <span
+              className="text-[#F1F1F1] text-base ml-2"
+              onClick={() => {
                 logout();
                 navigate("/admin");
-              }}>ออกจากระบบ</span>
-        </div>
+              }}
+            >
+              ออกจากระบบ
+            </span>
+          </div>
         </div>
 
         {/* Main Content */}
@@ -164,11 +171,15 @@ function AdminCategoryCreate() {
             <div className="text-lg">
               {createCategory ? (
                 <div className="ml-5">
-                  <h1 className="text-[16px] font-medium text-[#646C80]">หมวดหมู่</h1>
+                  <h1 className="text-[16px] font-medium text-[#646C80]">
+                    หมวดหมู่
+                  </h1>
                   <p>{categoryName}</p>
                 </div>
               ) : (
-                <div className="ml-5 font-medium text-[20px]">เพิ่มหมวดหมู่</div>
+                <div className="ml-5 font-medium text-[20px]">
+                  เพิ่มหมวดหมู่
+                </div>
               )}
             </div>
             <div className="flex items-center space-x-4 mr-6">
@@ -206,7 +217,7 @@ function AdminCategoryCreate() {
               <div className="flex items-center mt-5">
                 <div className="w-[205px] text-[#646C80]">
                   ชื่อหมวดหมู่<span className="text-red-600">*</span>
-                </div>               
+                </div>
                 <input
                   type="text"
                   value={categoryName}
@@ -215,31 +226,33 @@ function AdminCategoryCreate() {
                   disabled={createCategory === true}
                 />
               </div>
-              
+
               {validationMessage && (
-                <div className="text-red-600 mt-2 ml-72">{validationMessage}</div>
+                <div className="text-red-600 mt-2 ml-72">
+                  {validationMessage}
+                </div>
               )}
               {createCategory && (
                 <div className="flex flex-col gap-7 -mx-4 rounded-t-none mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">
-                  <div className="">                    
+                  <div className="">
                     <hr className="border-t-2 border-[#CCD0D7] w-[1235px] ml-5 -mt-10 mb-14" />
                     <div>
-                    <span className="block ml-5 font-medium text-[16px] text-[#646C80] ">
-                       สร้างเมื่อ
-                     <span className="ml-[210px] font-normal text-[16px] text-[#000000]">
-                      {dayjs().format("DD/MM/YYYY")} {" "}
-                      {dayjs().format("HH:mm A")}           
-                    </span>                        
-                    </span>
-                    <span className="block ml-5 font-medium text-[16px] text-[#646C80] pt-7 mb-5 ">
-                      แก้ไขล่าสุด
-                     <span className="ml-[195px] font-normal text-[16px] text-[#000000]">
-                      {dayjs().format("DD/MM/YYYY")} {" "}
-                      {dayjs().format("HH:mm A")}           
-                    </span>                        
-                    </span>                    
+                      <span className="block ml-5 font-medium text-[16px] text-[#646C80] ">
+                        สร้างเมื่อ
+                        <span className="ml-[210px] font-normal text-[16px] text-[#000000]">
+                          {dayjs().format("DD/MM/YYYY")}{" "}
+                          {dayjs().format("HH:mm A")}
+                        </span>
+                      </span>
+                      <span className="block ml-5 font-medium text-[16px] text-[#646C80] pt-7 mb-5 ">
+                        แก้ไขล่าสุด
+                        <span className="ml-[195px] font-normal text-[16px] text-[#000000]">
+                          {dayjs().format("DD/MM/YYYY")}{" "}
+                          {dayjs().format("HH:mm A")}
+                        </span>
+                      </span>
+                    </div>
                   </div>
-                </div>
                 </div>
               )}
             </div>

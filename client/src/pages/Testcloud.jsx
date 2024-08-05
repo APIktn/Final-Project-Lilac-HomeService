@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const UploadForm = () => {
   const [file, setFile] = useState(null);
- 
+
   const [uploading, setUploading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -18,22 +18,25 @@ const UploadForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUploading(true);
-   
 
     const data = new FormData();
-    data.append('file', file);
-    
+    data.append("file", file);
+
     try {
       // Upload file to Cloudinary
-      const cloudinaryResponse = await axios.post('http://localhost:4000/test/upload', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        onUploadProgress: (e) => {
-          console.log(e.loaded / e.total);
-        },
-      });
+      const cloudinaryResponse = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/test/upload`,
+        data,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          onUploadProgress: (e) => {
+            console.log(e.loaded / e.total);
+          },
+        }
+      );
 
       // Handle Cloudinary response
-      console.log('Cloudinary response:', cloudinaryResponse.data);
+      console.log("Cloudinary response:", cloudinaryResponse.data);
 
       // Prepare data for Supabase
       const photoData = {
@@ -41,19 +44,21 @@ const UploadForm = () => {
       };
 
       // Send data to Supabase
-      const supabaseResponse = await axios.post('http://localhost:4000/test/createdprofile', photoData, {
-        headers: { 'Content-Type': 'application/json' },
-        
-      });
+      const supabaseResponse = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/test/createdprofile`,
+        photoData,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-      console.log('Supabase response:', supabaseResponse.data);
+      console.log("Supabase response:", supabaseResponse.data);
 
-      setMessage('Upload successful!');
+      setMessage("Upload successful!");
       setFile(null);
-     
     } catch (error) {
-      console.error('Error uploading to the backend server', error);
-      setMessage('Error uploading. Please try again.');
+      console.error("Error uploading to the backend server", error);
+      setMessage("Error uploading. Please try again.");
     } finally {
       setUploading(false);
     }
@@ -61,11 +66,7 @@ const UploadForm = () => {
 
   return (
     <form id="upload-form" onSubmit={handleSubmit}>
-      <input
-        type="file"
-        id="file-field"
-        onChange={handleFileChange}
-      />
+      <input type="file" id="file-field" onChange={handleFileChange} />
       {/* <input
         type="title"
         id="title-field"
@@ -74,7 +75,7 @@ const UploadForm = () => {
         placeholder="Enter title"
       /> */}
       <button type="submit" disabled={uploading}>
-        {uploading ? 'Uploading...' : 'Upload'}
+        {uploading ? "Uploading..." : "Upload"}
       </button>
       {message && <p>{message}</p>}
     </form>

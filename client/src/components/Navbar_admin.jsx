@@ -25,11 +25,16 @@ const Navbar_admin = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/user/profile", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("technician-token")}`,
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/user/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem(
+                "technician-token"
+              )}`,
+            },
+          }
+        );
         setUserData(response.data.user);
       } catch (error) {
         console.error("Error fetching user data", error);

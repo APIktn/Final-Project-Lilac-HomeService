@@ -77,7 +77,7 @@ function AdminCategoryEdit() {
   const getCategoryEdit = async (category_id) => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/categories/${category_id}`
+        `${import.meta.env.VITE_API_BASE_URL}/categories/${category_id}`
       );
 
       console.log("Fetched category:", result.data.data);
@@ -100,7 +100,7 @@ function AdminCategoryEdit() {
   const categoryPatch = async (data) => {
     try {
       await axios.patch(
-        `http://localhost:4000/categories/edit/${category_id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/categories/edit/${category_id}`,
         data
       );
       console.log(data);
@@ -183,13 +183,17 @@ function AdminCategoryEdit() {
             </div>
           </div>
           <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
-          <img src={vectorLogout} alt="Logout" className="mr-2" />
-          <span className="text-[#F1F1F1] text-base ml-2"  
-                onClick={() => {
+            <img src={vectorLogout} alt="Logout" className="mr-2" />
+            <span
+              className="text-[#F1F1F1] text-base ml-2"
+              onClick={() => {
                 logout();
                 navigate("/admin");
-              }}>ออกจากระบบ</span>
-        </div>
+              }}
+            >
+              ออกจากระบบ
+            </span>
+          </div>
         </div>
 
         {/* Main Content */}
@@ -269,30 +273,32 @@ function AdminCategoryEdit() {
                   />
                 </div>
                 {validationMessage && (
-                  <div className="text-red-600 mt-2 ml-72">{validationMessage}</div>
+                  <div className="text-red-600 mt-2 ml-72">
+                    {validationMessage}
+                  </div>
                 )}
                 {createCategory && (
-                 <div className="flex flex-col gap-7 -mx-4 rounded-t-none mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">
-                 <div className="">                    
-                   <hr className="border-t-2 border-[#CCD0D7] w-[1235px] ml-5 -mt-10 mb-14" />
-                   <div>
-                   <span className="block ml-5 font-medium text-[16px] text-[#646C80] ">
-                      สร้างเมื่อ
-                    <span className="ml-[210px] font-normal text-[16px] text-[#000000]">
-                     {dayjs().format("DD/MM/YYYY")} {" "}
-                     {dayjs().format("HH:mm A")}           
-                   </span>                        
-                   </span>
-                   <span className="block ml-5 font-medium text-[16px] text-[#646C80] pt-7 mb-5 ">
-                     แก้ไขล่าสุด
-                    <span className="ml-[195px] font-normal text-[16px] text-[#000000]">
-                     {dayjs().format("DD/MM/YYYY")} {" "}
-                     {dayjs().format("HH:mm A")}           
-                   </span>                        
-                   </span>                    
-                 </div>
-               </div>
-               </div>
+                  <div className="flex flex-col gap-7 -mx-4 rounded-t-none mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">
+                    <div className="">
+                      <hr className="border-t-2 border-[#CCD0D7] w-[1235px] ml-5 -mt-10 mb-14" />
+                      <div>
+                        <span className="block ml-5 font-medium text-[16px] text-[#646C80] ">
+                          สร้างเมื่อ
+                          <span className="ml-[210px] font-normal text-[16px] text-[#000000]">
+                            {dayjs().format("DD/MM/YYYY")}{" "}
+                            {dayjs().format("HH:mm A")}
+                          </span>
+                        </span>
+                        <span className="block ml-5 font-medium text-[16px] text-[#646C80] pt-7 mb-5 ">
+                          แก้ไขล่าสุด
+                          <span className="ml-[195px] font-normal text-[16px] text-[#000000]">
+                            {dayjs().format("DD/MM/YYYY")}{" "}
+                            {dayjs().format("HH:mm A")}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             ) : null}
@@ -311,28 +317,28 @@ function AdminCategoryEdit() {
                     <div className="w-[433px] ml-16">{categoryName}</div>
                   </div>
                   <div className="flex flex-col gap-7 -mx-4 mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">
-                  <div className="">                    
-                    <hr className="border-t-2 border-[#CCD0D7] w-[1235px] ml-5 -mt-10 mb-14" />
-                    <div>
-                    <span className="block ml-5 font-medium text-[16px] text-[#646C80] ">
-                       สร้างเมื่อ
-                     <span className="ml-[210px] font-normal text-[16px] text-[#000000]">
-                     {dayjs(category.created_at).format(
-                          "DD/MM/YYYY HH:mm A"
-                        )}       
-                    </span>                        
-                    </span>
-                    <span className="block ml-5 font-medium text-[16px] text-[#646C80] pt-7 mb-5 ">
-                      แก้ไขล่าสุด
-                     <span className="ml-[195px] font-normal text-[16px] text-[#000000]">
-                     {dayjs(category.updated_at).format(
-                          "DD/MM/YYYY HH:mm A"
-                        )}         
-                    </span>                        
-                    </span>                    
+                    <div className="">
+                      <hr className="border-t-2 border-[#CCD0D7] w-[1235px] ml-5 -mt-10 mb-14" />
+                      <div>
+                        <span className="block ml-5 font-medium text-[16px] text-[#646C80] ">
+                          สร้างเมื่อ
+                          <span className="ml-[210px] font-normal text-[16px] text-[#000000]">
+                            {dayjs(category.created_at).format(
+                              "DD/MM/YYYY HH:mm A"
+                            )}
+                          </span>
+                        </span>
+                        <span className="block ml-5 font-medium text-[16px] text-[#646C80] pt-7 mb-5 ">
+                          แก้ไขล่าสุด
+                          <span className="ml-[195px] font-normal text-[16px] text-[#000000]">
+                            {dayjs(category.updated_at).format(
+                              "DD/MM/YYYY HH:mm A"
+                            )}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                </div>                 
                 </div>
               )
             ) : null}

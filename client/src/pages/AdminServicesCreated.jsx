@@ -29,9 +29,7 @@ function AdminServiceCreate() {
   const [message, setMessage] = useState("");
   const { state, logout } = useAdminAuth();
   const { admin } = state;
-  const[categories,setCategories] = useState([])
-
-  
+  const [categories, setCategories] = useState([]);
 
   const handleCreate = () => {
     if (categoryName.trim()) {
@@ -126,16 +124,18 @@ function AdminServiceCreate() {
 
   const getCategories = async () => {
     try {
-      const result = await axios.get("http://localhost:4000/categories");
+      const result = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/categories`
+      );
       console.log("Fetched categories:", result.data.data);
-      setCategories(result.data.data);      
+      setCategories(result.data.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
-    } 
+    }
   };
 
   useEffect(() => {
-    getCategories();    
+    getCategories();
   }, []);
 
   const handleDropUpload = (e) => {
@@ -155,44 +155,43 @@ function AdminServiceCreate() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!servicename.trim()) {
-    alert("กรุณากรอกชื่อบริการ");
-    return;
-  }
-
-  if (!categoryName.trim()) {
-    alert("กรุณาเลือกหมวดหมู่");
-    return;
-  }
-
-  const newErrors = {};
-
-  for (let item of subServiceItems) {
-    if (!item.price.trim()) {
-      newErrors.price = "กรุณากรอกราคา";
-    } else if (!/^\d+(\.\d{1,2})?$/.test(item.price)) {
-      newErrors.price = "กรุณากรอกราคาให้ถูกต้อง";
-    }
-
-    if (!item.name.trim() || !item.price.trim() || !item.unit.trim()) {
-      alert(
-        "กรุณากรอกข้อมูลในฟิลด์ชื่อรายการ, ค่าบริการต่อหน่วย และหน่วยบริการให้ครบถ้วน"
-      );
+    if (!servicename.trim()) {
+      alert("กรุณากรอกชื่อบริการ");
       return;
     }
-  }
 
-  if (Object.keys(newErrors).length > 0) {
-    // Display the errors
-    alert(newErrors.price);
-    return;
-  }
+    if (!categoryName.trim()) {
+      alert("กรุณาเลือกหมวดหมู่");
+      return;
+    }
 
-  setUploading(true);
+    const newErrors = {};
 
- 
+    for (let item of subServiceItems) {
+      if (!item.price.trim()) {
+        newErrors.price = "กรุณากรอกราคา";
+      } else if (!/^\d+(\.\d{1,2})?$/.test(item.price)) {
+        newErrors.price = "กรุณากรอกราคาให้ถูกต้อง";
+      }
+
+      if (!item.name.trim() || !item.price.trim() || !item.unit.trim()) {
+        alert(
+          "กรุณากรอกข้อมูลในฟิลด์ชื่อรายการ, ค่าบริการต่อหน่วย และหน่วยบริการให้ครบถ้วน"
+        );
+        return;
+      }
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      // Display the errors
+      alert(newErrors.price);
+      return;
+    }
+
+    setUploading(true);
+
     try {
       const formData = new FormData();
       formData.append("service_name", servicename);
@@ -206,7 +205,7 @@ function AdminServiceCreate() {
       });
 
       const response = await axios.post(
-        "http://localhost:4000/adminservice/post",
+        `${import.meta.env.VITE_API_BASE_URL}/adminservice/post`,
         formData,
         {
           headers: {
@@ -221,7 +220,7 @@ function AdminServiceCreate() {
         setCategoryName("");
         setSubServiceItems([{ name: "", price: "", unit: "" }]);
         setUploadedImage(null);
-        window.location.href = "/admin/service";  
+        window.location.href = "/admin/service";
       }
     } catch (error) {
       console.error("Error uploading data", error);
@@ -238,51 +237,66 @@ function AdminServiceCreate() {
   return (
     <form id="upload-form" onSubmit={handleSubmit}>
       <div className="flex h-screen">
-       {/* Sidebar */}
-      <div className="bg-[#001C59] w-[240px]  flex flex-col justify-between">                    
-        <div>
-          <div
-            className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
-            onClick={() => navigate("/")}
-          >
-            <img src={vectorHouse} alt="House" className="w-[26.06px] h-[26.06px] mr-2" />
-            <span className="text-[#336DF2] text-[20px] font-medium mt-1">HomeServices</span>
-          </div>
+        {/* Sidebar */}
+        <div className="bg-[#001C59] w-[240px]  flex flex-col justify-between">
           <div>
-            <div className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer" 
-              onClick={() => navigate("/admin/category")}>
-              <img src={vectorCategory} alt="Category" className="mr-2 ml-2" />
-              <span className="text-[#F1F1F1] text-base ml-3">หมวดหมู่</span>
-            </div>
             <div
-              className="flex items-center  p-4  bg-[#022B87] cursor-pointer"              
-            >
-              <img src={vectorService} alt="Service" className="mr-2 ml-2" />
-              <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
-            </div>
-            <div
-              className="flex items-center  p-4  hover:bg-[#022B87] cursor-pointer"
-              onClick={() => navigate("/admin/promotion")}            
+              className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
+              onClick={() => navigate("/")}
             >
               <img
-                src={vectorPromotionCode}
-                alt="Promotion Code"
-                className="mr-2 ml-2"
+                src={vectorHouse}
+                alt="House"
+                className="w-[26.06px] h-[26.06px] mr-2"
               />
-              <span className="text-[#F1F1F1] text-base ml-3">Promotion Code</span>
+              <span className="text-[#336DF2] text-[20px] font-medium mt-1">
+                HomeServices
+              </span>
+            </div>
+            <div>
+              <div
+                className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer"
+                onClick={() => navigate("/admin/category")}
+              >
+                <img
+                  src={vectorCategory}
+                  alt="Category"
+                  className="mr-2 ml-2"
+                />
+                <span className="text-[#F1F1F1] text-base ml-3">หมวดหมู่</span>
+              </div>
+              <div className="flex items-center  p-4  bg-[#022B87] cursor-pointer">
+                <img src={vectorService} alt="Service" className="mr-2 ml-2" />
+                <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
+              </div>
+              <div
+                className="flex items-center  p-4  hover:bg-[#022B87] cursor-pointer"
+                onClick={() => navigate("/admin/promotion")}
+              >
+                <img
+                  src={vectorPromotionCode}
+                  alt="Promotion Code"
+                  className="mr-2 ml-2"
+                />
+                <span className="text-[#F1F1F1] text-base ml-3">
+                  Promotion Code
+                </span>
+              </div>
             </div>
           </div>
+          <div className="flex items-center p-2 hover:bg-[#022B87] cursor-pointer  ml-5 mb-16">
+            <img src={vectorLogout} alt="Logout" className="mr-2" />
+            <span
+              className="text-[#F1F1F1] text-base ml-2"
+              onClick={() => {
+                logout();
+                navigate("/admin");
+              }}
+            >
+              ออกจากระบบ
+            </span>
+          </div>
         </div>
-        <div className="flex items-center p-2 hover:bg-[#022B87] cursor-pointer  ml-5 mb-16">
-        <img src={vectorLogout} alt="Logout" className="mr-2" />
-          <span className="text-[#F1F1F1] text-base ml-2"
-                  onClick={() => {
-                  logout();
-                  navigate("/admin")}}
-          >ออกจากระบบ</span>
-        </div>
-      </div>
-
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col bg-[#EFEFF2]">
@@ -322,7 +336,7 @@ function AdminServiceCreate() {
                     <input
                       id="servicename"
                       name="servicename"
-                      type="text"                     
+                      type="text"
                       onChange={(event) => {
                         setServicename(event.target.value);
                       }}
@@ -376,14 +390,17 @@ function AdminServiceCreate() {
                                 className="mb-2 w-[48px] h-[46px]"
                               />
                               <p className="font-normal text-[14px] text-[#646C80]">
-                                <span className="text-[#336DF2]">อัพโหลดรูปภาพ</span> หรือ ลากและวางที่นี่
+                                <span className="text-[#336DF2]">
+                                  อัพโหลดรูปภาพ
+                                </span>{" "}
+                                หรือ ลากและวางที่นี่
                               </p>
                               <p className="font-normal text-[12px] text-[#646C80]">
                                 PNG, JPG ขนาดไม่เกิน 5 MB
                               </p>
                             </div>
                             <input
-                              id="upload"                                                         
+                              id="upload"
                               name="image-service"
                               type="file"
                               onChange={handleFileChange}
@@ -406,21 +423,22 @@ function AdminServiceCreate() {
                   </button>
                 </div>
               </div>
-            <p className="ml-2 font-normal text-[16px] text-[#646C80]  mt-12">รายการบริการย่อย</p>
+              <p className="ml-2 font-normal text-[16px] text-[#646C80]  mt-12">
+                รายการบริการย่อย
+              </p>
             </div>
 
             {/* Sub-Service Items */}
             {subServiceItems.map((item, index) => (
               <div
-              key={item.id}
-              className="bg-white p-4 rounded-md rounded-t-none"
-              draggable
-              onDragStart={(e) => handleDragStart(e, index)}
-              onDragOver={(e) => handleDragOver(e)}
-              onDrop={(e) => handleDrop(e, index)}
+                key={item.id}
+                className="bg-white p-4 rounded-md rounded-t-none"
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={(e) => handleDragOver(e)}
+                onDrop={(e) => handleDrop(e, index)}
               >
                 <div className="flex gap-5 items-center  bg-white  p-2 ">
-                  
                   <div className="col-span-1 flex items-center cursor-grab mt-2">
                     <img
                       src={vectorDragDrop}
@@ -457,7 +475,7 @@ function AdminServiceCreate() {
                       className="border border-gray-300 rounded-md p-2 w-full"
                       value={item.price}
                       placeholder="฿"
-                      style={{ textAlign: 'right' }}
+                      style={{ textAlign: "right" }}
                       onChange={(e) =>
                         setSubServiceItems((prevItems) =>
                           prevItems.map((prevItem, idx) =>
@@ -497,15 +515,15 @@ function AdminServiceCreate() {
                   <div className="col-span-1 flex space-x-2 justify-between"></div>
                 </div>
               </div>
-            ))
-            }
+            ))}
             <div className=" bg-white p-4 rounded-b-lg">
               <button
                 onClick={handleAddSubService}
                 className="border-[#336DF2] border text-[#336DF2] py-2 px-4 ml-2 mb-6 rounded-lg w-[185px] h-11 flex items-center justify-cent text-[16px] font-medium"
                 type="button"
               >
-                <span className="ml-6">เพิ่มบริการ</span><span className="text-[25px] ml-3" >+</span>
+                <span className="ml-6">เพิ่มบริการ</span>
+                <span className="text-[25px] ml-3">+</span>
               </button>
             </div>
           </div>

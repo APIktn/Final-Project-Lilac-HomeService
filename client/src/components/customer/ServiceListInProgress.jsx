@@ -10,7 +10,7 @@
 
 //   const getServices = async () => {
 //     try {
-//       const result = await axios.get(`http://localhost:4000/inProgress`, {
+//       const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/inProgress`, {
 //         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 //       });
 //       setOrderDetails(result.data.data);
@@ -29,7 +29,7 @@
 //   const handleStatusChange = async (order_detail_id, new_status) => {
 //     try {
 //       const response = await axios.put(
-//         "http://localhost:4000/updateOrderStatus",
+//         "${import.meta.env.VITE_API_BASE_URL}/updateOrderStatus",
 //         {
 //           order_detail_id,
 //           new_status,
@@ -115,9 +115,12 @@ const ServiceListHistory = () => {
 
   const getServices = async () => {
     try {
-      const result = await axios.get(`http://localhost:4000/inProgress`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const result = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/inProgress`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       setOrderDetails(result.data.data);
       setLoading(false);
     } catch (error) {
@@ -134,7 +137,7 @@ const ServiceListHistory = () => {
   const handleStatusChange = async (order_detail_id, new_status) => {
     try {
       const response = await axios.put(
-        "http://localhost:4000/updateOrderStatus",
+        `${import.meta.env.VITE_API_BASE_URL}/updateOrderStatus`,
         {
           order_detail_id,
           new_status,

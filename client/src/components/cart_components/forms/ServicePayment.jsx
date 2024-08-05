@@ -35,7 +35,9 @@ const ServicePayment = () => {
   const genQR = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/payments/create-payment-intent",
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }/api/payments/create-payment-intent`,
         {
           amount: discountPrice * 100,
           currency: "thb",
@@ -72,7 +74,9 @@ const ServicePayment = () => {
   const checkPaymentStatus = async (paymentIntentId) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/payments/payment-status/${paymentIntentId}`
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }/api/payments/payment-status/${paymentIntentId}`
       );
 
       if (response.data.status === "succeeded") {
@@ -99,7 +103,7 @@ const ServicePayment = () => {
   const handleApplyCode = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/apply-promo-code",
+        `${import.meta.env.VITE_API_BASE_URL}/apply-promo-code`,
         { promoCode, netPrice }
       );
       const { newNetPrice, message } = response.data;

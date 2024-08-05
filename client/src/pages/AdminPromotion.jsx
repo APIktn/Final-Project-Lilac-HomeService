@@ -92,7 +92,9 @@ function AdminPromotion() {
 
   const getPromotionCode = async () => {
     try {
-      const result = await axios.get(`http://localhost:4000/promotion`);
+      const result = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/promotion`
+      );
       console.log("Fetched promotion codes:", result.data.data);
       setOriginalPromotionCode(result.data.data);
     } catch (error) {
@@ -478,7 +480,7 @@ export default AdminPromotion;
 //   const handleDeleteConfirm = async () => {
 //     try {
 //       await axios.delete(
-//         `http://localhost:4000/promotion/${itemToDelete.promo_id}`
+//         `${import.meta.env.VITE_API_BASE_URL}/promotion/${itemToDelete.promo_id}`
 //       );
 //       setOriginalPromotionCode((prevItems) =>
 //         prevItems.filter(
@@ -501,7 +503,7 @@ export default AdminPromotion;
 
 //   const getPromotionCode = async () => {
 //     try {
-//       const result = await axios.get(`http://localhost:4000/promotion`);
+//       const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/promotion`);
 //       console.log("Fetched promotion codes:", result.data.data);
 //       setOriginalPromotionCode(result.data.data);
 //     } catch (error) {

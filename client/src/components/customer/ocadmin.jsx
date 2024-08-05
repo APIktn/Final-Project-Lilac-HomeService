@@ -30,9 +30,14 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
   React.useEffect(() => {
     const fetchTechnicians = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/technicians", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/technicians`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         setTechnicians(response.data);
       } catch (error) {
         console.error("Error fetching technicians:", error);
@@ -48,7 +53,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
 
     try {
       const response = await axios.put(
-        "http://localhost:4000/updateOrderStatus",
+        `${import.meta.env.VITE_API_BASE_URL}/updateOrderStatus`,
         {
           order_detail_id: orderDetail.order_detail_id,
           new_status: newStatus,
@@ -75,7 +80,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
 
     try {
       const response = await axios.put(
-        "http://localhost:4000/updateTechnician",
+        `${import.meta.env.VITE_API_BASE_URL}/updateTechnician`,
         {
           order_detail_id: orderDetail.order_detail_id,
           technician_id: newTechnician,

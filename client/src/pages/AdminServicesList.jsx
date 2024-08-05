@@ -25,7 +25,7 @@
 
 //   const getServices = async () => {
 //     try {
-//       const result = await axios.get("http://localhost:4000/adminserviceslist");
+//       const result = await axios.get("${import.meta.env.VITE_API_BASE_URL}/adminserviceslist");
 //       console.log(result.data.data)
 //       const sortedGroupedServices = result.data.data;
 
@@ -110,7 +110,7 @@
 
 //     // Update the order on the server
 //     try {
-//       await axios.patch("http://localhost:4000/adminserviceslist/reorder", {
+//       await axios.patch("${import.meta.env.VITE_API_BASE_URL}/adminserviceslist/reorder", {
 //         services: updatedServices.map((service) => ({
 //           service_id: service.service_id,
 //           position_id: service.position_id,
@@ -136,7 +136,7 @@
 
 //     try {
 //       await axios.delete(
-//         `http://localhost:4000/adminserviceslist/${itemToDelete.service_id}`
+//         `${import.meta.env.VITE_API_BASE_URL}/adminserviceslist/${itemToDelete.service_id}`
 //       );
 //       // Remove item from groupedServices
 //       const updatedGroupedServices = groupedServices.map((group) => {
@@ -354,7 +354,9 @@ function AdminServiceList() {
 
   const getServices = async () => {
     try {
-      const result = await axios.get("http://localhost:4000/adminserviceslist");
+      const result = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/adminserviceslist`
+      );
       console.log(result.data.data);
       const sortedGroupedServices = result.data.data;
 
@@ -440,13 +442,16 @@ function AdminServiceList() {
 
     // Update the order on the server
     try {
-      await axios.patch("http://localhost:4000/adminserviceslist/reorder", {
-        services: updatedServices.map((service) => ({
-          service_id: service.service_id,
-          position_id: service.position_id,
-          service_name: service.service_name,
-        })),
-      });
+      await axios.patch(
+        `${import.meta.env.VITE_API_BASE_URL}/adminserviceslist/reorder`,
+        {
+          services: updatedServices.map((service) => ({
+            service_id: service.service_id,
+            position_id: service.position_id,
+            service_name: service.service_name,
+          })),
+        }
+      );
     } catch (error) {
       console.error("Error updating category order on the server:", error);
     }
@@ -466,7 +471,9 @@ function AdminServiceList() {
 
     try {
       await axios.delete(
-        `http://localhost:4000/adminserviceslist/${itemToDelete.service_id}`
+        `${import.meta.env.VITE_API_BASE_URL}/adminserviceslist/${
+          itemToDelete.service_id
+        }`
       );
       // Remove item from groupedServices
       const updatedGroupedServices = groupedServices.map((group) => {
@@ -569,9 +576,7 @@ function AdminServiceList() {
       <div className="flex-1 flex flex-col bg-[#EFEFF2]">
         {/* Admin Topbar */}
         <div className="bg-white p-4 flex  items-center justify-between">
-          <div className="text-[20px] font-medium ml-5  w-[76px]">
-            บริการ
-          </div>
+          <div className="text-[20px] font-medium ml-5  w-[76px]">บริการ</div>
           <div className="flex items-center ">
             <div className="flex w-72 h-11 border rounded-md p-2 items-center ">
               <img
@@ -600,8 +605,8 @@ function AdminServiceList() {
         {/* Admin Service List */}
         {loading ? (
           <div className="flex justify-center items-center w-full h-[500px]">
-          <ClipLoader size={200} color={"#123abc"} loading={loading} />
-        </div>
+            <ClipLoader size={200} color={"#123abc"} loading={loading} />
+          </div>
         ) : (
           <div className="p-4 overflow-y-auto">
             {searchTerm ? (
@@ -609,7 +614,7 @@ function AdminServiceList() {
                 <div className="flex flex-col">
                   {/* Header Row */}
                   <div className="grid grid-cols-12 gap-1 items-center bg-[#E6E7EB] rounded-md p-2 border border-[#EFEFF2] text-[14px] font-normal text-[#646C80] h-[41px] ">
-                  <div className="col-span-1 ">&nbsp;</div>
+                    <div className="col-span-1 ">&nbsp;</div>
                     <div className="col-span-1 -ml-6">ลำดับ</div>
                     <div className="col-span-2 ">ชื่อบริการ</div>
                     <div className="col-span-2 ">หมวดหมู่</div>
@@ -644,12 +649,12 @@ function AdminServiceList() {
                             className="grid grid-cols-12 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
                           >
                             <div className="col-span-1 ml-7">
-                            <div>
-                              <img src={vectorDragDrop} alt="DragDrop" />
-                            </div>
-                            <div className="ml-2 -mt-[18px]">
-                              <img src={vectorDragDrop} alt="DragDrop" />
-                            </div>
+                              <div>
+                                <img src={vectorDragDrop} alt="DragDrop" />
+                              </div>
+                              <div className="ml-2 -mt-[18px]">
+                                <img src={vectorDragDrop} alt="DragDrop" />
+                              </div>
                             </div>
                             <div className="flex-1 col-span-1">
                               {groupedServices
@@ -748,12 +753,12 @@ function AdminServiceList() {
                             className="grid grid-cols-12 gap-1 items-center border-b-2  text-[16px] text-[#000000] h-[88px]   font-light"
                           >
                             <div className="col-span-1 ml-7">
-                            <div>
-                              <img src={vectorDragDrop} alt="DragDrop" />
-                            </div>
-                            <div className="ml-2 -mt-[18px]">
-                              <img src={vectorDragDrop} alt="DragDrop" />
-                            </div>
+                              <div>
+                                <img src={vectorDragDrop} alt="DragDrop" />
+                              </div>
+                              <div className="ml-2 -mt-[18px]">
+                                <img src={vectorDragDrop} alt="DragDrop" />
+                              </div>
                             </div>
                             <div className="flex-1 col-span-1">
                               {groupedServices

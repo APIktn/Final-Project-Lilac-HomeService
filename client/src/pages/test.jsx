@@ -7,7 +7,7 @@ function App() {
   const insertDataToSupabase = async (data) => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/questions",
+        `${import.meta.env.VITE_API_BASE_URL}/questions`,
         data,
         {
           headers: {

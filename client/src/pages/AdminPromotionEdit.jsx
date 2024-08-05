@@ -188,7 +188,7 @@ function AdminPromotionEdit() {
   const getPromotionEdit = async (promo_id) => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/promotion/${promo_id}`
+        `${import.meta.env.VITE_API_BASE_URL}/promotion/${promo_id}`
       );
 
       console.log("Fetched Promotion Code:", result.data.data);
@@ -221,7 +221,7 @@ function AdminPromotionEdit() {
   const promotionCode = async (data) => {
     try {
       await axios.patch(
-        `http://localhost:4000/promotion/edit/${promo_id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/promotion/edit/${promo_id}`,
         data
       );
 
@@ -273,49 +273,58 @@ function AdminPromotionEdit() {
       <div className="flex h-screen">
         {/* Sidebar */}
         <div className="bg-[#001C59] w-[240px] flex flex-col justify-between">
-        <div>
-          <div
-            className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
-            onClick={() => navigate("/")}
-          >
-            <img src={vectorHouse} alt="House" className="w-[26.06px] h-[26.06px] mr-2" />
-            <span className="text-[#336DF2] text-[20px] font-medium mt-1">HomeServices</span>
-
+          <div>
+            <div
+              className="bg-[#E7EEFF] py-1 rounded-xl flex items-center justify-center mb-12 mx-5 mt-7 w-[192px] h-[46px]"
+              onClick={() => navigate("/")}
+            >
+              <img
+                src={vectorHouse}
+                alt="House"
+                className="w-[26.06px] h-[26.06px] mr-2"
+              />
+              <span className="text-[#336DF2] text-[20px] font-medium mt-1">
+                HomeServices
+              </span>
+            </div>
+            <div
+              className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer"
+              onClick={() => navigate("/admin/category")}
+            >
+              <img src={vectorCategory} alt="Category" className="mr-2 ml-2" />
+              <span className="text-[#F1F1F1] text-base ml-3">หมวดหมู่</span>
+            </div>
+            <div
+              className="flex items-center p-4  hover:bg-[#022B87] cursor-pointer"
+              onClick={() => navigate("/admin/service")}
+            >
+              <img src={vectorService} alt="Service" className="mr-2 ml-2" />
+              <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
+            </div>
+            <div className="flex items-center p-4 bg-[#022B87] cursor-pointer">
+              <img
+                src={vectorPromotionCode}
+                alt="Promotion Code"
+                className="mr-2 ml-2"
+              />
+              <span className="text-[#F1F1F1] text-base ml-3">
+                Promotion Code
+              </span>
+            </div>
           </div>
-          <div
-            className="flex items-center  p-4 hover:bg-[#022B87] cursor-pointer"
-            onClick={() => navigate("/admin/category")}
-          >
-            <img src={vectorCategory} alt="Category" className="mr-2 ml-2" />
-            <span className="text-[#F1F1F1] text-base ml-3">หมวดหมู่</span>
-          </div>
-          <div
-            className="flex items-center p-4  hover:bg-[#022B87] cursor-pointer"
-            onClick={() => navigate("/admin/service")}
-          >
-            <img src={vectorService} alt="Service" className="mr-2 ml-2" />
-            <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
-          </div>
-          <div className="flex items-center p-4 bg-[#022B87] cursor-pointer">
-            <img
-              src={vectorPromotionCode}
-              alt="Promotion Code"
-              className="mr-2 ml-2"
-            />
-            <span className="text-[#F1F1F1] text-base ml-3">
-              Promotion Code
+          <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
+            <img src={vectorLogout} alt="Logout" className="mr-2" />
+            <span
+              className="text-[#F1F1F1] text-base ml-2"
+              onClick={() => {
+                logout();
+                navigate("/admin");
+              }}
+            >
+              ออกจากระบบ
             </span>
           </div>
         </div>
-        <div className="flex items-center p-2 rounded-md hover:bg-[#022B87] cursor-pointer ml-5 mb-16">
-          <img src={vectorLogout} alt="Logout" className="mr-2" />    
-          <span className="text-[#F1F1F1] text-base ml-2"  
-                onClick={() => {
-                logout();
-                navigate("/admin");
-              }}>ออกจากระบบ</span>
-        </div>
-      </div>
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col bg-[#EFEFF2]">

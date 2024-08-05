@@ -33,9 +33,12 @@ function CustomerInfoBody() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/user/profile", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/user/profile`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       if (response.data.user) {
         setUserData(response.data.user);
         setFormData({
@@ -98,7 +101,7 @@ function CustomerInfoBody() {
 
     try {
       const response = await axios.put(
-        "http://localhost:4000/user/profile",
+        `${import.meta.env.VITE_API_BASE_URL}/user/profile`,
         formData,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -116,7 +119,7 @@ function CustomerInfoBody() {
           uploadData.append("profile_image", profileImage);
 
           const uploadResponse = await axios.post(
-            "http://localhost:4000/user/upload-profile-image",
+            `${import.meta.env.VITE_API_BASE_URL}/user/upload-profile-image`,
             uploadData,
             {
               headers: {

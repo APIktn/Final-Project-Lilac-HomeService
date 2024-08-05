@@ -24,7 +24,7 @@ const Services = () => {
   const getServices = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/services/top6services`
+        `${import.meta.env.VITE_API_BASE_URL}/services/top6services`
       );
       setServices(result.data.data);
     } catch (error) {
