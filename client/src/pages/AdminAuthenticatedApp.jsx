@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AdminDashboardPage from "./AdminDashboardPage";
 import NotFoundPage from "./NotFoundPage";
 import HomePage_admin from "./HomePage_admin";
@@ -31,6 +31,8 @@ function AdminAuthenticatedApp() {
       <Routes>
         <Route path="/admin" element={<HomePage_admin />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/login" element={<Navigate to="/" replace />} />
+        <Route path="/register" element={<Navigate to="/" replace />} />
         <Route path="/" element={<HomePage_admin />} />
         <Route path="/servicelist" element={<ServiceList_admin />} />
         <Route path="/test" element={<TestAdmin />} />

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage_technician from "./HomePage_technician";
 import NotFoundPage from "./NotFoundPage";
 import TechInfo from "./TechInfo";
@@ -14,6 +14,12 @@ function TechnicianAuthenticatedApp() {
         <Route path="/techinfo" element={<TechInfo />} />
         <Route path="/techinprogress" element={<TechInprogress />} />
         <Route path="/techcompleted" element={<TechCompleted />} />
+        <Route path="/" element={<Navigate to="/technician" replace />} />
+        <Route path="/login" element={<Navigate to="/technician" replace />} />
+        <Route
+          path="/register"
+          element={<Navigate to="/technician" replace />}
+        />
       </Routes>
     </div>
   );
