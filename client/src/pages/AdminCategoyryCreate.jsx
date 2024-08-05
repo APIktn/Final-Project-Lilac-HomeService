@@ -78,7 +78,7 @@ function AdminCategoryCreate() {
         data
       );
 
-      console.log(data);
+      // console.log(data);
       setMessage(response.data.message);
     } catch (error) {
       if (error.response && error.response.status === 400) {

@@ -17,7 +17,7 @@ function App() {
           },
         }
       );
-      console.log("Data inserted to Supabase:", response.data);
+      // console.log("Data inserted to Supabase:", response.data);
     } catch (error) {
       console.error("Error inserting data to Supabase:", error.message);
     }

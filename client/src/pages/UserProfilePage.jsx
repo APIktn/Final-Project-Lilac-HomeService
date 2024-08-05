@@ -82,7 +82,7 @@ function UserProfilePage() {
         `${import.meta.env.VITE_API_BASE_URL}/user/profile`,
         formData
       );
-      console.log("Response from server:", response.data);
+      // console.log("Response from server:", response.data);
       if (
         response.status === 200 &&
         response.data.message === "อัปเดตข้อมูลผู้ใช้สำเร็จ"
@@ -102,7 +102,7 @@ function UserProfilePage() {
               },
             }
           );
-          console.log("Upload Response from server:", uploadResponse.data);
+          // console.log("Upload Response from server:", uploadResponse.data);
         }
 
         setIsEditing(false);

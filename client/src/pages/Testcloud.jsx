@@ -36,7 +36,7 @@ const UploadForm = () => {
       );
 
       // Handle Cloudinary response
-      console.log("Cloudinary response:", cloudinaryResponse.data);
+      // console.log("Cloudinary response:", cloudinaryResponse.data);
 
       // Prepare data for Supabase
       const photoData = {
@@ -52,7 +52,7 @@ const UploadForm = () => {
         }
       );
 
-      console.log("Supabase response:", supabaseResponse.data);
+      // console.log("Supabase response:", supabaseResponse.data);
 
       setMessage("Upload successful!");
       setFile(null);

@@ -191,7 +191,7 @@ function AdminPromotionEdit() {
         `${import.meta.env.VITE_API_BASE_URL}/promotion/${promo_id}`
       );
 
-      console.log("Fetched Promotion Code:", result.data.data);
+      // console.log("Fetched Promotion Code:", result.data.data);
 
       setPromotion(result.data.data);
 
@@ -225,7 +225,7 @@ function AdminPromotionEdit() {
         data
       );
 
-      console.log(data);
+      // console.log(data);
       navigate("/admin/promotion");
     } catch (error) {
       if (error.response && error.response.status === 400) {

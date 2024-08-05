@@ -357,7 +357,7 @@ function AdminServiceList() {
       const result = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/adminserviceslist`
       );
-      console.log(result.data.data);
+      // console.log(result.data.data);
       const sortedGroupedServices = result.data.data;
 
       // Ensure categories are sorted by position_id

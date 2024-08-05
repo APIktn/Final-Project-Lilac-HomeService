@@ -111,7 +111,7 @@ function TechInfoBody() {
           },
         }
       );
-      console.log("Response from server:", response.data);
+      // console.log("Response from server:", response.data);
       if (
         response.status === 200 &&
         response.data.message === "อัปเดตข้อมูลผู้ใช้สำเร็จ"
@@ -134,7 +134,7 @@ function TechInfoBody() {
               },
             }
           );
-          console.log("Upload Response from server:", uploadResponse.data);
+          // console.log("Upload Response from server:", uploadResponse.data);
         }
 
         setIsEditing(false);
