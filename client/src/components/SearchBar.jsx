@@ -22,7 +22,6 @@ const SearchBar = () => {
       const result = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/services/serviceslist`
       );
-      console.log("Fetched services:", result.data.data);
       setServices(result.data.data);
     } catch (error) {
       console.error("Error fetching services:", error);
