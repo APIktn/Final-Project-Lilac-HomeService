@@ -7,6 +7,7 @@ import { TextField, MenuItem } from "@mui/material";
 import { useEffect, useContext } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CartContext } from "../../../contexts/cartContext";
+import dayjs from "dayjs";
 
 function ServiceForm() {
   const {
@@ -28,6 +29,10 @@ function ServiceForm() {
     setMoreInfo,
     setSelectedNames,
   } = useContext(CartContext);
+
+  const currentDate = dayjs();
+  const currentTime = dayjs();
+  const isToday = selectedDate && selectedDate.isSame(currentDate, "day");
 
   useEffect(() => {
     (() => {
@@ -228,6 +233,7 @@ function ServiceForm() {
                   label={selectedDate ? "" : "กรุณาเลือกวันที่"}
                   value={selectedDate || null}
                   format="DD/MM/YYYY"
+                  minDate={currentDate}
                   onChange={(newValue) => {
                     setSelectedDate(newValue);
                   }}
@@ -349,6 +355,7 @@ function ServiceForm() {
                   <DesktopTimePicker
                     label={selectedTime ? "" : "กรุณาเลือกเวลา"}
                     value={selectedTime || null}
+                    minTime={isToday ? currentTime : null}
                     onChange={(newValue) => {
                       setSelectedTime(newValue);
                     }}
