@@ -188,7 +188,7 @@ function AdminPromotionEdit() {
   const getPromotionEdit = async (promo_id) => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/promotion/${promo_id}`
+        `${import.meta.env.VITE_API_BASE_URL}/promotion/${promo_id}`
       );
 
       console.log("Fetched Promotion Code:", result.data.data);
@@ -221,7 +221,7 @@ function AdminPromotionEdit() {
   const promotionCode = async (data) => {
     try {
       await axios.patch(
-        `http://localhost:4000/promotion/edit/${promo_id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/promotion/edit/${promo_id}`,
         data
       );
 

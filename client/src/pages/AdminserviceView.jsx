@@ -28,7 +28,7 @@ function AdminServiceView() {
   const getServicesEdit = async (service_name) => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/adminservice/${service_name}`
+        `${import.meta.env.VITE_API_BASE_URL}/adminservice/${service_name}`
       );
 
       console.log("Fetched category:", result.data.data);

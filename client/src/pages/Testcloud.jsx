@@ -25,7 +25,7 @@ const UploadForm = () => {
     
     try {
       // Upload file to Cloudinary
-      const cloudinaryResponse = await axios.post('http://localhost:4000/test/upload', data, {
+      const cloudinaryResponse = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/test/upload`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: (e) => {
           console.log(e.loaded / e.total);
@@ -41,7 +41,7 @@ const UploadForm = () => {
       };
 
       // Send data to Supabase
-      const supabaseResponse = await axios.post('http://localhost:4000/test/createdprofile', photoData, {
+      const supabaseResponse = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/test/createdprofile`, photoData, {
         headers: { 'Content-Type': 'application/json' },
         
       });

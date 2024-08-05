@@ -90,7 +90,7 @@ function AdminPromotion() {
 
   const getPromotionCode = async () => {
     try {
-      const result = await axios.get(`http://localhost:4000/promotion`);
+      const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/promotion`);
       console.log("Fetched promotion codes:", result.data.data);
       setOriginalPromotionCode(result.data.data);
     } catch (error) {

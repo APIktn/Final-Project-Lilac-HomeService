@@ -28,7 +28,7 @@ const Navbar_user = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/user/profile", {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/user/profile`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setUserData(response.data.user);
@@ -43,7 +43,7 @@ const Navbar_user = () => {
 
   const getPromotionCode = async () => {
     try {
-      const result = await axios.get(`http://localhost:4000/promotion/active`);
+      const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/promotion/active`);
       console.log("Fetched promotion codes:", result.data.data);
       setOriginalPromotionCode(result.data.data);
     } catch (error) {

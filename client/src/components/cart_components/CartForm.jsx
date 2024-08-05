@@ -19,7 +19,7 @@ function CartForm() {
   const getServices = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/cart/${service_name}`
+        `${import.meta.env.VITE_API_BASE_URL}/cart/${service_name}`
       );
       setServices(result.data.data);
       setCartPath(service_name);

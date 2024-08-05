@@ -109,7 +109,7 @@ function StepButtons() {
     try {
       // Create Payment Intent on the server
       const response = await axios.post(
-        "http://localhost:4000/api/payments/create-payment-intent",
+        `${import.meta.env.VITE_API_BASE_URL}/api/payments/create-payment-intent`,
         {
           amount: discountPrice * 100, //
           currency: "thb",

@@ -38,7 +38,7 @@ function TechnicianAuthProvider(props) {
 
   const register = async (data) => {
     try {
-      await axios.post("http://localhost:4000/auth/register/technician", data);
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/register/technician`, data);
       navigate("/technician");
     } catch (error) {
       setState({
@@ -51,7 +51,7 @@ function TechnicianAuthProvider(props) {
   const login = async (data) => {
     try {
       const result = await axios.post(
-        "http://localhost:4000/auth/login/technician",
+        `${import.meta.env.VITE_API_BASE_URL}/auth/login/technician`,
         data
       );
       const { token } = result.data;

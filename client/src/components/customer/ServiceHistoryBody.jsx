@@ -7,7 +7,7 @@ const ServiceListHistory = () => {
   const [orderDetails, setOrderDetails] = useState([]);
 
   const getServices = async () => {
-    const result = await axios.get(`http://localhost:4000/completeorder`, {
+    const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/completeorder`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
 

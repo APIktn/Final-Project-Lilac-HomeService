@@ -77,7 +77,7 @@ function AdminCategoryEdit() {
   const getCategoryEdit = async (category_id) => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/categories/${category_id}`
+        `${import.meta.env.VITE_API_BASE_URL}/categories/${category_id}`
       );
 
       console.log("Fetched category:", result.data.data);
@@ -100,7 +100,7 @@ function AdminCategoryEdit() {
   const categoryPatch = async (data) => {
     try {
       await axios.patch(
-        `http://localhost:4000/categories/edit/${category_id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/categories/edit/${category_id}`,
         data
       );
       console.log(data);

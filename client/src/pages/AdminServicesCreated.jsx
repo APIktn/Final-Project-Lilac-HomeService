@@ -126,7 +126,7 @@ function AdminServiceCreate() {
 
   const getCategories = async () => {
     try {
-      const result = await axios.get("http://localhost:4000/categories");
+      const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
       console.log("Fetched categories:", result.data.data);
       setCategories(result.data.data);      
     } catch (error) {
@@ -206,7 +206,7 @@ function AdminServiceCreate() {
       });
 
       const response = await axios.post(
-        "http://localhost:4000/adminservice/post",
+        `${import.meta.env.VITE_API_BASE_URL}/adminservice/post`,
         formData,
         {
           headers: {

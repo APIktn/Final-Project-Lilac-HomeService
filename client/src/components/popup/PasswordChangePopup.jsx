@@ -28,7 +28,7 @@ const PasswordChangePopup = ({ onClose }) => {
     setPasswordErrors({});
     try {
       const response = await axios.put(
-        "http://localhost:4000/user/change-password",
+        `${import.meta.env.VITE_API_BASE_URL}/user/change-password`,
         passwordData
       );
       if (

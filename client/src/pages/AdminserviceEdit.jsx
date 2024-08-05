@@ -78,7 +78,7 @@ function AdminServiceEdit() {
   // const handleDeleteConfirm = async () => {
   //   try {
   //     await axios.delete(
-  //       `http://localhost:4000/adminservice/${itemToDelete.
+  //       `${import.meta.env.VITE_API_BASE_URL}/adminservice/${itemToDelete.
   //         service_list_id}`
   //     );
   //     setSubServiceItems((prevItems) =>
@@ -156,7 +156,7 @@ function AdminServiceEdit() {
   const getServicesEdit = async (service_name) => {
     try {
       const result = await axios.get(
-        `http://localhost:4000/adminservice/${service_name}`
+        `${import.meta.env.VITE_API_BASE_URL}/adminservice/${service_name}`
       );
 
       console.log("Fetched category:", result.data.data[0].service_list);
@@ -179,7 +179,7 @@ function AdminServiceEdit() {
 
   const getCategories = async () => {
     try {
-      const result = await axios.get("http://localhost:4000/categories");
+      const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
       // console.log("Fetched categories:", result.data.data);
       setCategories(result.data.data);
     } catch (error) {
@@ -282,7 +282,7 @@ function AdminServiceEdit() {
       });
 
       const response = await axios.put(
-        `http://localhost:4000/adminservice/update/${service_name}`,
+        `${import.meta.env.VITE_API_BASE_URL}/adminservice/update/${service_name}`,
         formData,
         {
           headers: {

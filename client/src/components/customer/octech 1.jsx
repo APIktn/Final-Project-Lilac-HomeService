@@ -30,7 +30,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
   React.useEffect(() => {
     const fetchTechnicians = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/technicians", {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/technicians`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setTechnicians(response.data);
@@ -51,7 +51,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
 
     try {
       const response = await axios.put(
-        "http://localhost:4000/updateOrderStatus",
+        `${import.meta.env.VITE_API_BASE_URL}/updateOrderStatus`,
         {
           order_detail_id: orderDetail.order_detail_id,
           new_status: newStatus,
@@ -78,7 +78,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
 
     try {
       const response = await axios.put(
-        "http://localhost:4000/updateTechnician",
+        `${import.meta.env.VITE_API_BASE_URL}/updateTechnician`,
         {
           order_detail_id: orderDetail.order_detail_id,
           technician_id: newTechnician,
@@ -106,7 +106,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
 
       // Then, update the technician's status
       const response = await axios.put(
-        "http://localhost:4000/updateJob",
+        `${import.meta.env.VITE_API_BASE_URL}/updateJob`,
         {
           user_id: selectedTechnician,
           new_status: "กำลังรองาน",

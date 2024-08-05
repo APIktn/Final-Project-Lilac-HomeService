@@ -12,7 +12,7 @@ const ServiceListHistory = () => {
   // };
 
   const getServices = async () => {
-    const result = await axios.get(`http://localhost:4000/incompleteorder`, {
+    const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/incompleteorder`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     // console.log("result", result);

@@ -13,7 +13,7 @@ function Payment_status_page() {
     const fetchBillInfo = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/cart/bill/${orderId}`
+          `${import.meta.env.VITE_API_BASE_URL}/cart/bill/${orderId}`
         );
         setBillInfo(response.data);
       } catch (error) {

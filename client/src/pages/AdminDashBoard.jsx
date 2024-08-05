@@ -29,7 +29,7 @@ function AdminDashboard() {
 
   const getCategories = async () => {
     try {
-      const result = await axios.get("http://localhost:4000/categories");
+      const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
       console.log("Fetched categories:", result.data.data);
       setCategories(result.data.data);
       setFilteredItems(result.data.data);
@@ -70,7 +70,7 @@ function AdminDashboard() {
 
     // Update the order on the server
     try {
-      await axios.patch("http://localhost:4000/categories/reorder", {
+      await axios.patch(`${import.meta.env.VITE_API_BASE_URL}/categories/reorder`, {
         categories: newItems.map((item) => ({
           category_id: item.category_id,
           position_id: item.position_id,
@@ -99,7 +99,7 @@ function AdminDashboard() {
   const handleDeleteConfirm = async () => {
     try {
       await axios.delete(
-        `http://localhost:4000/categories/${itemToDelete.category_id}`
+        `${import.meta.env.VITE_API_BASE_URL}/categories/${itemToDelete.category_id}`
       );
       setCategories((prevItems) =>
         prevItems.filter(

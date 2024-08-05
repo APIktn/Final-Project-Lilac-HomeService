@@ -55,7 +55,7 @@ function OrderSummary({ summaryOrder, service_name }) {
   const fetchNetPrice = async (summaryData, service_name) => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/cart/${service_name}`,
+        `${import.meta.env.VITE_API_BASE_URL}/cart/${service_name}`,
         { summaryData }
       );
       await setNetPrice(response.data.netPrice);

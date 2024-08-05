@@ -73,7 +73,7 @@ function AdminCategoryCreate() {
 
   const categoryPost = async (data) => {
     try {
-      await axios.post(`http://localhost:4000/categories/create`, data);
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/categories/create`, data);
 
       console.log(data);
       setMessage(response.data.message);

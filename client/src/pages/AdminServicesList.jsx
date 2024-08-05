@@ -25,7 +25,7 @@
 
 //   const getServices = async () => {
 //     try {
-//       const result = await axios.get("http://localhost:4000/adminserviceslist");
+//       const result = await axios.get("${import.meta.env.VITE_API_BASE_URL}/adminserviceslist");
 //       console.log(result.data.data)
 //       const sortedGroupedServices = result.data.data;
 
@@ -110,7 +110,7 @@
 
 //     // Update the order on the server
 //     try {
-//       await axios.patch("http://localhost:4000/adminserviceslist/reorder", {
+//       await axios.patch("${import.meta.env.VITE_API_BASE_URL}/adminserviceslist/reorder", {
 //         services: updatedServices.map((service) => ({
 //           service_id: service.service_id,
 //           position_id: service.position_id,
@@ -136,7 +136,7 @@
 
 //     try {
 //       await axios.delete(
-//         `http://localhost:4000/adminserviceslist/${itemToDelete.service_id}`
+//         `${import.meta.env.VITE_API_BASE_URL}/adminserviceslist/${itemToDelete.service_id}`
 //       );
 //       // Remove item from groupedServices
 //       const updatedGroupedServices = groupedServices.map((group) => {
@@ -354,7 +354,7 @@ function AdminServiceList() {
 
   const getServices = async () => {
     try {
-      const result = await axios.get("http://localhost:4000/adminserviceslist");
+      const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/adminserviceslist`);
       console.log(result.data.data);
       const sortedGroupedServices = result.data.data;
 
@@ -440,7 +440,7 @@ function AdminServiceList() {
 
     // Update the order on the server
     try {
-      await axios.patch("http://localhost:4000/adminserviceslist/reorder", {
+      await axios.patch(`${import.meta.env.VITE_API_BASE_URL}/adminserviceslist/reorder`, {
         services: updatedServices.map((service) => ({
           service_id: service.service_id,
           position_id: service.position_id,
@@ -466,7 +466,7 @@ function AdminServiceList() {
 
     try {
       await axios.delete(
-        `http://localhost:4000/adminserviceslist/${itemToDelete.service_id}`
+        `${import.meta.env.VITE_API_BASE_URL}/adminserviceslist/${itemToDelete.service_id}`
       );
       // Remove item from groupedServices
       const updatedGroupedServices = groupedServices.map((group) => {

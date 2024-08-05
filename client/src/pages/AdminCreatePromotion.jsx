@@ -171,7 +171,7 @@ function AdminCreatePromotion() {
 
   const promotionCode = async (data) => {
     try {
-      await axios.post("http://localhost:4000/promotion", data);
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/promotion`, data);
 
       console.log(data);
       navigate("/admin/promotion");

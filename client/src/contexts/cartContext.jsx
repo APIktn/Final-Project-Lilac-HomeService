@@ -78,7 +78,7 @@ const CartContextProvider = (props) => {
     //-----Send Formatted Data to Server to Store in DB---/////
     try {
       const response = await axios.post(
-        `http://localhost:4000/cart/${cartPath}/bill`,
+        `${import.meta.env.VITE_API_BASE_URL}/cart/${cartPath}/bill`,
         billInfo
       );
       navigate("/payment-status", {
