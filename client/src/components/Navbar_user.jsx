@@ -187,7 +187,7 @@ const Navbar_user = () => {
             <CustomMenuItem
               onClick={() => {
                 logout();
-                navigate("/");
+                navigate("/login");
               }}
             >
               <img src={logout1} alt="logout" className="mr-1 h-8 sm:h-6" />
