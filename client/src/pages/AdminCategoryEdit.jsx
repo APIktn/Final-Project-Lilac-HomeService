@@ -80,7 +80,7 @@ function AdminCategoryEdit() {
         `${import.meta.env.VITE_API_BASE_URL}/categories/${category_id}`
       );
 
-      console.log("Fetched category:", result.data.data);
+      // console.log("Fetched category:", result.data.data);
 
       setCategory(result.data.data);
 
@@ -103,7 +103,7 @@ function AdminCategoryEdit() {
         `${import.meta.env.VITE_API_BASE_URL}/categories/edit/${category_id}`,
         data
       );
-      console.log(data);
+      // console.log(data);
       setMessage(response.data.message);
     } catch (error) {
       if (error.response && error.response.status === 400) {

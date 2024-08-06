@@ -75,13 +75,13 @@ function AdminCategoryCreate() {
     try {
       await axios.post(`${import.meta.env.VITE_API_BASE_URL}/categories/create`, data);
 
-      console.log(data);
+      // console.log(data);
       setMessage(response.data.message);
     } catch (error) {
       if (error.response && error.response.status === 400) {
         alert("กรุณากรอกข้อมูลให้ครบ หรือ มีชื่อหมวดหมู่นี้แล้ว");
       }
-      console.error("Error creating promotion code:", error);
+      // console.error("Error creating promotion code");
     }
   };
 

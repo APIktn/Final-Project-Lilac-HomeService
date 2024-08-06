@@ -103,7 +103,7 @@ const ServicePayment = () => {
         { promoCode, netPrice }
       );
       const { newNetPrice, message } = response.data;
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       setDiscountPrice(newNetPrice);
       // Handle the response as needed
     } catch (error) {

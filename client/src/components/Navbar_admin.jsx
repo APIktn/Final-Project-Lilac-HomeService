@@ -32,7 +32,7 @@ const Navbar_admin = () => {
         });
         setUserData(response.data.user);
       } catch (error) {
-        console.error("Error fetching user data", error);
+        // console.error("Error fetching user data", error);
       }
     };
 

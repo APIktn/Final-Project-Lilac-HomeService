@@ -24,26 +24,13 @@ import bodyParser from "body-parser";
 import _ from "lodash";
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = 4000;
 
-const allowedOrigins = [
-  process.env.VITE_BACKEND_URL,
-  'https://lilac-homeservices.vercel.app'
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error(`Not allowed by CORS: ${origin}`));
-    }
-  }
-};
-
-app.use(cors(corsOptions));
-
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 app.use(express.json());
 app.use(bodyParser.json());
