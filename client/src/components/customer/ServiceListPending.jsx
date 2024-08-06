@@ -123,7 +123,7 @@ const ServiceListHistory = () => {
     } catch (error) {
       setError("เกิดข้อผิดพลาดในการดึงข้อมูล");
       setLoading(false);
-      console.error("Error fetching services:", error);
+      // console.error("Error fetching services:", error);
     }
   };
 
@@ -151,12 +151,12 @@ const ServiceListHistory = () => {
               : detail
           )
         );
-        console.log("สถานะอัพเดตสำเร็จ");
+        // console.log("สถานะอัพเดตสำเร็จ");
       } else {
-        console.error("สถานะอัพเดตไม่สำเร็จ:", response.statusText);
+        // console.error("สถานะอัพเดตไม่สำเร็จ:", response.statusText);
       }
     } catch (error) {
-      console.error("เกิดข้อผิดพลาดในการอัพเดตสถานะ:", error);
+      // console.error("เกิดข้อผิดพลาดในการอัพเดตสถานะ:", error);
     }
   };
 

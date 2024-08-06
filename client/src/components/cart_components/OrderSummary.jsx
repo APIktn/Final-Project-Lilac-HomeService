@@ -61,7 +61,7 @@ function OrderSummary({ summaryOrder, service_name }) {
       await setNetPrice(response.data.netPrice);
       setDiscountPrice(response.data.netPrice);
     } catch (error) {
-      console.error("Error fetching net price from server", error);
+      // console.error("Error fetching net price from server", error);
     }
   };
 

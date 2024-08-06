@@ -87,7 +87,7 @@ function AdminCategoryEdit() {
       setCategoryName(result.data.data.category_name);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching category:", error);
+      // console.error("Error fetching category:", error);
     }
   };
 
@@ -109,9 +109,9 @@ function AdminCategoryEdit() {
       if (error.response && error.response.status === 400) {
         alert("กรุณากรอกข้อมูลให้ครบ หรือ มีชื่อหมวดหมู่นี้แล้ว");
       } else {
-        console.error("Error updating category:", error);
+        // console.error("Error updating category:", error);
       }
-      console.error("Error updating category:", error);
+      // console.error("Error updating category:", error);
     }
   };
 

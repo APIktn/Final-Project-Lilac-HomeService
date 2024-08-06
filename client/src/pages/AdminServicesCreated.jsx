@@ -127,10 +127,10 @@ function AdminServiceCreate() {
   const getCategories = async () => {
     try {
       const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories`);
-      console.log("Fetched categories:", result.data.data);
+      // console.log("Fetched categories:", result.data.data);
       setCategories(result.data.data);      
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      // console.error("Error fetching categories:", error);
     } 
   };
 
@@ -224,7 +224,7 @@ function AdminServiceCreate() {
         window.location.href = "/admin/service";  
       }
     } catch (error) {
-      console.error("Error uploading data", error);
+      // console.error("Error uploading data", error);
       setMessage("เกิดข้อผิดพลาดในการอัพโหลดข้อมูล");
     } finally {
       setUploading(false);

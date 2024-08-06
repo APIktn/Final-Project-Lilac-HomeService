@@ -55,7 +55,7 @@ const ServicePayment = () => {
       });
 
       if (result.error) {
-        console.error("Stripe error:", result.error.message);
+        // console.error("Stripe error:", result.error.message);
       } else {
         // Directly access QR code URL if available
         const qrCodeUrl =
@@ -65,7 +65,7 @@ const ServicePayment = () => {
         checkPaymentStatus(paymentIntentId);
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
 
@@ -83,7 +83,7 @@ const ServicePayment = () => {
         setTimeout(() => checkPaymentStatus(paymentIntentId), 5000); // Check every 5 seconds
       }
     } catch (error) {
-      console.error("Error checking payment status:", error);
+      // console.error("Error checking payment status:", error);
     }
   };
 
@@ -107,7 +107,7 @@ const ServicePayment = () => {
       setDiscountPrice(newNetPrice);
       // Handle the response as needed
     } catch (error) {
-      console.error("Error applying promo code:", error);
+      // console.error("Error applying promo code:", error);
       setDiscountPrice(netPrice);
       alert("ไม่สามารถใช้โค้ดนี้ได้ กรุณาลองใหม่อีกครั้ง");
       // Handle the error as needed

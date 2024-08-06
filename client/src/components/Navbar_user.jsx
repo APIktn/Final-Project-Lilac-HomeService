@@ -33,7 +33,7 @@ const Navbar_user = () => {
         });
         setUserData(response.data.user);
       } catch (error) {
-        console.error("Error fetching user data", error);
+        // console.error("Error fetching user data", error);
       }
     };
 
@@ -47,7 +47,7 @@ const Navbar_user = () => {
       // console.log("Fetched promotion codes:", result.data.data);
       setOriginalPromotionCode(result.data.data);
     } catch (error) {
-      console.error("Error fetching promotion codes:", error);
+      // console.error("Error fetching promotion codes:", error);
     } finally {
       setLoading(false);
     }

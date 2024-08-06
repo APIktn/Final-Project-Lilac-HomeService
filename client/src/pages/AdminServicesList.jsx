@@ -355,7 +355,7 @@ function AdminServiceList() {
   const getServices = async () => {
     try {
       const result = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/adminserviceslist`);
-      console.log(result.data.data);
+      // console.log(result.data.data);
       const sortedGroupedServices = result.data.data;
 
       // Ensure categories are sorted by position_id
@@ -366,7 +366,7 @@ function AdminServiceList() {
       setGroupedServices(sortedCategories);
       setFilteredServices(sortedCategories);
     } catch (error) {
-      console.error("Error fetching services:", error);
+      // console.error("Error fetching services:", error);
     } finally {
       setLoading(false);
     }
@@ -448,7 +448,7 @@ function AdminServiceList() {
         })),
       });
     } catch (error) {
-      console.error("Error updating category order on the server:", error);
+      // console.error("Error updating category order on the server:", error);
     }
   };
 
@@ -482,7 +482,7 @@ function AdminServiceList() {
       setItemToDelete(null);
       window.location.href = "/admin/service";
     } catch (error) {
-      console.error("Error deleting service:", error);
+      // console.error("Error deleting service:", error);
     }
   };
 

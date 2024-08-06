@@ -191,14 +191,14 @@ function AdminPromotionEdit() {
         `${import.meta.env.VITE_API_BASE_URL}/promotion/${promo_id}`
       );
 
-      console.log("Fetched Promotion Code:", result.data.data);
+      // console.log("Fetched Promotion Code:", result.data.data);
 
       setPromotion(result.data.data);
 
       setPromotionName(result.data.data.code);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching category:", error);
+      // console.error("Error fetching category:", error);
     }
   };
 
@@ -225,7 +225,7 @@ function AdminPromotionEdit() {
         data
       );
 
-      console.log(data);
+      // console.log(data);
       navigate("/admin/promotion");
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -244,7 +244,7 @@ function AdminPromotionEdit() {
             "กรุณาตั้ง Percent Code ให้อยู่ระหว่าง 1-100 \n(โค้ดยังไม่ถูกแก้ไขกรุณากดแก้ไขเพื่อแก้ไขใหม่)"
           );
         }
-        console.error("Error creating promotion code:", error);
+        // console.error("Error creating promotion code:", error);
       }
     }
   };

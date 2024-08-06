@@ -35,7 +35,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
         });
         setTechnicians(response.data);
       } catch (error) {
-        console.error("Error fetching technicians:", error);
+        // console.error("Error fetching technicians:", error);
       }
     };
 
@@ -58,13 +58,13 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
       );
 
       if (response.status === 200) {
-        console.log("สถานะอัพเดตสำเร็จ");
+        // console.log("สถานะอัพเดตสำเร็จ");
         onStatusChange(orderDetail.order_detail_id, newStatus);
       } else {
-        console.error("สถานะอัพเดตไม่สำเร็จ:", response.statusText);
+        // console.error("สถานะอัพเดตไม่สำเร็จ:", response.statusText);
       }
     } catch (error) {
-      console.error("เกิดข้อผิดพลาดในการอัพเดตสถานะ:", error);
+      // console.error("เกิดข้อผิดพลาดในการอัพเดตสถานะ:", error);
     }
   };
 
@@ -85,14 +85,14 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
       );
 
       if (response.status === 200) {
-        console.log("พนักงานอัพเดตสำเร็จ");
+        // console.log("พนักงานอัพเดตสำเร็จ");
 
         onStatusChange(orderDetail.order_detail_id, status);
       } else {
-        console.error("พนักงานอัพเดตไม่สำเร็จ:", response.statusText);
+        // console.error("พนักงานอัพเดตไม่สำเร็จ:", response.statusText);
       }
     } catch (error) {
-      console.error("เกิดข้อผิดพลาดในการอัพเดตพนักงาน:", error);
+      // console.error("เกิดข้อผิดพลาดในการอัพเดตพนักงาน:", error);
     }
   };
 

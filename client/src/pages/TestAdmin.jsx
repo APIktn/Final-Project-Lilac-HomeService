@@ -19,7 +19,7 @@ function TestAdmin() {
         );
         setData(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       }
     };
 

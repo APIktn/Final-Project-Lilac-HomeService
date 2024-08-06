@@ -53,7 +53,7 @@ function TechInfoBody() {
         setLoading(false);
       }
     } catch (error) {
-      console.error("API Error:", error.response?.data?.error || error.message);
+      // console.error("API Error:", error.response?.data?.error || error.message);
       setError(
         error.response?.data?.error || "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน"
       );
@@ -108,7 +108,7 @@ function TechInfoBody() {
           },
         }
       );
-      console.log("Response from server:", response.data);
+      // console.log("Response from server:", response.data);
       if (
         response.status === 200 &&
         response.data.message === "อัปเดตข้อมูลผู้ใช้สำเร็จ"
@@ -131,7 +131,7 @@ function TechInfoBody() {
               },
             }
           );
-          console.log("Upload Response from server:", uploadResponse.data);
+          // console.log("Upload Response from server:", uploadResponse.data);
         }
 
         setIsEditing(false);
@@ -142,7 +142,7 @@ function TechInfoBody() {
         setSubmitLoading(false);
       }
     } catch (error) {
-      console.error("API Error:", error.response?.data?.error || error.message);
+      // console.error("API Error:", error.response?.data?.error || error.message);
       setError(
         error.response?.data?.error ||
           "เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้งาน"

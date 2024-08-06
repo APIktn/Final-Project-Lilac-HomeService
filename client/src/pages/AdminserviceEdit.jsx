@@ -159,7 +159,7 @@ function AdminServiceEdit() {
         `${import.meta.env.VITE_API_BASE_URL}/adminservice/${service_name}`
       );
 
-      console.log("Fetched category:", result.data.data[0].service_list);
+      // console.log("Fetched category:", result.data.data[0].service_list);
 
       setServicename(result.data.data[0].service_name);
       setCategoryName(result.data.data[0].categories.category_name);
@@ -167,7 +167,7 @@ function AdminServiceEdit() {
       setSubServiceItems(result.data.data[0].service_list);
       setOriginalServiceList(result.data.data[0].service_list);
     } catch (error) {
-      console.error("Error fetching category:", error);
+      // console.error("Error fetching category:", error);
     }
   };
 
@@ -183,7 +183,7 @@ function AdminServiceEdit() {
       // console.log("Fetched categories:", result.data.data);
       setCategories(result.data.data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      // console.error("Error fetching categories:", error);
     }
   };
 
@@ -300,7 +300,7 @@ function AdminServiceEdit() {
         window.location.href = `/admin/service`;
       }
     } catch (error) {
-      console.error("Error updating data", error);
+      // console.error("Error updating data", error);
       setMessage("เกิดข้อผิดพลาดในการอัพเดตข้อมูล");
     } finally {
       setUploading(false);

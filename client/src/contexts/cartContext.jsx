@@ -85,7 +85,7 @@ const CartContextProvider = (props) => {
         state: { orderId: response.data.order_id },
       });
     } catch (error) {
-      console.error("Error sending billInfo to server:", error);
+      // console.error("Error sending billInfo to server:", error);
     }
   };
 

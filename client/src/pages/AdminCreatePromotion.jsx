@@ -173,7 +173,7 @@ function AdminCreatePromotion() {
     try {
       await axios.post(`${import.meta.env.VITE_API_BASE_URL}/promotion`, data);
 
-      console.log(data);
+      // console.log(data);
       navigate("/admin/promotion");
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -189,7 +189,7 @@ function AdminCreatePromotion() {
           alert("เกิดข้อผิดพลาดในการสร้างรหัสโปรโมชั่น");
         }
       } else {
-        console.error("Error creating promotion code:", error);
+        // console.error("Error creating promotion code:", error);
       }
     }
   };

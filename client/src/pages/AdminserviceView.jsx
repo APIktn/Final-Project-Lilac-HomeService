@@ -31,11 +31,11 @@ function AdminServiceView() {
         `${import.meta.env.VITE_API_BASE_URL}/adminservice/${service_name}`
       );
 
-      console.log("Fetched category:", result.data.data);
+      // console.log("Fetched category:", result.data.data);
 
       setServiceName(result.data.data);      
     } catch (error) {
-      console.error("Error fetching category:", error);
+      // console.error("Error fetching category:", error);
     }
   };
 

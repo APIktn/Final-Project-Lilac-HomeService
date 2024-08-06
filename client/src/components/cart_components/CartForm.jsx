@@ -24,7 +24,7 @@ function CartForm() {
       setServices(result.data.data);
       setCartPath(service_name);
     } catch (error) {
-      console.error("Error");
+      // console.error("Error");
     }
   };
 
