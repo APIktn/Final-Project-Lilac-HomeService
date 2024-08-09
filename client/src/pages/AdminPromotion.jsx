@@ -67,7 +67,7 @@ function AdminPromotion() {
   const handleDeleteConfirm = async () => {
     try {
       await axios.delete(
-        `lo/promotion/${itemToDelete.promo_id}`
+        `${import.meta.env.VITE_API_BASE_URL}/promotion/${itemToDelete.promo_id}`
       );
       setOriginalPromotionCode((prevItems) =>
         prevItems.filter(
