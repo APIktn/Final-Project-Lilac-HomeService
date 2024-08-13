@@ -378,7 +378,7 @@ function AdminServiceEdit() {
         {/* Main Content */}
         <div className="flex-1 flex flex-col bg-[#EFEFF2]">
           {/* Admin Topbar */}
-          <div className="bg-white p-4 flex justify-between items-center h-[80px] w-[1465px]">
+          <div className="bg-white p-4 flex justify-between items-center h-[80px]">
             <div className="flex flex-row -ml-8">
               <img src={Frame} alt="frame" className="ml-10" />
               <div className="ml-5 mt-4">
@@ -417,7 +417,7 @@ function AdminServiceEdit() {
           {/* Workspace */}
           <div className="p-4 pt-8 flex-1 overflow-auto  mx-4 ">
             <div className=" rounded-b-none "></div>
-            <div className="bg-white p-4 rounded-t-lg w-[1380px]">
+            <div className="bg-white p-4 rounded-t-lg">
               {/* Form for Uploading Picture for Service */}
               <div className="border-b border-[#CCD0D7] mb-4 pb-4 ">
                 <div className="mb-4 w-[1072px]">

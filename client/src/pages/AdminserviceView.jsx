@@ -149,7 +149,7 @@ function AdminServiceView() {
             </div>     
             </span>               
             </div>
-            <hr className="border-t-2 border-[#E6E7EB] w-[1235px] ml-3" />
+            <hr className="border-t-2 border-[#E6E7EB] w-[1360px] ml-3" />
             <span className="block ml-3 font-medium text-[16px] text-[#646C80] py-10 mt-3">
                  รายการบริการย่อย
             </span> 
@@ -182,7 +182,7 @@ function AdminServiceView() {
          ))}
          </div>
          ))}
-            <hr className="border-t-2 border-[#E6E7EB] w-[1235px] ml-3  pt-10" />
+            <hr className="border-t-2 border-[#E6E7EB] w-[1360px] ml-3  pt-10" />
             <span className="block ml-3 font-medium text-[16px] text-[#646C80] pt-5">
                  สร้างเมื่อ
               <span className="ml-[240px] font-normal text-[16px] text-[#000000]">
