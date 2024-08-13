@@ -9,8 +9,7 @@ const HomePage_technician = () => {
     <>
       <Navbar />
       <ServiceListHeader />
-      <ServiceListBody />
-      <Footer />
+      <ServiceListBody />      
     </>
   );
 };
