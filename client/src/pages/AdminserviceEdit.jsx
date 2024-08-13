@@ -378,7 +378,7 @@ function AdminServiceEdit() {
         {/* Main Content */}
         <div className="flex-1 flex flex-col bg-[#EFEFF2]">
           {/* Admin Topbar */}
-          <div className="bg-white p-4 flex justify-between items-center h-[80px] w-[1355px]">
+          <div className="bg-white p-4 flex justify-between items-center h-[80px] w-[1465px]">
             <div className="flex flex-row -ml-8">
               <img src={Frame} alt="frame" className="ml-10" />
               <div className="ml-5 mt-4">
@@ -388,7 +388,7 @@ function AdminServiceEdit() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center space-x-6 mr-6">
+            <div className="flex items-center space-x-6 mr-9">
               <button
                 onClick={() => navigate("/admin/service")}
                 className="border-[#336DF2] border text-[#336DF2] py-2 px-4 rounded-md w-[112px] h-11"
@@ -408,7 +408,7 @@ function AdminServiceEdit() {
                   className="bg-[#336DF2] text-white py-2 px-4 rounded-md w-[112px] h-11 justify-center"
                   onClick={handleCreate}
                 >
-                  แก้ไข
+                  สร้าง
                 </button>
               ) : null}
             </div>
@@ -417,7 +417,7 @@ function AdminServiceEdit() {
           {/* Workspace */}
           <div className="p-4 pt-8 flex-1 overflow-auto  mx-4 ">
             <div className=" rounded-b-none "></div>
-            <div className="bg-white p-4 rounded-t-lg w-[1280px]">
+            <div className="bg-white p-4 rounded-t-lg w-[1380px]">
               {/* Form for Uploading Picture for Service */}
               <div className="border-b border-[#CCD0D7] mb-4 pb-4 ">
                 <div className="mb-4 w-[1072px]">
@@ -530,7 +530,7 @@ function AdminServiceEdit() {
             {subServiceItems.map((item, index) => (
               <div
                 key={item.id}
-                className="bg-white p-4 rounded-md rounded-t-none w-[1280px]"
+                className="bg-white p-4 rounded-md rounded-t-none w-[1380px]"
                 draggable
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragOver={(e) => handleDragOver(e)}
@@ -617,7 +617,7 @@ function AdminServiceEdit() {
                 </div>
               </div>
             ))}
-            <div className=" bg-white p-4 rounded-b-lg">
+            <div className=" bg-white p-4 rounded-b-lg w-[1380px]">
               <button
                 onClick={handleAddSubService}
                 className="border-[#336DF2] border text-[#336DF2] py-2 px-4 ml-2 mb-8 rounded-lg  w-[185px] h-11 flex items-center justify-cent text-[16px] font-medium"
@@ -628,9 +628,9 @@ function AdminServiceEdit() {
               </button>
             </div>
             {isCreated && (
-              <div className="flex flex-col gap-7 -mx-[2p3] rounded-t-none mb-4  pb-4 h-[180px] w-[1280px] pt-10 bg-white -mt-1">
+              <div className="flex flex-col gap-7 -mx-[2p3] rounded-t-none mb-4  pb-4 h-[180px] w-[1380px] pt-10 bg-white -mt-1">
                 <div className="">
-                  <hr className="border-t-2 border-[#CCD0D7] w-[1240px] ml-5 -mt-10 mb-14" />
+                  <hr className="border-t-2 border-[#CCD0D7] w-[1340px] ml-5 -mt-10 mb-14" />
                   <div className="ml-2">
                     <span className="block ml-5 font-medium text-[16px] text-[#646C80] ">
                       สร้างเมื่อ
