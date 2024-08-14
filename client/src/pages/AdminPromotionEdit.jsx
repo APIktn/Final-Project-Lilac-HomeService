@@ -296,7 +296,8 @@ function AdminPromotionEdit() {
             <img src={vectorService} alt="Service" className="mr-2 ml-2" />
             <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
           </div>
-          <div className="flex items-center p-4 bg-[#022B87] cursor-pointer">
+          <div className="flex items-center p-4 bg-[#022B87] cursor-pointer"
+          onClick={() => navigate("/admin/promotion")}>
             <img
               src={vectorPromotionCode}
               alt="Promotion Code"
