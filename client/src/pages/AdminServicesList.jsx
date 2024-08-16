@@ -368,7 +368,7 @@ function AdminServiceList() {
       setGroupedServices(sortedCategories);
       setFilteredServices(sortedCategories);
     } catch (error) {
-      console.error("Error fetching services:", error);
+      // console.error("Error fetching services:", error);
     } finally {
       setLoading(false);
     }
@@ -453,7 +453,7 @@ function AdminServiceList() {
         }
       );
     } catch (error) {
-      console.error("Error updating category order on the server:", error);
+      // console.error("Error updating category order on the server:", error);
     }
   };
 
@@ -489,7 +489,7 @@ function AdminServiceList() {
       setItemToDelete(null);
       window.location.href = "/admin/service";
     } catch (error) {
-      console.error("Error deleting service:", error);
+      // console.error("Error deleting service:", error);
     }
   };
 

@@ -36,7 +36,7 @@ function AdminDashboard() {
       setCategories(result.data.data);
       setFilteredItems(result.data.data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      // console.error("Error fetching categories:", error);
     } finally {
       setLoading(false);
     }
@@ -83,7 +83,7 @@ function AdminDashboard() {
         }
       );
     } catch (error) {
-      console.error("Error updating category order on the server:", error);
+      // console.error("Error updating category order on the server:", error);
     }
   };
 
@@ -122,7 +122,7 @@ function AdminDashboard() {
       setItemToDelete(null);
       window.location.href = "/admin/category";
     } catch (error) {
-      console.error("Error deleting category:", error);
+      // console.error("Error deleting category:", error);
     }
   };
 

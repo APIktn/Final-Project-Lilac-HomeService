@@ -46,7 +46,7 @@ const PasswordChangePopup = ({ onClose }) => {
         setPasswordErrors({ general: "เกิดข้อผิดพลาดในการเปลี่ยนรหัสผ่าน" });
       }
     } catch (error) {
-      console.error("API Error:", error.response?.data?.error || error.message);
+      // console.error("API Error:", error.response?.data?.error || error.message);
       setPasswordErrors({
         general:
           error.response?.data?.error || "เกิดข้อผิดพลาดในการเปลี่ยนรหัสผ่าน",

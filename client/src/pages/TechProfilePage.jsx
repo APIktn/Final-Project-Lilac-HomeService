@@ -55,7 +55,7 @@ function UserProfilePage() {
         setLoading(false);
       }
     } catch (error) {
-      console.error("API Error:", error.response?.data?.error || error.message);
+      // console.error("API Error:", error.response?.data?.error || error.message);
       setError(
         error.response?.data?.error || "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน"
       );
@@ -113,7 +113,7 @@ function UserProfilePage() {
         setSubmitLoading(false);
       }
     } catch (error) {
-      console.error("API Error:", error.response?.data?.error || error.message);
+      // console.error("API Error:", error.response?.data?.error || error.message);
       setError(
         error.response?.data?.error ||
           "เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้งาน"

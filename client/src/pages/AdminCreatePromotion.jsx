@@ -189,7 +189,7 @@ function AdminCreatePromotion() {
           alert("เกิดข้อผิดพลาดในการสร้างรหัสโปรโมชั่น");
         }
       } else {
-        console.error("Error creating promotion code:", error);
+        // console.error("Error creating promotion code:", error);
       }
     }
   };

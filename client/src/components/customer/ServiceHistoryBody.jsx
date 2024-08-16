@@ -22,7 +22,7 @@ const ServiceListHistory = () => {
   }, []);
 
   return (
-    <main className="bg-[#F3F4F6] px-4">
+    <main className="min-h-[55vh] bg-[#F3F4F6] px-4">
       <div className="md:flex container md:mx-auto md:px-20 md:py-2 justify-between items-start  ">
         <div className="sticky top-[45px] md:top-[75px] z-40 md:basis-1/4  ">
           <CustomerAccount />

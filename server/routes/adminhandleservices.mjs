@@ -100,7 +100,7 @@ adminserviceRouter.post("/post", upload.single("image"), async (req, res) => {
 });
 
 adminserviceRouter.get("/:service_name", async (req, res) => {
-  const serviceName = req.params.service_name; // Fixing this line
+  const serviceName = req.params.service_name; 
   let result;
   try {
     result = await supabase
@@ -141,18 +141,18 @@ adminserviceRouter.delete("/:service_list_id", async (req, res) => {
 
     if (data && data.length === 0) {
       return res.status(404).json({
-        message: `Promotion code with promo_id ${service_list_id} not found`,
+        message: `${service_list_id} not found`,
       });
     }
 
     res.status(200).json({
-      message: `Promotion code with promo_id ${service_list_id} deleted successfully`,
+      message: `${service_list_id} deleted successfully`,
       data,
     });
   } catch (error) {
-    console.error("Error deleting promotion code:", error);
+    console.error("Error deleting:", error);
     res.status(500).json({
-      message: "Error deleting promotion code",
+      message: "Error deleting ",
       error: error.message,
     });
   }
@@ -235,7 +235,7 @@ adminserviceRouter.put(
         return res.status(404).json({ error: "Service not found" });
       }
 
-      const { service_id } = existingService;
+      const { service_id } = existingService; 
 
       const { error: serviceError } = await supabase
         .from("services")
@@ -246,29 +246,51 @@ adminserviceRouter.put(
         throw serviceError;
       }
 
-      const { error: deleteError } = await supabase
-        .from("service_list")
-        .delete()
-        .eq("service_id", service_id);
+      const { data: existingSubServices, error: fetchSubServiceError } =
+        await supabase
+          .from("service_list")
+          .select("service_list_id, service_lists, price, units")
+          .eq("service_id", service_id);
 
-      if (deleteError) {
-        throw deleteError;
+      if (fetchSubServiceError) {
+        throw fetchSubServiceError;
       }
 
-      const subServiceInserts = validSubServiceItems.map((item) => ({
-        service_id: service_id,
-        service_lists: item.name,
-        price: item.price ? parseFloat(item.price) : 0,
-        units: item.unit,
-        quantity: 0,
-      }));
+      for (const item of validSubServiceItems) {
+        const existingItem = existingSubServices.find(
+          (subItem) => subItem.service_lists === item.name
+        );
 
-      const { error: subServiceError } = await supabase
-        .from("service_list")
-        .insert(subServiceInserts);
+        if (existingItem) {
+          await supabase
+            .from("service_list")
+            .update({
+              price: item.price ? parseFloat(item.price) : 0,
+              units: item.unit,
+            })
+            .eq("service_id", service_id)
+            .eq("service_list_id", existingItem.service_list_id);
+        } else {
+          await supabase.from("service_list").insert({
+            service_id: service_id,
+            service_lists: item.name,
+            price: item.price ? parseFloat(item.price) : 0,
+            units: item.unit,
+            quantity: 0,
+          });
+        }
+      }
 
-      if (subServiceError) {
-        throw subServiceError;
+      const subServiceNames = validSubServiceItems.map((item) => item.name);
+      const subServicesToDelete = existingSubServices.filter(
+        (subItem) => !subServiceNames.includes(subItem.service_lists)
+      );
+
+      for (const subItem of subServicesToDelete) {
+        await supabase
+          .from("service_list")
+          .delete()
+          .eq("service_list_id", subItem.service_list_id);
       }
 
       res.status(200).json({ message: "อัพเดตข้อมูลสำเร็จ" });

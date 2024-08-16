@@ -198,7 +198,7 @@ function AdminPromotionEdit() {
       setPromotionName(result.data.data.code);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching category:", error);
+      // console.error("Error fetching category:", error);
     }
   };
 
@@ -244,7 +244,7 @@ function AdminPromotionEdit() {
             "กรุณาตั้ง Percent Code ให้อยู่ระหว่าง 1-100 \n(โค้ดยังไม่ถูกแก้ไขกรุณากดแก้ไขเพื่อแก้ไขใหม่)"
           );
         }
-        console.error("Error creating promotion code:", error);
+        // console.error("Error creating promotion code:", error);
       }
     }
   };
@@ -301,7 +301,10 @@ function AdminPromotionEdit() {
               <img src={vectorService} alt="Service" className="mr-2 ml-2" />
               <span className="text-[#F1F1F1] text-base ml-3">บริการ</span>
             </div>
-            <div className="flex items-center p-4 bg-[#022B87] cursor-pointer">
+            <div
+              className="flex items-center p-4 bg-[#022B87] cursor-pointer"
+              onClick={() => navigate("/admin/promotion")}
+            >
               <img
                 src={vectorPromotionCode}
                 alt="Promotion Code"

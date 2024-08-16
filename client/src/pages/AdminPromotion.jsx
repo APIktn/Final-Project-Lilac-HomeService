@@ -80,7 +80,7 @@ function AdminPromotion() {
       setItemToDelete(null);
       window.location.href = "/admin/promotion";
     } catch (error) {
-      console.error("Error deleting promotion code:", error);
+      // console.error("Error deleting promotion code:", error);
       // Handle error state or notification to the user
     }
   };
@@ -98,7 +98,7 @@ function AdminPromotion() {
       // console.log("Fetched promotion codes:", result.data.data);
       setOriginalPromotionCode(result.data.data);
     } catch (error) {
-      console.error("Error fetching promotion codes:", error);
+      // console.error("Error fetching promotion codes:", error);
     } finally {
       setLoading(false);
     }

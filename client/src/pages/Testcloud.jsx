@@ -30,13 +30,13 @@ const UploadForm = () => {
         {
           headers: { "Content-Type": "multipart/form-data" },
           onUploadProgress: (e) => {
-            console.log(e.loaded / e.total);
+            // console.log(e.loaded / e.total);
           },
         }
       );
 
       // Handle Cloudinary response
-      // console.log("Cloudinary response:", cloudinaryResponse.data);
+      // console.log('Cloudinary response:', cloudinaryResponse.data);
 
       // Prepare data for Supabase
       const photoData = {
@@ -52,12 +52,12 @@ const UploadForm = () => {
         }
       );
 
-      // console.log("Supabase response:", supabaseResponse.data);
+      // console.log('Supabase response:', supabaseResponse.data);
 
       setMessage("Upload successful!");
       setFile(null);
     } catch (error) {
-      console.error("Error uploading to the backend server", error);
+      // console.error('Error uploading to the backend server', error);
       setMessage("Error uploading. Please try again.");
     } finally {
       setUploading(false);

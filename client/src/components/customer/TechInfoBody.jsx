@@ -56,7 +56,7 @@ function TechInfoBody() {
         setLoading(false);
       }
     } catch (error) {
-      console.error("API Error:", error.response?.data?.error || error.message);
+      // console.error("API Error:", error.response?.data?.error || error.message);
       setError(
         error.response?.data?.error || "เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้งาน"
       );
@@ -145,7 +145,7 @@ function TechInfoBody() {
         setSubmitLoading(false);
       }
     } catch (error) {
-      console.error("API Error:", error.response?.data?.error || error.message);
+      // console.error("API Error:", error.response?.data?.error || error.message);
       setError(
         error.response?.data?.error ||
           "เกิดข้อผิดพลาดในการอัปเดตข้อมูลผู้ใช้งาน"
@@ -171,7 +171,7 @@ function TechInfoBody() {
   };
 
   return (
-    <div className="bg-[#F3F4F6] px-4 pb-2">
+    <div className="min-h-[55vh] bg-[#F3F4F6] px-4 pb-2">
       <div className="md:flex container md:mx-auto md:px-20 md:py-2 justify-between items-start">
         <div className="sticky top-[45px] md:top-[75px] z-40 md:basis-1/4">
           <TechAccount />

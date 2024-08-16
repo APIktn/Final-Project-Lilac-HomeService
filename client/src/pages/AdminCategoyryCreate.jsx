@@ -84,7 +84,7 @@ function AdminCategoryCreate() {
       if (error.response && error.response.status === 400) {
         alert("กรุณากรอกข้อมูลให้ครบ หรือ มีชื่อหมวดหมู่นี้แล้ว");
       }
-      console.error("Error creating promotion code:", error);
+      // console.error("Error creating promotion code");
     }
   };
 
@@ -235,7 +235,7 @@ function AdminCategoryCreate() {
               {createCategory && (
                 <div className="flex flex-col gap-7 -mx-4 rounded-t-none mb-4 mt-10 pb-4 h-[180px] w-[380] pt-10 bg-white rounded-lg">
                   <div className="">
-                    <hr className="border-t-2 border-[#CCD0D7] w-[1235px] ml-5 -mt-10 mb-14" />
+                    <hr className="border-t-2 border-[#CCD0D7] w-[1345px] ml-5 -mt-10 mb-14" />
                     <div>
                       <span className="block ml-5 font-medium text-[16px] text-[#646C80] ">
                         สร้างเมื่อ

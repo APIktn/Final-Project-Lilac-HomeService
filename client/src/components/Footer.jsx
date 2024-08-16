@@ -49,7 +49,7 @@ const Footer = () => {
             <div className=" text-base text-left mt-4 md:mt-0">
               <div className="flex items-center">
                 <img src={Tel_icon} alt="Tel_icon" className="mr-2 h-4 w-4" />
-                <p className="text-gray-600 text-base">080-540-6357</p>
+                <p className="text-gray-600 text-base">080-540-63XX</p>
               </div>
               <div className="flex items-center mt-2">
                 <img src={Mail_icon} alt="Mail_icon" className="mr-2 h-4 w-4" />
@@ -112,7 +112,7 @@ const Footer = () => {
             <div className=" text-base text-left mt-4 md:mt-0">
               <div className="flex items-center">
                 <img src={Tel_icon} alt="Tel_icon" className="mr-2 h-4 w-4" />
-                <p className="text-gray-600 text-base">080-540-6357</p>
+                <p className="text-gray-600 text-base">080-540-63XX</p>
               </div>
               <div className="flex items-center mt-2">
                 <img src={Mail_icon} alt="Mail_icon" className="mr-2 h-4 w-4" />

@@ -26,7 +26,7 @@ function AuthProvider(props) {
           error: null,
         }));
       } catch (error) {
-        console.error("Token decoding failed", error);
+        // console.error("Token decoding failed", error);
         localStorage.removeItem("token");
         setState((prevState) => ({
           ...prevState,

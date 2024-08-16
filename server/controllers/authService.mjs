@@ -29,7 +29,7 @@ export const loginUser = async (email, password, role) => {
       profile_image: user.profile_image,
     },
     process.env.SECRET_KEY,
-    { expiresIn: "1h" }
+    { expiresIn: "5h" }
   );
 
   return {

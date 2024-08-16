@@ -28,7 +28,7 @@ const Service_user = () => {
       );
       setServices(result.data.data);
     } catch (error) {
-      console.error("Error fetching services:", error);
+      // console.error("Error fetching services:", error);
     }
   };
 

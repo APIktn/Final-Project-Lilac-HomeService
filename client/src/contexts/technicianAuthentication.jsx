@@ -25,7 +25,7 @@ function TechnicianAuthProvider(props) {
           technician: technicianDataFromToken,
         }));
       } catch (error) {
-        console.error("Token decoding failed", error);
+        // console.error("Token decoding failed", error);
         localStorage.removeItem("technician-token");
         setState((prevState) => ({ ...prevState, technician: null }));
       }

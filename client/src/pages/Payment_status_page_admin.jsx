@@ -17,7 +17,7 @@ function Payment_status_page() {
         );
         setBillInfo(response.data);
       } catch (error) {
-        console.error("Error fetching bill info:", error);
+        // console.error("Error fetching bill info:", error);
       }
     };
 

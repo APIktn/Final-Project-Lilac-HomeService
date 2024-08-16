@@ -22,7 +22,7 @@ function AdminAuthProvider(props) {
         const adminDataFromToken = jwtDecode(token);
         setState((prevState) => ({ ...prevState, admin: adminDataFromToken }));
       } catch (error) {
-        console.error("Token decoding failed", error);
+        // console.error("Token decoding failed", error);
         localStorage.removeItem("admin-token");
         setState({ ...state, admin: null });
       }

@@ -130,7 +130,7 @@ function AdminServiceCreate() {
       // console.log("Fetched categories:", result.data.data);
       setCategories(result.data.data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      // console.error("Error fetching categories:", error);
     }
   };
 
@@ -223,7 +223,7 @@ function AdminServiceCreate() {
         window.location.href = "/admin/service";
       }
     } catch (error) {
-      console.error("Error uploading data", error);
+      // console.error("Error uploading data", error);
       setMessage("เกิดข้อผิดพลาดในการอัพโหลดข้อมูล");
     } finally {
       setUploading(false);

@@ -9,8 +9,7 @@ const CustomerInfo = () => {
     <>
       <Navbar />
       <CustomerInfoHeader />
-      <TechInfoBody />
-      <Footer />
+      <TechInfoBody />     
     </>
   );
 };

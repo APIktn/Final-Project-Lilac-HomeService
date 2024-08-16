@@ -40,7 +40,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
         );
         setTechnicians(response.data);
       } catch (error) {
-        console.error("Error fetching technicians:", error);
+        // console.error("Error fetching technicians:", error);
       }
     };
 
@@ -48,7 +48,7 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
   }, []);
 
   React.useEffect(() => {
-    console.log("Status has changed to:", status);
+    // console.log("Status has changed to:", status);
   }, [status]);
 
   const handleStatusChange = async (newStatus) => {
@@ -67,13 +67,13 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
       );
 
       if (response.status === 200) {
-        console.log("สถานะอัพเดตสำเร็จ");
+        // console.log("สถานะอัพเดตสำเร็จ");
         onStatusChange(orderDetail.order_detail_id, newStatus);
       } else {
-        console.error("สถานะอัพเดตไม่สำเร็จ:", response.statusText);
+        // console.error("สถานะอัพเดตไม่สำเร็จ:", response.statusText);
       }
     } catch (error) {
-      console.error("เกิดข้อผิดพลาดในการอัพเดตสถานะ:", error);
+      // console.error("เกิดข้อผิดพลาดในการอัพเดตสถานะ:", error);
     }
   };
 
@@ -94,13 +94,13 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
       );
 
       if (response.status === 200) {
-        console.log("พนักงานอัพเดตสำเร็จ");
+        // console.log("พนักงานอัพเดตสำเร็จ");
         onStatusChange(orderDetail.order_detail_id, status);
       } else {
-        console.error("พนักงานอัพเดตไม่สำเร็จ:", response.statusText);
+        // console.error("พนักงานอัพเดตไม่สำเร็จ:", response.statusText);
       }
     } catch (error) {
-      console.error("เกิดข้อผิดพลาดในการอัพเดตพนักงาน:", error);
+      // console.error("เกิดข้อผิดพลาดในการอัพเดตพนักงาน:", error);
     }
   };
 
@@ -122,15 +122,15 @@ const OcAdmin = ({ orderDetail, onStatusChange }) => {
       );
 
       if (response.status === 200) {
-        console.log("สถานะพนักงานอัพเดตสำเร็จ");
+        // console.log("สถานะพนักงานอัพเดตสำเร็จ");
       } else {
-        console.error("สถานะพนักงานอัพเดตไม่สำเร็จ:", response.statusText);
+        // console.error("สถานะพนักงานอัพเดตไม่สำเร็จ:", response.statusText);
       }
 
       // Optionally, you can reload or update the UI here
       window.location.reload();
     } catch (error) {
-      console.error("เกิดข้อผิดพลาดในการอัพเดตพนักงาน:", error);
+      // console.error("เกิดข้อผิดพลาดในการอัพเดตพนักงาน:", error);
     }
   };
 
